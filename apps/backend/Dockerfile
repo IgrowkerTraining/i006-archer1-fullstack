@@ -7,14 +7,11 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install all dependencies (tsx is needed at runtime to execute .ts files)
+RUN npm ci && npm cache clean --force
 
 # Development stage
 FROM base AS development
-
-# Install all dependencies including devDependencies
-RUN npm ci
 
 # Copy source code
 COPY . .
@@ -52,5 +49,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
-# Start the application
-CMD ["node", "server.js"]
+# Start the application (tsx runs .ts files directly)
+CMD ["npx", "tsx", "server.ts"]

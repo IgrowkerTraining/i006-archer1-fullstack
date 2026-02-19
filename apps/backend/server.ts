@@ -1,7 +1,7 @@
-const express = require("express");
-const { setupMiddleware } = require("./src/middleware");
-const apiRoutes = require("./src/routes");
-const config = require("./src/config");
+import express from "express";
+import { setupMiddleware } from "./src/middleware";
+import apiRoutes from "./src/routes";
+import config from "./src/config";
 
 const app = express();
 
