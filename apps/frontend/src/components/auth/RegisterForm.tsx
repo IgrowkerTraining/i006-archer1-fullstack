@@ -74,7 +74,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8">
-        {/* En tablet: 2 columnas. En móvil: 1 columna */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           <div className="md:col-span-2">
             <Input
