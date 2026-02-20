@@ -1,0 +1,79 @@
+/* PaginaInicio.css */
+
+.pagina-inicio-wrapper {
+  background-color: #FFFBF1; /* fondo claro */
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  color: #0B1001; /* letras oscuras */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #EFAD23; /* amarillo */
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Usuario en navbar */
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Contenido central */
+.pagina-inicio-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Texto principal */
+.pagina-inicio-content p {
+  font-size: 1.3rem; /* tamaño tablet */
+  margin-bottom: 25px;
+  color: #0B1001; /* letras oscuras */
+}
+
+/* Botón agregar explotación */
+.pagina-inicio-content button {
+  background-color: #68911B; /* verde */
+  color: white;
+  padding: 15px 40px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.pagina-inicio-content button:hover {
+  background-color: #557716; /* verde más oscuro al hover */
+}
+
+/* Responsive tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+  .pagina-inicio-wrapper {
+    padding: 0 40px;
+  }
+
+  .pagina-inicio-content p {
+    font-size: 1.5rem;
+  }
+
+  .pagina-inicio-content button {
+    padding: 18px 50px;
+    font-size: 1.2rem;
+  }
+}
