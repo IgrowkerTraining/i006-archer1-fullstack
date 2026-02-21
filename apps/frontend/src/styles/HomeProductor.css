@@ -1,119 +1,135 @@
-.home-wrapper {
-  background-color: #5f5f5f;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 40px;
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FFFBF1;
+  font-family: Arial, sans-serif;
 }
 
+.home-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  background-color: #FFFBF1;
+}
 
 .home-container {
-  background-color: #FFFBF1;
-  border-radius: 35px;
-  padding: 50px;
-  flex: 1;
-  max-width: 900px;
   width: 100%;
-  margin: 0 auto;
+  max-width: 1100px;
+  background: transparent;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 .navbar {
   width: 100%;
-  max-width: 900px;
   background-color: #EFAD23;
-  border-radius: 25px;
-  padding: 18px 30px;
+  border-radius: 20px;
+  padding: 16px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto 25px auto;
+  box-sizing: border-box;
+  margin-bottom: 50px;
 }
 
-.nav-title {
-  font-weight: 700;
-  font-size: 20px;
+.nav-left select {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: #FFFBF1;
   color: #0B1001;
-  letter-spacing: 0.5px;
+  margin-right: 450px;
 }
 
-
-
-.nav-user {
+.nav-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
+  position: relative;
 }
+
 
 .user-chip {
   background-color: #FFFBF1;
-  padding: 8px 18px;
+  padding: 10px 20px;
   border-radius: 30px;
   font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-
-.logout-btn {
-  background: none;
-  border: none;
-  font-size: 14px;
-  color: #0B1001;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-
-.logout-btn:hover {
-  opacity: 1;
-}
-
-
-.top-bar {
-  margin-bottom: 40px;
-}
-
-.top-bar select {
-  border: none;
-  background: none;
-  font-size: 20px;
-  font-weight: 600;
-  outline: none;
-  color: #0B1001;
   cursor: pointer;
 }
-
 
 .buttons {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 35px;
+  gap: 25px; /* Espacio uniforme entre los 3 botones */
+  width: 100%;
+  margin-top: 20px;
 }
 
+/* Estilo unificado para los tres botones */
 .buttons button {
-  width: 65%;
-  padding: 24px;
-  font-size: 20px;
-  border-radius: 30px;
-  border: none;
-  background-color: #68911B;
-  color: #FFFBF1;
+  width: 100%;           /* Ocupa el ancho disponible */
+  max-width: 500px;      /* Pero no más de 500px para que no se vean gigantes en PC */
+  padding: 20px;         /* Un poco más de aire */
+  font-size: 18px;
   font-weight: 600;
+  background-color: #6B8E23;
+  color: white;
+  border: none;
+  border-radius: 20px;   /* Bordes redondeados consistentes */
   cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 8px 20px rgba(104, 145, 27, 0.3);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Un toque de relieve */
 }
 
 .buttons button:hover {
-  background-color: #7ea733;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(104, 145, 27, 0.4);
+  opacity: 0.9;
+  transform: translateY(-2px); /* Efecto de levante al pasar el mouse */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.buttons button:active {
+  transform: translateY(0);
+};
+
+.user-menu {
+  position: relative;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  min-width: 150px;
+  z-index: 10;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  font-size: 13px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #0B1001;
+  border-radius: 8px;
+  width: auto;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f3f3;
 }
