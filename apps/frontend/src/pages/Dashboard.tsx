@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
             </svg>
           </div>
           <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-            NEXUS
+            ARCHER1
           </span>
         </div>
 
@@ -196,7 +196,7 @@ const Dashboard: React.FC = () => {
 
       <div className="sm:hidden sticky bottom-0 p-4 bg-slate-950 border-t border-slate-800">
         <Button variant="outline" className="w-full" onClick={logout}>
-          Log Out of Nexus
+          Log Out of Archer1
         </Button>
       </div>
     </div>

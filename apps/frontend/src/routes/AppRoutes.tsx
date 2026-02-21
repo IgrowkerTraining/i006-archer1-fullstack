@@ -5,11 +5,7 @@ import PublicRoute from "./PublicRoute";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import PaginaInicio from "../pages/PaginaInicio";
-import HomeProductor from "../pages/HomeProductor";
-import ActividadRegistro from "../pages/ActividadRegistro";
-import AgregarExplotacion from "../pages/AgregarExplotacion";
-import HomeTecnico from "../pages/HomeTecnico";
+import Dashboard from "../pages/Dashboard";
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -22,6 +18,7 @@ export const AppRoutes: React.FC = () => {
           </PublicRoute>
         }
       />
+
       <Route
         path="/register"
         element={
@@ -30,41 +27,6 @@ export const AppRoutes: React.FC = () => {
           </PublicRoute>
         }
       />
-
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <PaginaInicio />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/homeProductor"
-        element={
-          <ProtectedRoute>
-            <HomeProductor />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/homeTecnico"
-        element={
-          <ProtectedRoute>
-            <HomeTecnico />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/agregarExplotacion"
-        element={
-          <ProtectedRoute>
-            <AgregarExplotacion />
-          </ProtectedRoute>
-        }
-      />
-
       <Route
         path="/actividad"
         element={
@@ -73,8 +35,7 @@ export const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
