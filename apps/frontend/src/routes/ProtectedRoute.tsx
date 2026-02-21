@@ -1,15 +1,18 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+// ProtectedRoute.tsx
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
+  bypassAuth?: boolean; // permite saltar la autenticación
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
-  redirectTo = '/login' 
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  redirectTo = "/login",
+  bypassAuth = false,
 }) => {
   const { isAuthenticated, loading } = useAuth();
 
@@ -23,6 +26,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       </div>
     );
   }
+
+  if (bypassAuth) return <>{children}</>;
 
   return isAuthenticated ? <>{children}</> : <Navigate to={redirectTo} replace />;
 };
