@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Input } from "../common/Input";
 import { Button } from "../common/Button";
 import { api } from "../../services/api";
@@ -8,12 +8,14 @@ type Role = "producer" | "technician";
 type RegisterFormProps = {
   role: Role;
   showLicenseField?: boolean;
+  subtitle?: string;
   onSuccess?: () => void;
 };
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({
   role,
   showLicenseField = false,
+  subtitle = "Completa tus datos para registrarte",
   onSuccess,
 }) => {
   const [fullName, setFullName] = useState("");
@@ -24,6 +26,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const title = useMemo(() => "CREA TU CUENTA", []);
 
   const validate = () => {
     if (!fullName.trim()) return "El nombre completo es obligatorio.";
@@ -50,8 +54,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       password,
       country,
       role,
+      ...(showLicenseField ? { licenseNumber } : {}),
     };
-    if (showLicenseField) payload.licenseNumber = licenseNumber;
 
     try {
       setLoading(true);
@@ -65,17 +69,45 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center text-slate-700">
-        CREA TU CUENTA
-      </h1>
-      <p className="mt-2 text-center text-slate-500 text-sm sm:text-base">
-        Completa tus datos para registrarte
-      </p>
+    <div
+      className="w-full rounded-[28px] border shadow-2xl overflow-hidden"
+      style={{
+        backgroundColor: "#FFFBF1",
+        borderColor: "rgba(11,16,1,0.12)",
+        color: "#0B1001",
+      }}
+    >
+      <div
+        className="px-10 pt-10 pb-6 border-b"
+        style={{ borderColor: "rgba(11,16,1,0.10)" }}
+      >
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <h1 className="text-[34px] leading-tight font-extrabold tracking-tight">
+              {title}
+            </h1>
+            <p className="mt-2 text-lg" style={{ opacity: 0.78 }}>
+              {subtitle}
+            </p>
+          </div>
 
-      <form onSubmit={handleSubmit} className="mt-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-          <div className="md:col-span-2">
+      
+          <div
+            className="shrink-0 px-4 py-2 rounded-2xl text-sm font-bold border"
+            style={{
+              borderColor: "rgba(11,16,1,0.18)",
+              backgroundColor: "rgba(239,173,35,0.18)",
+              color: "#0B1001",
+            }}
+          >
+            {role === "producer" ? "PRODUCTOR" : "TÉCNICO"}
+          </div>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="px-10 py-8">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+          <div className="col-span-2">
             <Input
               label="Nombre completo"
               placeholder="Ingrese su nombre y apellido"
@@ -85,7 +117,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             />
           </div>
 
-          <div className="md:col-span-2">
+          <div className="col-span-2">
             <Input
               label="E-mail"
               type="email"
@@ -114,7 +146,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           />
 
           {showLicenseField ? (
-            <div className="md:col-span-2">
+            <div className="col-span-2">
               <Input
                 label="Nº de matrícula"
                 placeholder="Ingrese número de matrícula"
@@ -127,19 +159,41 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         </div>
 
         {error ? (
-          <p className="mt-5 text-sm text-red-600 text-center">{error}</p>
+          <div
+            className="mt-6 rounded-2xl border px-4 py-3 text-sm font-medium"
+            style={{
+              borderColor: "rgba(239, 68, 68, 0.35)",
+              backgroundColor: "rgba(239, 68, 68, 0.10)",
+              color: "#7f1d1d",
+            }}
+          >
+            {error}
+          </div>
         ) : null}
 
-        {/* Botón grande y cómodo para tablet */}
-        <div className="mt-6">
+
+        <div className="mt-8">
           <Button
             type="submit"
-            className="w-full py-3 md:py-3.5 text-base"
+            className="w-full py-4 text-lg rounded-2xl"
             isLoading={loading}
+            style={{
+              backgroundColor: "#68911B",
+              color: "#FFFBF1",
+            } as any}
           >
             Crear cuenta
           </Button>
+
+          <p className="mt-4 text-sm text-center" style={{ opacity: 0.75 }}>
+            Al continuar aceptas los términos y condiciones.
+          </p>
         </div>
+
+        <div
+          className="mt-8 h-[6px] rounded-full"
+          style={{ backgroundColor: "#EFAD23" }}
+        />
       </form>
     </div>
   );

@@ -1,0 +1,59 @@
+/* src/styles/register.css */
+.archer-register {
+  font-family: "Lato", system-ui, sans-serif;
+  background: #FFFBF1;
+  color: #0B1001;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.archer-register__card {
+  width: 100%;
+  max-width: 980px;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  border: 1px solid rgba(0,0,0,.08);
+  padding: 40px;
+}
+
+.archer-register__title {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.archer-register__subtitle {
+  margin-top: 8px;
+  font-size: 18px;
+  opacity: .75;
+}
+
+.archer-register__grid {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+}
+
+
+.archer-register__btn {
+  margin-top: 24px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: none;
+  background: #68911B;
+  color: #FFFBF1;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.archer-register__btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}

@@ -6,18 +6,34 @@ const RegisterProducer: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-10 sm:px-6 md:py-14">
-      <div className="mx-auto w-full max-w-md md:max-w-2xl">
-        <RegisterForm
-          role="producer"
-          showLicenseField={false}
-          onSuccess={() => navigate("/login")}
-        />
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "#FFFBF1" }}
+    >
+      <div className="mx-auto max-w-[980px] px-8 py-12">
+        <div
+          className="rounded-[34px] p-8 shadow-2xl border"
+          style={{
+            backgroundColor: "rgba(11,16,1,0.05)",
+            borderColor: "rgba(11,16,1,0.10)",
+          }}
+        >
+          <RegisterForm
+            role="producer"
+            showLicenseField={false}
+            subtitle="Perfil: Productor"
+            onSuccess={() => navigate("/login")}
+          />
 
-        <div className="mt-6 text-center">
-          <Link to="/register" className="text-sm text-slate-300 underline">
-            Volver
-          </Link>
+          <div className="mt-6 text-center">
+            <Link
+              to="/register"
+              style={{ color: "#0B1001" }}
+              className="underline font-semibold"
+            >
+              Volver
+            </Link>
+          </div>
         </div>
       </div>
     </div>
