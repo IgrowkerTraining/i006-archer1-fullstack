@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model agroactivity {
+  id                                    String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authorid                              String?       @db.Uuid
+  date                                  DateTime?     @db.Timestamp(6)
+  cropid                                String        @db.Uuid
+  productid                             String        @db.Uuid
+  machineryid                           String        @db.Uuid
+  climate                               String?
+  dose                                  String?
+  reason                                String?
+  method                                String?
+  responsibleid                         String?       @db.Uuid
+  surface                               Float?        @db.Real
+  activitytype                          String        @db.Uuid
+  exploitationid                        String        @db.Uuid
+  comments                              String?
+  user_agroactivity_authoridTouser      user?         @relation("agroactivity_authoridTouser", fields: [authorid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  crop                                  crop          @relation(fields: [cropid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  exploitation                          exploitation  @relation(fields: [exploitationid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  machinery                             machinery     @relation(fields: [machineryid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product                               product       @relation(fields: [productid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_agroactivity_responsibleidTouser user?         @relation("agroactivity_responsibleidTouser", fields: [responsibleid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  observation                           observation[]
+}
+
+model user {
+  id                                            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dni                                           Int            @db.SmallInt
+  istechnician                                  Boolean?
+  name                                          String?
+  surname                                       String?
+  email                                         String?
+  passwordhash                                  String?
+  agroactivity_agroactivity_authoridTouser      agroactivity[] @relation("agroactivity_authoridTouser")
+  agroactivity_agroactivity_responsibleidTouser agroactivity[] @relation("agroactivity_responsibleidTouser")
+  observation                                   observation[]
+}
+
+model usertest {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now())
+  name       String
+  email      String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model crop {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String?
+  variety      String?
+  plotid       String         @db.Uuid
+  agroactivity agroactivity[]
+  plot         plot           @relation(fields: [plotid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model exploitation {
+  id                                   String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                 String?
+  owner                                String?
+  location                             String?
+  agroactivity                         agroactivity[]
+  plot_plot_exploitationToexploitation plot[]         @relation("plot_exploitationToexploitation")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model machinery {
+  id           String         @id @db.Uuid
+  name         String?
+  agroactivity agroactivity[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model observation {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  text           String?
+  date           DateTime?    @db.Timestamp(6)
+  authorid       String       @db.Uuid
+  agroactivityid String       @db.Uuid
+  agroactivity   agroactivity @relation(fields: [agroactivityid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user           user         @relation(fields: [authorid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model plot {
+  id                                           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                         String?
+  totalsurface                                 Float?       @db.Real
+  exploitation                                 String       @db.Uuid
+  crop                                         crop[]
+  exploitation_plot_exploitationToexploitation exploitation @relation("plot_exploitationToexploitation", fields: [exploitation], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model product {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String?
+  agroactivity agroactivity[]
+}
