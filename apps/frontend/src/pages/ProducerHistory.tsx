@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useExplotation, Activity, Explotation } from "../context/ExplotationContext";
@@ -23,10 +22,7 @@ const ProducerHistory: React.FC = () => {
   useEffect(() => {
     if (!user) return;
     const misExplotacionesIds = explotations.map(ex => ex.id);
-
-    let filtradas = activities.filter(act =>
-      misExplotacionesIds.includes(act.explotationId)
-    );
+    let filtradas = activities.filter(act => misExplotacionesIds.includes(act.explotationId));
 
     if (explotacionSeleccionada) {
       filtradas = filtradas.filter(act => act.explotationId === explotacionSeleccionada.id);
@@ -34,114 +30,90 @@ const ProducerHistory: React.FC = () => {
     if (filtroActividad !== "todas") {
       filtradas = filtradas.filter(act => act.tipo === filtroActividad);
     }
-
     setActividadesFiltradas(filtradas);
-  }, [activities, explotations, user, explotacionSeleccionada, filtroActividad, filtroPeriodo, filtroParcela]);
-
-  useEffect(() => {
-    const handleClickFuera = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuAbierto(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickFuera);
-    return () => document.removeEventListener("mousedown", handleClickFuera);
-  }, []);
-
-  const toggleMenu = () => setMenuAbierto(prev => !prev);
+  }, [activities, explotations, user, explotacionSeleccionada, filtroActividad]);
 
   return (
-    <div className="historial-wrapper">
+    <div className="page-background">
+      <div className="history-frame">
+        
       <div className="navbar">
-        <div className="navbar-left">
-          <span className="navbar-title">Historial</span>
-        </div>
+  {/* IZQUIERDA */}
+  <div className="navbar-left">
+    <span className="navbar-title">Historial</span>
+  </div>
+  
+  {/* CENTRO (SELECT) */}
+  <div className="navbar-center">
+    <select
+      className="navbar-select-small"
+      value={explotacionSeleccionada?.id || ""}
+      onChange={e => {
+        const ex = explotations.find(ex => ex.id === e.target.value) || null;
+        setExplotacionSeleccionada(ex);
+      }}
+    >
+      <option value="">Todas las Explotaciones</option>
+      {explotations.map(ex => (
+        <option key={ex.id} value={ex.id}>{ex.nombre}</option>
+      ))}
+    </select>
+  </div>
 
-        <div className="navbar-center">
-          <select
-            value={explotacionSeleccionada?.id || ""}
-            onChange={e => {
-              const ex = explotations.find(ex => ex.id === e.target.value) || null;
-              setExplotacionSeleccionada(ex);
-            }}
-          >
-            <option value="">Seleccionar Explotación</option>
-            {explotations.map(ex => (
-              <option key={ex.id} value={ex.id}>{ex.nombre}</option>
-            ))}
-          </select>
-        </div>
+  {/* DERECHA (USUARIO) */}
+  <div className="navbar-right" ref={menuRef}>
+    <div className="user-chip" onClick={() => setMenuAbierto(!menuAbierto)}>
+      <span style={{ fontSize: '20px' }}>👤</span>
+      <span className="user-name">{user?.name || user?.email}</span>
+    </div>
 
-        <div className="user-menu" ref={menuRef}>
-          <div className="user-chip" onClick={toggleMenu}>
-            <span className="user-icon">👤</span>
-            <span className="user-name">{user?.name || user?.email}</span>
+    {menuAbierto && (
+      <div className="dropdown-menu"> 
+        <LogoutButton />
+      </div>
+    )}
+  </div>
+</div>
+
+        <h2 className="history-title">Historial de Actividades</h2>
+
+        <div className="filtros-grid">
+          <div className="form-group">
+            <label>Actividad</label>
+            <select className="filter-select" value={filtroActividad} onChange={e => setFiltroActividad(e.target.value)}>
+              <option value="todas">Todas</option>
+              {Array.from(new Set(activities.map(a => a.tipo))).map(tipo => (
+                <option key={tipo} value={tipo}>{tipo}</option>
+              ))}
+            </select>
           </div>
-          {menuAbierto && (
-            <div className="dropdown-menu">
-              <LogoutButton className="dropdown-item" />
-            </div>
+          <div className="form-group">
+            <label>Periodo</label>
+            <select className="filter-select">
+              <option>Todos</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Parcela</label>
+            <select className="filter-select">
+              <option>Todas las parcelas</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="table-container" style={{ flex: 1, textAlign: 'center' }}>
+          {actividadesFiltradas.length === 0 ? (
+            <p className="no-data">No hay actividades registradas.</p>
+          ) : (
+            <table>{/* Tu tabla aquí */}</table>
           )}
         </div>
+
+        <div className="footer-line"></div>
       </div>
 
-      <div className="filtros-container">
-        <label>
-          Actividad:
-          <select value={filtroActividad} onChange={e => setFiltroActividad(e.target.value)}>
-            <option value="todas">Todas</option>
-            {Array.from(new Set(activities.map(a => a.tipo))).map(tipo => (
-              <option key={tipo} value={tipo}>{tipo}</option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Periodo:
-          <select value={filtroPeriodo} onChange={e => setFiltroPeriodo(e.target.value)}>
-            <option value="todos">Todos</option>
-            <option value="ultimo-mes">Último mes</option>
-            <option value="ultimo-trimestre">Último trimestre</option>
-          </select>
-        </label>
-
-        <label>
-          Parcela:
-          <select value={filtroParcela} onChange={e => setFiltroParcela(e.target.value)}>
-            <option value="todas">Todas</option>
-          </select>
-        </label>
-      </div>
-
-      <div className="historial-container">
-        <h2>Historial de Actividades</h2>
-
-        {actividadesFiltradas.length === 0 ? (
-          <p>No hay actividades registradas.</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Actividad</th>
-                <th>Fecha</th>
-                <th>Detalles</th>
-              </tr>
-            </thead>
-            <tbody>
-              {actividadesFiltradas.map((act) => {
-                const ex = explotations.find((e) => e.id === act.explotationId);
-                return (
-                  <tr key={act.id}>
-                    <td>{ex?.nombre || "Sin nombre"}</td>
-                    <td>{act.tipo}</td>
-                    <td>{new Date(act.fecha).toLocaleDateString()}</td>
-                    <td>{act.detalles}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
+      <div className="back-link-container">
+        <button className="back-link" onClick={() => navigate(-1)}>Volver</button>
       </div>
     </div>
   );
