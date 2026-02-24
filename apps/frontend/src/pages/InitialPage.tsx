@@ -12,7 +12,6 @@ const InitialPage: React.FC = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Redirigir automáticamente si ya existen explotaciones
   useEffect(() => {
     if (explotations.length > 0) {
       navigate("/homeProductor");
@@ -21,7 +20,6 @@ const InitialPage: React.FC = () => {
 
   const toggleMenu = () => setMenuAbierto(prev => !prev);
 
-  // Cerrar el menú al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -34,125 +32,129 @@ const InitialPage: React.FC = () => {
 
   return (
     <div style={{
-      backgroundColor: "#FFFBF1",
+      backgroundColor: "#61615b",
+      width: "100%",
       minHeight: "100vh",
       display: "flex",
       justifyContent: "center",
-      alignItems: "flex-start",
-      padding: "30px 20px",
-      fontFamily: "Arial, sans-serif",
-      boxSizing: "border-box"
+      alignItems: "center",
+      padding: "20px",
+      margin: 0
     }}>
+      
       <div style={{
+        backgroundColor: "#fdfaf2",
         width: "100%",
-        maxWidth: "1100px",
+        maxWidth: "900px",
+        minHeight: "85vh",
+        borderRadius: "80px", // Bordes bien redondeados
+        padding: "60px 40px",
         display: "flex",
         flexDirection: "column",
-        gap: "30px"
+        position: "relative",
+        
+        /* --- EL MARCO SUAVE --- */
+        border: "20px solid #f0eee4", // Color hueso suave que pediste
+        /* ---------------------- */
+
+        overflow: "hidden",
+        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" 
       }}>
-        <div style={{
-          width: "100%",
-          backgroundColor: "#EFAD23",
-          borderRadius: "20px",
-          padding: "16px 25px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxSizing: "border-box",
-          marginBottom: "50px"
-        }}>
-          {/* Espacio para mantener el layout si decides poner algo a la izquierda */}
-          <div /> 
-
-          <div ref={menuRef} style={{ position: "relative" }}>
-            <div
-              onClick={toggleMenu}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "10px 20px",
-                borderRadius: "30px",
-                backgroundColor: "#FFFBF1",
-                cursor: "pointer",
-                fontWeight: 500,
-                fontSize: "14px"
-              }}
-            >
-              <span>👤</span>
-              <span>{user?.name || user?.email}</span>
-            </div>
-
-            {menuAbierto && (
-              <div style={{
-                position: "absolute",
-                top: "55px",
-                right: 0,
-                backgroundColor: "#fff",
-                borderRadius: "12px",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-                padding: "8px",
-                minWidth: "150px",
-                zIndex: 10
-              }}>
-                <LogoutButton
-                  className="dropdown-item"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "13px",
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                    color: "#0B1001",
-                    borderRadius: "8px",
-                    width: "100%",
-                    textAlign: "left"
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "80px",
-          textAlign: "center",
-          padding: "0 20px",
-          gap: "20px"
-        }}>
-          <p style={{
-            fontSize: "1.3rem",
-            color: "#0B1001"
+        
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "50px" }}>
+          
+          <div style={{
+            backgroundColor: "#EFAD23",
+            borderRadius: "20px",
+            padding: "15px 25px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
           }}>
-            Aún no tienes explotaciones creadas
-          </p>
-          <button
-            onClick={() => navigate("/add-explotation")}
-            style={{
-              backgroundColor: "#68911B",
-              color: "white",
-              padding: "15px 40px",
-              borderRadius: "12px",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              transition: "background-color 0.3s"
-            }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#557716")}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#68911B")}
-          >
-            Agregar explotación
-          </button>
+            <div />
+            <div ref={menuRef} style={{ position: "relative" }}>
+              <div 
+                onClick={toggleMenu}
+                style={{
+                  background: "white",
+                  padding: "8px 15px",
+                  borderRadius: "30px",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer"
+                }}
+              >
+                <span>👤</span>
+                <span style={{ marginLeft: "8px", fontWeight: 500, fontSize: "14px", color: "#333" }}>
+                  {user?.name || user?.email}
+                </span>
+              </div>
+
+              {menuAbierto && (
+                <div style={{
+                  position: "absolute",
+                  top: "55px",
+                  right: 0,
+                  backgroundColor: "#fff",
+                  borderRadius: "12px",
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+                  padding: "8px",
+                  minWidth: "150px",
+                  zIndex: 100
+                }}>
+                  <LogoutButton className="dropdown-item" />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            flex: 1,
+            textAlign: "center",
+            marginTop: "60px",
+            gap: "30px"
+          }}>
+            <p style={{
+              fontSize: "1.6rem",
+              color: "#333",
+              fontWeight: "600",
+              maxWidth: "400px",
+              margin: 0
+            }}>
+              Aún no tienes explotaciones creadas
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+              <button 
+                onClick={() => navigate("/add-explotation")}
+                style={{
+                  width: "100%",
+                  maxWidth: "400px",
+                  padding: "22px",
+                  borderRadius: "18px",
+                  border: "none",
+                  backgroundColor: "#72922B",
+                  color: "white",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "0 5px 0px #566e21",
+                  transition: "transform 0.1s"
+                }}
+              >
+                Agregar explotación
+              </button>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
   );
 };
 
-// EXPORTACIÓN POR DEFECTO PARA EL ROUTER
 export default InitialPage;
