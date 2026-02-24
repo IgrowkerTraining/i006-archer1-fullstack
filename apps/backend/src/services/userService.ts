@@ -1,38 +1,88 @@
-import User, { UserData } from "../models/User";
+import prisma  from "../utils/prisma";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+interface RegisterDTO {
+  fullname: string;
+  email: string;
+  password: string;
+  country?: string;
+  istechnician: boolean;
+  registrationnumber?: string;
+}
 
 class UserService {
-  private users: User[] = [];
 
-  findByEmail(email: string): User | undefined {
-    return this.users.find((user) => user.email === email);
+  async register(data: RegisterDTO) {
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email: data.email }
+  });
+
+  if (existingUser) {
+    throw new Error("User already exists");
   }
 
-  findById(id: string): User | undefined {
-    return this.users.find((user) => user.id === id);
-  }
+  const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  async create(userData: UserData): Promise<User> {
-    const existingUser = this.findByEmail(userData.email);
-    if (existingUser) {
-      throw new Error("User already exists");
+  const user = await prisma.user.create({
+    data: {
+      fullname: data.fullname,
+      email: data.email,
+      passwordhash: hashedPassword,
+      country: data.country,
+      istechnician: data.istechnician,
+      registrationnumber: data.registrationnumber
+    },
+    select: {
+      id: true,
+      fullname: true,
+      email: true,
+      country: true,
+      istechnician: true,
+      registrationnumber: true
+    }
+  });
+
+  return user;
+}
+
+  //LOGIN
+  async login(email: string, password: string) {
+
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!user) {
+      throw new Error("Invalid credentials");
     }
 
-    const newUser = User.create(userData);
-    this.users.push(newUser);
-    return newUser;
-  }
+    const isMatch = await bcrypt.compare(password, user.passwordhash);
 
-  async authenticate(email: string, password: string): Promise<User> {
-    const user = this.findByEmail(email);
-    if (!user || user.password !== password) {
-      throw new Error("Invalid email or password");
+    if (!isMatch) {
+      throw new Error("Invalid credentials");
     }
-    return user;
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email , istechnician : user.istechnician },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return {
+      user: {
+        id: user.id,
+        istechnician: user.istechnician,
+        fullname: user.fullname,
+        email: user.email
+      },
+      token
+    };
   }
 
-  getAllUsers(): Omit<import("../models/User").UserProps, "password">[] {
-    return this.users.map((user) => user.toJSON());
-  }
 }
 
 export default new UserService();

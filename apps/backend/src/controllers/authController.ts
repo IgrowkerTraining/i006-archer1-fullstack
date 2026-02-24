@@ -1,58 +1,56 @@
 import { Request, Response } from "express";
 import userService from "../services/userService";
+import ValidatorUser from "../utils/validatorUser";
+import ResponseHelper from "../utils/responseHelper";
 
 class AuthController {
+
   async register(req: Request, res: Response): Promise<void> {
     try {
-      const { name, email, password } = req.body;
 
-      if (!name || !email || !password) {
-        res.status(400).json({
-          error: "All fields are required",
-        });
+      const errors = ValidatorUser.validateRegister(req.body);
+      if (errors.length > 0) {
+        ResponseHelper.error(res, "Validation failed", 400, errors);
         return;
       }
 
-      const newUser = await userService.create({ name, email, password });
+      const user = await userService.register(req.body);
 
-      res.status(201).json({
-        user: newUser.toJSON(),
-        message: "User registered successfully",
-      });
-    } catch (error) {
-      if (error instanceof Error && error.message === "User already exists") {
-        res.status(409).json({ error: error.message });
+      ResponseHelper.success(res, "Registered successfully" ,201);
+
+    } catch (error: any) {
+      if (error.message === "User already exists") {
+        ResponseHelper.error(res, "Validation failed", 409, {error: error.message});
         return;
       }
-      res.status(500).json({ error: "Registration failed" });
+
+      ResponseHelper.error(res, "Validation failed", 500, {error: "Registration failed"});
     }
   }
 
+
   async login(req: Request, res: Response): Promise<void> {
     try {
+      const errors = ValidatorUser.validateLogin(req.body);
+
+      if (errors.length > 0) {
+        ResponseHelper.error(res, "Validation failed", 400, {errors});
+        return;
+      }
+
       const { email, password } = req.body;
 
-      if (!email || !password) {
-        res.status(400).json({
-          error: "Email and password are required",
-        });
-        return;
-      }
+      const result = await userService.login(email, password);
 
-      const user = await userService.authenticate(email, password);
+      ResponseHelper.success(res," token: result.token",200);
 
-      res.json({
-        user: user.toJSON(),
-        token: "mock-jwt-token-" + user.id,
-        message: "Login successful",
-      });
-    } catch (error) {
-      if (error instanceof Error && error.message === "Invalid email or password") {
-        res.status(401).json({ error: error.message });
-        return;
+    } catch (error: any) {
+        if (error.message === "Invalid credentials") {
+          ResponseHelper.error(res, "Validation failed", 401, {error: error.message});
+          return;
+        }
+        ResponseHelper.error(res, "Login failed", 500, {detail: error.message});
       }
-      res.status(500).json({ error: "Login failed" });
-    }
   }
 }
 
