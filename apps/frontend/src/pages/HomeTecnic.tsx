@@ -1,21 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useExplotation, Explotation } from "../context/ExplotationContext";
+import { useExplotation } from "../context/ExplotationContext";
 import LogoutButton from "../components/LogoutButton";
 
 export default function HomeTecnic() {
   const { user } = useAuth();
-  const { explotations } = useExplotation(); // hook ya seguro dentro del Provider
+  const { explotations } = useExplotation();
   const navigate = useNavigate();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Solo mostramos las explotaciones asignadas al técnico (filtrar después)
-  // Cambié tecnicoId por userId
   const assignedExplotations = explotations.filter(
-    (ex) => ex.userId === user?.id // Ahora usamos userId en vez de tecnicoId
+    (ex) => ex.userId === user?.id
   );
 
   const toggleMenu = () => setMenuAbierto((prev) => !prev);
@@ -31,137 +29,96 @@ export default function HomeTecnic() {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#FFFBF1",
-        minHeight: "100vh",
+    <div style={{
+      backgroundColor: "#837d7d",
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "20px",
+      boxSizing: "border-box"
+    }}>
+      <div style={{
+        backgroundColor: "#FFFAF2",
+        width: "100%",
+        maxWidth: "850px", 
+        height: "88vh",
+        borderRadius: "60px",
+        padding: "40px",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "30px 20px",
-        fontFamily: "Arial, sans-serif",
+        flexDirection: "column",
+        position: "relative",
         boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1100px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-        }}
-      >
-        {/* NAVBAR */}
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "#EFAD23",
-            borderRadius: "20px",
-            padding: "16px 25px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            boxSizing: "border-box",
-            marginBottom: "50px",
-          }}
-        >
-          <div ref={menuRef} style={{ position: "relative" }}>
-            <div
-              onClick={toggleMenu}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "10px 20px",
-                borderRadius: "30px",
-                backgroundColor: "#FFFBF1",
-                cursor: "pointer",
-                fontWeight: 500,
-                fontSize: "14px",
-              }}
-            >
-              <span>👤</span>
-              <span>{user?.name || user?.email}</span>
+        
+        // BORDE FÍSICO PARA DEFINICIÓN
+        border: "20px solid rgba(0, 0, 0, 0.15)", 
+        
+        // DOBLE SOMBRA NEGRA PURA
+        boxShadow: "0px 0px 0px 10px rgba(0, 0, 0, 0.03), 0px 25px 60px rgba(0, 0, 0, 0.5)",
+      }}>
+        
+        {/* BARRA SUPERIOR */}
+        <div ref={menuRef} style={{ position: "relative" }}>
+          <div 
+            onClick={toggleMenu}
+            style={{
+              backgroundColor: "#F3B130",
+              padding: "10px 20px",
+              borderRadius: "25px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              cursor: "pointer"
+            }}
+          >
+            <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '2px 12px' }}>
+              <select style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '14px' }}>
+                <option>Seleccionar explotación</option>
+                {assignedExplotations.map(ex => (
+                  <option key={ex.id} value={ex.id}>{ex.nombre}</option>
+                ))}
+              </select>
             </div>
-
-            {menuAbierto && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "55px",
-                  right: 0,
-                  backgroundColor: "#fff",
-                  borderRadius: "12px",
-                  boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-                  padding: "8px",
-                  minWidth: "150px",
-                  zIndex: 10,
-                }}
-              >
-                <LogoutButton
-                  className="dropdown-item"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "13px",
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                    color: "#0B1001",
-                    borderRadius: "8px",
-                    width: "auto",
-                    textAlign: "left",
-                  }}
-                />
-              </div>
-            )}
+            <span style={{ fontSize: "18px" }}>👤</span>
           </div>
+
+          {menuAbierto && (
+            <div style={{
+              position: "absolute",
+              top: "55px",
+              right: "0",
+              backgroundColor: "white",
+              borderRadius: "15px",
+              boxShadow: "0px 10px 30px rgba(0,0,0,0.2)",
+              padding: "10px",
+              width: "180px",
+              zIndex: 1000,
+            }}>
+              <LogoutButton />
+            </div>
+          )}
         </div>
 
         {/* CONTENIDO */}
-        {assignedExplotations.length === 0 ? (
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "18px",
-              color: "#777",
-            }}
-          >
-            No tienes ninguna explotación asignada por el momento.
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
-            {assignedExplotations.map((ex) => (
-              <div
-                key={ex.id}
-                onClick={() =>
-                  navigate("/detalle-explotacion", { state: { explotationId: ex.id } })
-                }
-                style={{
-                  display: "flex",
-                  backgroundColor: "#F4EBDC",
-                  padding: "25px",
-                  borderRadius: "25px",
-                  alignItems: "center",
-                  gap: "20px",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                <div style={{ fontSize: "40px" }}>🖼️</div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: "20px" }}>{ex.nombre}</h3>
-                  <p style={{ margin: "5px 0 15px 0", fontSize: "14px" }}>
-                    <strong>Productor:</strong> {user?.name || user?.email} {/* Aquí he puesto el nombre del usuario */}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#A0A0A0", textAlign: "center" }}>
+          {assignedExplotations.length === 0 ? (
+            "No tienes ninguna explotación asignada por el momento."
+          ) : (
+             <div style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '15px'}}>
+                {/* Contenido si hay explotaciones */}
+             </div>
+          )}
+        </div>
+
+        {/* LÍNEA INFERIOR */}
+        <div style={{
+          width: "650px",
+          height: "5px",
+          backgroundColor: "#F3B130",
+          margin: "0 auto 10px auto",
+          borderRadius: "10px"
+        }} />
+
       </div>
     </div>
   );
