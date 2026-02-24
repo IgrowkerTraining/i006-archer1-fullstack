@@ -19,7 +19,7 @@
   background-color: #FFFBF1; 
   width: 100%;
   max-width: 950px !important;
-  min-height: 650px !important; 
+  min-height: 850px important;
   border-radius: 50px;
   box-shadow: 
     0 0 0 30px #f0eee4,
@@ -32,7 +32,7 @@
 }
 
 h2 {
-  margin-bottom: -180px;
+  margin-bottom: 30px;
   color: #222222;
   text-align: center;
   font-size: 28px;
