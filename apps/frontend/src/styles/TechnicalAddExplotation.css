@@ -1,65 +1,111 @@
-.form-wrapper {
-  background-color: #FFFBF1; 
+.page-background {
+  background-color: rgba(60, 60, 58, 0.75) !important; 
   min-height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; 
   padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.form-container {
+.outer-frame {
   background-color: #FFFBF1;
-  width: 600px; 
-  max-width: 95%;
+  width: 100% !important;
+  /* 🔥 ANCHO MÁS ESTRECHO: De 400px a 340px */
+  max-width: 450px !important; 
+  
+  height: auto !important; 
+  min-height: auto !important;
+  display: block; 
+  
   border-radius: 20px;
-  padding: 30px;
-  border: 4px solid #68911B; 
+  /* Reducimos un poco el padding para que no se vea vacío */
+  padding: 10px 15px; 
   box-sizing: border-box;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  /* ✅ MARCO SUAVE ESTILO CUADRO */
+  border: 15px solid #e4dcd4;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
 }
 
-h2 {
-  margin-bottom: 25px;
-  color: #0B1001; 
+.home-container {
+  height: fit-content;
+}
+
+.form-title {
+  color: #0b1001;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px; 
+  font-weight: bold;
+  margin-bottom: -180px;
 }
 
-.form-container input,
-.form-container select {
-  padding: 12px 15px;
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Un poco más apretado para que el cuadro sea más corto */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  color: #5d4a44;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+input, select {
+  padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  color: #0B1001;
+  border: 1.5px solid #d1c7c3;
+  font-size: 14px;
   background-color: #fff;
-  transition: border 0.3s;
+  color: #333;
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 15px;
 }
 
-.form-container input:focus,
-.form-container select:focus {
-  outline: none;
-  border-color: #68911B;
-  box-shadow: 0 0 5px rgba(104, 145, 27, 0.5);
-}
-
-button {
-  margin-top: 10px;
-  padding: 15px 20px;
-  border-radius: 20px;
-  border: none;
-  background-color: #68911B;
+.btn-submit {
+  margin-top: 15px;
+  padding: 14px;
+  background-color: #72922B;
   color: white;
+  border: none;
+  border-radius: 15px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%;
+  box-shadow: 0 4px 0px #566e21;
 }
 
-button:hover {
-  background-color: #5a7f19;
+.footer-line {
+  height: 4px;
+  background-color: #EFAD23;
+  width: 40%;
+  margin: 20px auto 0;
+  border-radius: 10px;
+}
+
+.back-link-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.back-link {
+  color: #ffffff;
+  background: rgba(0,0,0,0.4);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
 }
