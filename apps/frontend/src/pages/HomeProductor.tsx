@@ -15,7 +15,6 @@ export default function HomeProductor() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Filtrar solo las explotaciones del usuario
   const misExplotations = explotations.filter(ex => ex.userId === user?.id);
 
   useEffect(() => {
@@ -36,7 +35,6 @@ export default function HomeProductor() {
 
   const toggleMenu = () => setMenuAbierto(prev => !prev);
 
-  // Cerrar menú al hacer click fuera
   useEffect(() => {
     const handleClickFuera = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -50,7 +48,9 @@ export default function HomeProductor() {
   }, []);
 
   return (
-    <div className="home-wrapper">
+  <div className="page-background">
+    <div className="producer-frame">
+      
       <div className="home-container">
         <div className="navbar">
           <div className="nav-left">
@@ -73,12 +73,14 @@ export default function HomeProductor() {
             <div className="user-menu" ref={menuRef}>
               <div className="user-chip" onClick={toggleMenu}>
                 <span className="user-icon">👤</span>
-                <span className="user-name">{user?.name || user?.email}</span>
+                <span className="user-name">
+                  {user?.name || user?.email}
+                </span>
               </div>
 
               {menuAbierto && (
                 <div className="dropdown-menu">
-                  <LogoutButton className="dropdown-item" />
+                  <LogoutButton />
                 </div>
               )}
             </div>
@@ -86,20 +88,21 @@ export default function HomeProductor() {
         </div>
 
         <div className="buttons">
-          <div className="buttons">
-  <button onClick={() => {
-    console.log("Navegando a Actividad...");
-    navigate("/activity");
-  }}>Registrar actividad</button>
-  
-  <button onClick={() => {
-    console.log("Navegando a Historial...");
-    navigate("/producer-history");
-  }}>Historial</button>
-</div>
-          <button>Generar resumen</button>
+          <button onClick={() => navigate("/activity")}>
+            Registrar actividad
+          </button>
+
+          <button onClick={() => navigate("/producer-history")}>
+            Historial
+          </button>
+
+          <button>
+            Generar resumen
+          </button>
         </div>
+
       </div>
     </div>
-  );
+  </div>
+);
 }
