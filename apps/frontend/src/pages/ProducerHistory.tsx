@@ -42,6 +42,11 @@ const ProducerHistory: React.FC = () => {
     }
   };
 
+  // Función para ver observaciones (puedes cambiar la ruta según la página que cree tu compañero)
+  const handleVerObservaciones = (actId: string) => {
+    navigate(`/ver-observacion/${actId}`);
+  };
+
   return (
     <div className="page-background">
       <div className="history-frame">
@@ -79,7 +84,6 @@ const ProducerHistory: React.FC = () => {
                     <div className="edit-form-card">
                       <div className="form-group">
                         <label>Tipo de Actividad</label>
-                        {/* 1. CAMBIO A SELECT AQUÍ */}
                         <select 
                           className="filter-select"
                           value={tempData?.tipo || ""} 
@@ -111,7 +115,6 @@ const ProducerHistory: React.FC = () => {
                     </div>
                   ) : (
                     <>
-                      {/* 2. DISEÑO FORZADO CON ESTILOS INLINE */}
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '15px', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '10px' }}>
                         <span style={{ fontSize: '14px', color: '#444', fontWeight: '600', display: 'block' }}>{act.fecha}</span>
                         <h3 style={{ fontSize: '32px', color: '#000000', fontWeight: '900', margin: '5px 0 0 0', padding: '0', lineHeight: '1', display: 'block' }}>
@@ -127,8 +130,30 @@ const ProducerHistory: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="card-footer">
+                      {/* FOOTER DE LA CARD CON BOTÓN TRANSPARENTE EN MEDIO */}
+                      <div className="card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px' }}>
                         <button className="btn-edit" onClick={() => handleEditClick(act)}>Editar</button>
+                        
+                        <button 
+                          className="btn-obs-transparent" 
+                          onClick={() => handleVerObservaciones(act.id)}
+                          style={{
+                            background: 'transparent',
+                            border: '1px solid rgba(0,0,0,0.2)',
+                            borderRadius: '15px',
+                            padding: '5px 12px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: '#444',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s'
+                          }}
+                        >
+                          Ver observaciones
+                        </button>
+
+                        {/* Espaciador para mantener el equilibrio visual si solo hay un botón a la izquierda */}
+                        <div style={{ width: '60px' }}></div> 
                       </div>
                     </>
                   )}
