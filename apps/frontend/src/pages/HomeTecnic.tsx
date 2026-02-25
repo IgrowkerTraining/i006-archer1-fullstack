@@ -6,15 +6,14 @@ import LogoutButton from "../components/LogoutButton";
 
 export default function HomeTecnic() {
   const { user } = useAuth();
-  const { explotations } = useExplotation();
+  const { explotations } = useExplotation(); // Traemos todas las explotaciones del contexto
   const navigate = useNavigate();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const assignedExplotations = explotations.filter(
-    (ex) => ex.userId === user?.id
-  );
+  // Eliminamos el filtro de userId para que el Técnico vea TODO lo creado
+  const allExplotations = explotations;
 
   const toggleMenu = () => setMenuAbierto((prev) => !prev);
 
@@ -42,23 +41,19 @@ export default function HomeTecnic() {
         backgroundColor: "#FFFAF2",
         width: "100%",
         maxWidth: "850px", 
-        height: "88vh",
+        minHeight: "88vh",
         borderRadius: "60px",
         padding: "40px",
         display: "flex",
         flexDirection: "column",
         position: "relative",
         boxSizing: "border-box",
-        
-        // BORDE FÍSICO PARA DEFINICIÓN
         border: "20px solid rgba(0, 0, 0, 0.15)", 
-        
-        // DOBLE SOMBRA NEGRA PURA
-        boxShadow: "0px 0px 0px 10px rgba(0, 0, 0, 0.03), 0px 25px 60px rgba(0, 0, 0, 0.5)",
+        boxShadow: "0px 25px 60px rgba(0, 0, 0, 0.5)",
       }}>
         
-        {/* BARRA SUPERIOR */}
-        <div ref={menuRef} style={{ position: "relative" }}>
+        {/* Cabecera del Panel */}
+        <div ref={menuRef} style={{ position: "relative", marginBottom: "30px" }}>
           <div 
             onClick={toggleMenu}
             style={{
@@ -71,15 +66,13 @@ export default function HomeTecnic() {
               cursor: "pointer"
             }}
           >
-            <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '2px 12px' }}>
-              <select style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '14px' }}>
-                <option>Seleccionar explotación</option>
-                {assignedExplotations.map(ex => (
-                  <option key={ex.id} value={ex.id}>{ex.nombre}</option>
-                ))}
-              </select>
+            <span style={{ fontWeight: "bold", color: "white", fontSize: "18px" }}>
+              Panel de Control Técnico
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+               <span style={{ color: "white", fontWeight: "bold" }}>{user?.name || "Técnico"}</span>
+               <span style={{ fontSize: "20px" }}>👤</span>
             </div>
-            <span style={{ fontSize: "18px" }}>👤</span>
           </div>
 
           {menuAbierto && (
@@ -99,26 +92,74 @@ export default function HomeTecnic() {
           )}
         </div>
 
-        {/* CONTENIDO */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#A0A0A0", textAlign: "center" }}>
-          {assignedExplotations.length === 0 ? (
-            "No tienes ninguna explotación asignada por el momento."
+        {/* Listado de Explotaciones (Cards) */}
+        <div style={{ 
+          flex: 1, 
+          overflowY: "auto", 
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+          paddingRight: "10px"
+        }}>
+          {allExplotations.length === 0 ? (
+            <div style={{ textAlign: "center", color: "#A0A0A0", marginTop: "50px" }}>
+              No hay explotaciones registradas en el sistema.
+            </div>
           ) : (
-             <div style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '15px'}}>
-                {/* Contenido si hay explotaciones */}
-             </div>
+            allExplotations.map((ex) => (
+              <div 
+                key={ex.id}
+                style={{
+                  backgroundColor: "#99a877",
+                  borderRadius: "25px",
+                  padding: "20px 30px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <h3 style={{ margin: 0, fontSize: "24px", fontWeight: "900", color: "#000" }}>
+                    {ex.nombre}
+                  </h3>
+                  <p style={{ margin: 0, fontSize: "16px", color: "#222", fontWeight: "600" }}>
+                    Responsable: {ex.userId === "invitado" ? "Productor Invitado" : `Productor (${ex.userId})`}
+                  </p>
+                  <p style={{ margin: 0, fontSize: "15px", color: "#444" }}>
+                    📍 {ex.ubicacion}, {ex.region}
+                  </p>
+                </div>
+
+                <button 
+                  onClick={() => navigate("/technical-history")}
+                  style={{
+                    backgroundColor: "#5e5d5d",
+                    color: "white",
+                    border: "none",
+                    padding: "12px 25px",
+                    borderRadius: "20px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    fontSize: "15px",
+                    transition: "0.2s"
+                  }}
+                >
+                  Historial
+                </button>
+              </div>
+            ))
           )}
         </div>
 
-        {/* LÍNEA INFERIOR */}
+        {/* Línea decorativa inferior */}
         <div style={{
-          width: "650px",
-          height: "5px",
+          width: "70%",
+          height: "6px",
           backgroundColor: "#F3B130",
-          margin: "0 auto 10px auto",
+          margin: "30px auto 0 auto",
           borderRadius: "10px"
         }} />
-
       </div>
     </div>
   );
