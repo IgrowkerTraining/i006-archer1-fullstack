@@ -16,15 +16,15 @@ class AuthController {
 
       const user = await userService.register(req.body);
 
-      ResponseHelper.success(res, "Registered successfully" ,201);
+      ResponseHelper.success(res, "Registered successfully", 201);
 
     } catch (error: any) {
       if (error.message === "User already exists") {
-        ResponseHelper.error(res, "Validation failed", 409, {error: error.message});
+        ResponseHelper.error(res, "Validation failed", 409, { error: error.message });
         return;
       }
 
-      ResponseHelper.error(res, "Validation failed", 500, {error: "Registration failed"});
+      ResponseHelper.error(res, "Validation failed", 500, { error: "Registration failed" });
     }
   }
 
@@ -34,7 +34,7 @@ class AuthController {
       const errors = ValidatorUser.validateLogin(req.body);
 
       if (errors.length > 0) {
-        ResponseHelper.error(res, "Validation failed", 400, {errors});
+        ResponseHelper.error(res, "Validation failed", 400, { errors });
         return;
       }
 
@@ -42,15 +42,15 @@ class AuthController {
 
       const result = await userService.login(email, password);
 
-      ResponseHelper.success(res," token: result.token",200);
+      ResponseHelper.success(res, " token: result.token", 200);
 
     } catch (error: any) {
-        if (error.message === "Invalid credentials") {
-          ResponseHelper.error(res, "Validation failed", 401, {error: error.message});
-          return;
-        }
-        ResponseHelper.error(res, "Login failed", 500, {detail: error.message});
+      if (error.message === "Invalid credentials") {
+        ResponseHelper.error(res, "Validation failed", 401, { error: error.message });
+        return;
       }
+      ResponseHelper.error(res, "Login failed", 500, { detail: error.message });
+    }
   }
 }
 
