@@ -34,19 +34,13 @@ class ActivityService {
                 exploitation_plot_exploitationToexploitation: {
                     producer: producerId
                 }
-            }
-        });
-        const crops = await prisma.crop.findMany({
-            where: {
-                plot_crop_plotToplot: {
-                    exploitation_plot_exploitationToexploitation: {
-                        producer: producerId
-                    }
-                }
+            },
+            include: {
+                crop_crop_plotToplot: true
             }
         });
         const activitytypes = await prisma.activitytype.findMany();
-        return { plots, crops, activitytypes };
+        return { plots, activitytypes };
     }
 }
 
