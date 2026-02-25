@@ -1,83 +1,21 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.page-background {
-  background-color: #868686 !important;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-}
-
-.outer-frame {
-  background-color: #FFFBF1; 
-  width: 100%;
-  max-width: 950px !important;
-  min-height: 850px important;
-  border-radius: 50px;
-  box-shadow: 
-    0 0 0 30px #f0eee4,
-    0 30px 100px rgba(211, 199, 199, 0.692),
-    0 10px 30px rgba(185, 166, 166, 0.637);
-  padding: 50px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-h2 {
-  margin-bottom: 30px;
-  color: #222222;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
 .form-group {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.form-group label {
   font-weight: 600;
-  color: #222222;
+  color: #222;
   margin-bottom: 6px;
   font-size: 16px;
 }
 
-input, textarea, select {
-  padding: 12px 16px;
+.form-group input, .form-group select, .form-group textarea {
+  padding: 12px;
   border-radius: 12px;
   border: 1.5px solid #d1c7c3;
   font-size: 15px;
-  background-color: #fff;
-  color: #222222;
-  font-family: inherit;
   outline: none;
-}
-
-input::placeholder, textarea::placeholder {
-  color: #c4b9b5; 
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
 }
 
 .btn-submit {
@@ -90,34 +28,10 @@ textarea {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 5px 0px #566e21; /* Relieve verde oliva */
-  transition: transform 0.1s;
+  box-shadow: 0 5px 0px #566e21;
 }
 
 .btn-submit:active {
   transform: translateY(3px);
   box-shadow: 0 2px 0px #566e21;
-}
-
-.footer-line {
-  height: 6px;
-  background-color: #EFAD23;
-  width: 85%;
-  margin: 40px auto 0;
-  border-radius: 10px;
-}
-
-.back-link-container {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.back-link {
-  background: none;
-  border: none;
-  text-decoration: underline;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  font-size: 18px;
 }
