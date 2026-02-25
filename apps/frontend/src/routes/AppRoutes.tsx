@@ -12,6 +12,9 @@ import TechnicalAddExplotation from "../pages/TechnicalAddExplotation";
 import HomeTecnic from "../pages/HomeTecnic";
 import ProducerHistory from "../pages/ProducerHistory";
 import TechnicalHistory from "../pages/TechnicalHistory";
+import RegisterProducer from "../pages/RegisterProducer";
+import RegisterTechnician from "../pages/RegisterTechnician";
+import Dashboard from "../pages/Dashboard";
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -34,6 +37,33 @@ export const AppRoutes: React.FC = () => {
             </PublicRoute>
           }
         />
+
+              <Route
+        path="/register/producer"
+        element={
+          <PublicRoute>
+            <RegisterProducer/>
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/register/technician"
+        element={
+          <PublicRoute>
+            <RegisterTechnician />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <PublicRoute>
+            <Dashboard />
+          </PublicRoute>
+        }
+      />
 
         <Route path="/" element={<InitialPage />} />
         <Route path="/homeProductor" element={<HomeProductor />} />
