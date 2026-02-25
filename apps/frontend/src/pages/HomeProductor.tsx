@@ -15,21 +15,38 @@ export default function HomeProductor() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const misExplotations = explotations.filter(ex => ex.userId === user?.id);
+  const misExplotations = user ? explotations.filter(ex => ex.userId === user.id) : explotations;
 
+  // ESTE ES EL BLOQUE QUE DEBES CAMBIAR
   useEffect(() => {
-    const idSeleccionado = (location.state as any)?.seleccionadaId;
-    if (idSeleccionado) {
-      const encontrada = misExplotations.find(e => e.id === idSeleccionado);
-      setExplotationSeleccionada(encontrada || misExplotations[0] || null);
-    } else {
-      setExplotationSeleccionada(misExplotations[0] || null);
+    // 1. Miramos si venimos de "Agregar Explotación" con un ID nuevo
+    const idRecibido = (location.state as any)?.seleccionadaId;
+
+    if (idRecibido) {
+      const encontrada = explotations.find(e => e.id === idRecibido);
+      if (encontrada) {
+        setExplotationSeleccionada(encontrada);
+        // Limpiamos el estado de la ruta para que no re-seleccione al navegar por la app
+        window.history.replaceState({}, document.title);
+        return; 
+      }
     }
-  }, [misExplotations, location.state]);
+
+    // 2. Si no hay ID nuevo, pero ya teníamos una seleccionada, la mantenemos
+    if (explotationSeleccionada) {
+        // Verificamos que la seleccionada siga existiendo en la lista global
+        const sigueExistiendo = explotations.some(e => e.id === explotationSeleccionada.id);
+        if (sigueExistiendo) return;
+    }
+
+    // 3. Por defecto, si hay lista, seleccionamos la primera
+    if (misExplotations.length > 0) {
+      setExplotationSeleccionada(misExplotations[0]);
+    }
+  }, [explotations, misExplotations, location.state]);
 
   const handleCambioExplotation = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = e.target.value;
-    const encontrada = misExplotations.find(ex => ex.id === id);
+    const encontrada = misExplotations.find(ex => ex.id === e.target.value);
     setExplotationSeleccionada(encontrada || null);
   };
 
@@ -42,67 +59,50 @@ export default function HomeProductor() {
       }
     };
     document.addEventListener("mousedown", handleClickFuera);
-    return () => {
-      document.removeEventListener("mousedown", handleClickFuera);
-    };
+    return () => document.removeEventListener("mousedown", handleClickFuera);
   }, []);
 
   return (
-  <div className="page-background">
-    <div className="producer-frame">
-      
-      <div className="home-container">
-        <div className="navbar">
-          <div className="nav-left">
-            <select
-              value={explotationSeleccionada?.id || ""}
-              onChange={handleCambioExplotation}
-            >
-              <option value="" disabled>
-                Explotación seleccionada
-              </option>
-              {misExplotations.map(ex => (
-                <option key={ex.id} value={ex.id}>
-                  {ex.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+    <div className="page-background">
+      <div className="producer-frame">
+        <div className="home-container">
+          <div className="navbar">
+            <div className="nav-left">
+              <select
+                value={explotationSeleccionada?.id || ""}
+                onChange={handleCambioExplotation}
+              >
+                <option value="" disabled>Explotación seleccionada</option>
+                {misExplotations.map(ex => (
+                  <option key={ex.id} value={ex.id}>{ex.nombre}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="nav-right">
-            <div className="user-menu" ref={menuRef}>
-              <div className="user-chip" onClick={toggleMenu}>
-                <span className="user-icon">👤</span>
-                <span className="user-name">
-                  {user?.name || user?.email}
-                </span>
-              </div>
-
-              {menuAbierto && (
-                <div className="dropdown-menu">
-                  <LogoutButton />
+            <div className="nav-right">
+              <div className="user-menu" ref={menuRef}>
+                <div className="user-chip" onClick={toggleMenu}>
+                  <span className="user-icon">👤</span>
+                  <span className="user-name">
+                    {user?.name || user?.email || "Usuario Invitado"}
+                  </span>
                 </div>
-              )}
+                {menuAbierto && (
+                  <div className="dropdown-menu">
+                    <LogoutButton />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
+          <div className="buttons">
+            <button onClick={() => navigate("/activity")}>Registrar actividad</button>
+            <button onClick={() => navigate("/producer-history")}>Historial</button>
+            <button>Generar resumen</button>
+          </div>
         </div>
-
-        <div className="buttons">
-          <button onClick={() => navigate("/activity")}>
-            Registrar actividad
-          </button>
-
-          <button onClick={() => navigate("/producer-history")}>
-            Historial
-          </button>
-
-          <button>
-            Generar resumen
-          </button>
-        </div>
-
       </div>
     </div>
-  </div>
-);
+  );
 }
