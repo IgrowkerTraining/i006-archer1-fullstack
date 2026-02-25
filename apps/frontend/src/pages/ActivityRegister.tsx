@@ -41,7 +41,6 @@ const ActivityRegister: React.FC = () => {
   return (
     <div className="page-background" style={{ backgroundColor: '#868686', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
       
-      {/* CUADRO BLANCO CON MARCO FORZADO */}
       <div style={{ 
         backgroundColor: '#FFFBF1', 
         width: '100%', 

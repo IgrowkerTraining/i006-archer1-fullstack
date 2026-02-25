@@ -12,7 +12,7 @@ const TechnicalAddExplotation: React.FC = () => {
   const [region, setRegion] = useState("");
   const [superficie, setSuperficie] = useState<number | "">("");
 
-  // Opciones para los selectores
+
   const opcionesRegiones = ["Extremadura", "Andalucía", "Castilla-La Mancha", "Aragón", "Comunidad Valenciana"];
   const opcionesUbicaciones = ["Badajoz", "Cáceres", "Sevilla", "Córdoba", "Jaén", "Ciudad Real"];
 

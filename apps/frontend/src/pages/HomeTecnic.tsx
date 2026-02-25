@@ -6,13 +6,11 @@ import LogoutButton from "../components/LogoutButton";
 
 export default function HomeTecnic() {
   const { user } = useAuth();
-  const { explotations } = useExplotation(); // Traemos todas las explotaciones del contexto
+  const { explotations } = useExplotation();
   const navigate = useNavigate();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  // Eliminamos el filtro de userId para que el Técnico vea TODO lo creado
   const allExplotations = explotations;
 
   const toggleMenu = () => setMenuAbierto((prev) => !prev);
@@ -52,7 +50,6 @@ export default function HomeTecnic() {
         boxShadow: "0px 25px 60px rgba(0, 0, 0, 0.5)",
       }}>
         
-        {/* Cabecera del Panel */}
         <div ref={menuRef} style={{ position: "relative", marginBottom: "30px" }}>
           <div 
             onClick={toggleMenu}
@@ -92,7 +89,7 @@ export default function HomeTecnic() {
           )}
         </div>
 
-        {/* Listado de Explotaciones (Cards) */}
+
         <div style={{ 
           flex: 1, 
           overflowY: "auto", 
@@ -152,7 +149,6 @@ export default function HomeTecnic() {
           )}
         </div>
 
-        {/* Línea decorativa inferior */}
         <div style={{
           width: "70%",
           height: "6px",

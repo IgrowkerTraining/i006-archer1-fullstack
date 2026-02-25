@@ -18,16 +18,14 @@ const TechnicalHistory: React.FC = () => {
 
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // 1. Detectar si venimos de una explotación específica desde el Home
   useEffect(() => {
     const idRecibido = (location.state as any)?.explotationId;
     if (idRecibido) {
       const encontrada = explotations.find(ex => ex.id === idRecibido);
-      if (encontrada) setExplotationSeleccionada(encontrada);
+      if (encontrada) setExplotacionSeleccionada(encontrada);
     }
   }, [explotations, location.state]);
 
-  // 2. Filtrar y ordenar actividades
   useEffect(() => {
     let filtradas = [...activities];
     if (explotacionSeleccionada) {
@@ -36,12 +34,11 @@ const TechnicalHistory: React.FC = () => {
     if (filtroActividad !== "todas") {
       filtradas = filtradas.filter(act => act.tipo === filtroActividad);
     }
-    // Ordenar por fecha descendente
+
     filtradas.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
     setActividadesFiltradas(filtradas);
   }, [activities, explotacionSeleccionada, filtroActividad]);
 
-  // Navegar a la página de observación (la que crea tu compañero)
   const handleIrAObservacion = (actividadId: string) => {
     navigate(`/nueva-observacion/${actividadId}`);
   };
@@ -59,7 +56,6 @@ const TechnicalHistory: React.FC = () => {
         position: "relative"
       }}>
         
-        {/* NAVBAR */}
         <div className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <span style={{ fontWeight: '900', fontSize: '1.4rem', color: '#000' }}>Historial Técnico</span>
           
@@ -91,7 +87,6 @@ const TechnicalHistory: React.FC = () => {
 
         <h2 style={{ textAlign: 'center', color: '#000', fontWeight: '900', marginBottom: '20px' }}>Registro de Actividades</h2>
 
-        {/* TABLA DE ACTIVIDADES */}
         <div className="table-container" style={{ marginTop: '20px', backgroundColor: 'rgba(0,0,0,0.03)', borderRadius: '20px', padding: '15px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
@@ -131,8 +126,7 @@ const TechnicalHistory: React.FC = () => {
                           cursor: 'pointer',
                           fontWeight: '900',
                           fontSize: '11px',
-                          boxShadow: '0 2px 0 #000',
-                          active: { transform: 'translateY(2px)', boxShadow: 'none' }
+                          boxShadow: '0 2px 0 #000'
                         }}
                       >
                         OBSERVACIÓN
@@ -145,17 +139,15 @@ const TechnicalHistory: React.FC = () => {
           </table>
         </div>
 
-        {/* LÍNEA AMARILLA DEL FOOTER (IGUAL QUE EN EL HOME) */}
         <div style={{
           width: "70%",
           height: "6px",
           backgroundColor: "#F3B130",
-          margin: "580px auto 10px auto",
+          margin: "40px auto 10px auto",
           borderRadius: "10px"
         }} />
       </div>
 
-      {/* BOTÓN VOLVER EXTERIOR */}
       <div style={{ textAlign: 'center', marginTop: '25px' }}>
         <button 
           onClick={() => navigate(-1)} 

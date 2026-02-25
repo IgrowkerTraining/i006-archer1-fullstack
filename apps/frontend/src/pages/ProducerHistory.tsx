@@ -42,7 +42,6 @@ const ProducerHistory: React.FC = () => {
     }
   };
 
-  // Función para ver observaciones (puedes cambiar la ruta según la página que cree tu compañero)
   const handleVerObservaciones = (actId: string) => {
     navigate(`/ver-observacion/${actId}`);
   };
@@ -130,7 +129,6 @@ const ProducerHistory: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* FOOTER DE LA CARD CON BOTÓN TRANSPARENTE EN MEDIO */}
                       <div className="card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px' }}>
                         <button className="btn-edit" onClick={() => handleEditClick(act)}>Editar</button>
                         
@@ -152,7 +150,6 @@ const ProducerHistory: React.FC = () => {
                           Ver observaciones
                         </button>
 
-                        {/* Espaciador para mantener el equilibrio visual si solo hay un botón a la izquierda */}
                         <div style={{ width: '60px' }}></div> 
                       </div>
                     </>

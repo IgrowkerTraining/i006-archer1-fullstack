@@ -47,15 +47,15 @@ const InitialPage: React.FC = () => {
         width: "100%",
         maxWidth: "900px",
         minHeight: "85vh",
-        borderRadius: "80px", // Bordes bien redondeados
+        borderRadius: "80px",
         padding: "60px 40px",
         display: "flex",
         flexDirection: "column",
         position: "relative",
         
-        /* --- EL MARCO SUAVE --- */
-        border: "20px solid #f0eee4", // Color hueso suave que pediste
-        /* ---------------------- */
+
+        border: "20px solid #f0eee4",
+
 
         overflow: "hidden",
         boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" 

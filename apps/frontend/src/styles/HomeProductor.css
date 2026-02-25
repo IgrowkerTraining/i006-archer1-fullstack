@@ -20,14 +20,14 @@
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* CONTENEDOR PRINCIPAL */
+
 .home-container {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-/* NAVBAR */
+
 .navbar {
   background-color: #EFAD23;
   border-radius: 20px;
@@ -37,7 +37,7 @@
   align-items: center;
 }
 
-/* SELECT */
+
 .nav-left select {
   padding: 8px 15px;
   border-radius: 30px;
@@ -48,17 +48,16 @@
   color: #333;
 }
 
-/* BOTONES */
 .buttons {
-  flex: 1; /* ocupa el espacio restante */
+  flex: 1; 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centra verticalmente */
+  justify-content: center; 
   align-items: center;
-  gap: 25px; /* separación entre botones */
+  gap: 25px;
 }
 
-/* ESTILO BOTONES */
+
 .buttons button {
   width: 100%;
   max-width: 400px;
