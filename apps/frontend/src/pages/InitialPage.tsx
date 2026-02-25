@@ -4,6 +4,7 @@ import { useExplotation } from "../context/ExplotationContext";
 import { useAuth } from "../hooks/useAuth";
 import LogoutButton from "../components/LogoutButton";
 
+
 const InitialPage: React.FC = () => {
   const { explotations } = useExplotation();
   const { user } = useAuth();

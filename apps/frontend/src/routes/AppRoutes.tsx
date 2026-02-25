@@ -15,6 +15,8 @@ import TechnicalHistory from "../pages/TechnicalHistory";
 import RegisterProducer from "../pages/RegisterProducer";
 import RegisterTechnician from "../pages/RegisterTechnician";
 import Dashboard from "../pages/Dashboard";
+import { OnboardingScreen } from "../pages/OnboardingScreen";
+import { LoginScreen } from "../pages/LoginScreen";
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -65,7 +67,8 @@ export const AppRoutes: React.FC = () => {
         }
       />
 
-        <Route path="/" element={<InitialPage />} />
+        <Route path="/" element={<OnboardingScreen />} />
+        <Route path="/loginscreen" element={<LoginScreen />} /> 
         <Route path="/homeProductor" element={<HomeProductor />} />
         <Route path="/homeTecnic" element={<HomeTecnic />} />
         <Route path="/activity" element={<ActivityRegister />} />
