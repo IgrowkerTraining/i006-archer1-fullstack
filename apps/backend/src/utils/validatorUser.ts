@@ -20,6 +20,7 @@ interface LoginData {
 class ValidatorUser {
 
 
+
   static required(value: string | undefined, fieldName: string): string | null {
     if (!value || value.trim() === "") {
       return `${fieldName} is required`;
@@ -92,6 +93,7 @@ class ValidatorUser {
     return errors;
   }
 
+  // 🔹 VALIDATE LOGIN
 
   static validateLogin(data: LoginData): ValidationError[] {
     const errors: ValidationError[] = [];

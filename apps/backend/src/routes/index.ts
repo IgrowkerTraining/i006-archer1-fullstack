@@ -1,13 +1,14 @@
 import { Router } from "express";
 import authRoutes from "./auth";
 import healthRoutes from "./health";
+import testRoutes from "./test";
+import activityRoutes from "./activity";
 
 const router = Router();
 
 router.use("/auth", authRoutes);
 router.use("/health", healthRoutes);
-router.use("/activity");
-router.use("/plot");
-router.use("/history");
+router.use("/test", testRoutes);
+router.use("/activity", activityRoutes);
 
 export default router;
