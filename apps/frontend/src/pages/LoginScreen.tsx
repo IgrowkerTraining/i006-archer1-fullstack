@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 export const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const handleLogin = () => {
     console.log('Logging in with', email, password);
     // tu logika logowania
   };
-  
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-start pt-20 px-6 font-sans md:justify-center md:bg-[#f3efe6]"
@@ -22,7 +23,7 @@ export const LoginScreen: React.FC = () => {
           <h1 className="text-4xl font-extrabold text-[#0B1001] mb-2">¡Bienvenido!</h1>
           <p className="text-lg font-medium text-[#0B1001] opacity-80">Inicia sesión para continuar</p>
         </div>
-        
+
         {/* Form */}
         <form className="flex flex-col gap-8 flex-grow" onSubmit={e => { e.preventDefault(); handleLogin(); }}>
           <label className="flex flex-col text-[#0B1001] font-semibold text-sm">
@@ -69,9 +70,9 @@ export const LoginScreen: React.FC = () => {
         {/* Footer */}
         <p className="text-center mt-8 text-[#0B1001] opacity-70">
           ¿No tienes cuenta?{' '}
-          <a href="#" className="font-bold underline text-[#EFAD23] hover:text-[#c49011]">
+          <Link to="/register" className="font-bold underline text-[#EFAD23] hover:text-[#c49011]">
             Regístrate
-          </a>
+          </Link>
         </p>
 
         {/* Mobile Home Indicator */}
