@@ -49,8 +49,16 @@ const InitialPage: React.FC = () => {
 
           <div style={{ backgroundColor: "#EFAD23", borderRadius: "20px", padding: "15px 25px", display: "flex", justifyContent: "flex-end" }}>
             <div ref={menuRef} style={{ position: "relative" }}>
-              <div onClick={() => setMenuAbierto(!menuAbierto)} style={{ background: "white", padding: "8px 15px", borderRadius: "30px", cursor: "pointer" }}>
-                <span>👤 {user?.name || user?.email}</span>
+              <div onClick={() => setMenuAbierto(!menuAbierto)} style={{ borderRadius: "30px", cursor: "pointer", display: "flex", alignItems: "center" }}>
+
+                <i className="bi bi-person-circle" style={{
+                  marginRight: "8px",
+                  fontSize: "2.5rem",
+                  color: "#000000",
+                  display: "inline-block"
+                }}></i>
+
+                <span style={{ color: "#333" }}> {user?.name || user?.email}</span>
               </div>
               {menuAbierto && (
                 <div style={{ position: "absolute", top: "50px", right: 0, backgroundColor: "#fff", padding: "10px", borderRadius: "10px", zIndex: 100 }}>
@@ -65,27 +73,24 @@ const InitialPage: React.FC = () => {
             <p style={{ fontSize: "1.6rem", color: "#333", fontWeight: "600" }}>Aún no tienes explotaciones creadas</p>
 
             <button
-              onClick={() => {
-                console.log("Abriendo modal...");
-                setShowModal(true);
-              }}
+              onClick={() => setShowModal(true)}
               style={{
-                width: "90px",             // Ancho y alto iguales
-                height: "90px",
-                borderRadius: "60%",       // 50% lo hace círculo perfecto
+                width: "70px",
+                height: "70px",
+                borderRadius: "50%", // Círculo perfecto
                 border: "none",
                 backgroundColor: "#72922B",
                 color: "white",
-                fontSize: "40px",          // El símbolo + más grande
-                fontWeight: "bold",
+                fontSize: "35px",
+                fontWeight: "300", // Un poco más fino queda más elegante
                 cursor: "pointer",
-                boxShadow: "0 3px 0px #566e21",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                transition: "transform 0.2s"
+                lineHeight: "0",   // Truco para centrar verticalmente el +
+                paddingBottom: "5px" // Ajuste fino manual para el símbolo +
               }}
-              title="Agregar explotación"
             >
               +
             </button>
