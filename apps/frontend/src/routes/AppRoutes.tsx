@@ -92,6 +92,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="/producer-history" element={<ProducerHistory />} />
         <Route path="/technical-history" element={<TechnicalHistory />} />
         <Route path="/add-explotation" element={<TechnicalAddExplotation />} />
+        <Route path="/initial" element={<InitialPage />} />
+
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
