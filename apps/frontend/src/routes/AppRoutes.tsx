@@ -17,6 +17,9 @@ import RegisterTechnician from "../pages/RegisterTechnician";
 import Dashboard from "../pages/Dashboard";
 import { OnboardingScreen } from "../pages/OnboardingScreen";
 import { LoginScreen } from "../pages/LoginScreen";
+import TechnicianObservations from "../pages/TechnicianObservations";
+import TechnicianAddObservation from "../pages/TechnicianAddObservation";
+import ProducerObservations from "../pages/ProducerObservations";
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -40,32 +43,46 @@ export const AppRoutes: React.FC = () => {
           }
         />
 
-              <Route
-        path="/register/producer"
-        element={
-          <PublicRoute>
-            <RegisterProducer/>
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/register/producer"
+          element={
+            <PublicRoute>
+              <RegisterProducer />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/register/technician"
-        element={
-          <PublicRoute>
-            <RegisterTechnician />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/register/technician"
+          element={
+            <PublicRoute>
+              <RegisterTechnician />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/dashboard"
-        element={
-          <PublicRoute>
-            <Dashboard />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/app/technician/activities/:activityId/observations"
+          element={<TechnicianObservations />}
+        />
+
+        <Route
+          path="/app/technician/activities/:activityId/observations/new"
+          element={<TechnicianAddObservation />}
+        />
+
+        <Route
+          path="/app/producer/activities/:activityId/observations"
+          element={<ProducerObservations />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PublicRoute>
+              <Dashboard />
+            </PublicRoute>
+          }
+        />
 
         <Route path="/" element={<OnboardingScreen />} />
         <Route path="/loginscreen" element={<LoginScreen />} /> 
