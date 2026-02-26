@@ -5,7 +5,6 @@ import { useAuth } from "../hooks/useAuth";
 import LogoutButton from "../components/LogoutButton";
 import TechnicalAddExplotation from "./TechnicalAddExplotation";
 
-
 const InitialPage: React.FC = () => {
   const { explotations } = useExplotation();
   const { user } = useAuth();
@@ -23,31 +22,31 @@ const InitialPage: React.FC = () => {
 
   return (
     <>
-      {/* 1. LA PÁGINA NORMAL */}
+
       <div style={{
-        backgroundColor: "#61615b", 
-        width: "100%", 
+        backgroundColor: "#61615b",
+        width: "100%",
         minHeight: "100vh",
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         padding: "20px"
       }}>
-        
+
         <div style={{
-          backgroundColor: "#fdfaf2", 
-          width: "100%", 
-          maxWidth: "900px", 
+          backgroundColor: "#fdfaf2",
+          width: "100%",
+          maxWidth: "900px",
           minHeight: "85vh",
-          borderRadius: "80px", 
-          padding: "60px 40px", 
-          display: "flex", 
+          borderRadius: "80px",
+          padding: "60px 40px",
+          display: "flex",
           flexDirection: "column",
-          border: "20px solid #f0eee4", 
-          boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)"
+          border: "20px solid #f0eee4",
+          boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+          position: "relative"
         }}>
-          
-          {/* Navbar Amarilla */}
+
           <div style={{ backgroundColor: "#EFAD23", borderRadius: "20px", padding: "15px 25px", display: "flex", justifyContent: "flex-end" }}>
             <div ref={menuRef} style={{ position: "relative" }}>
               <div onClick={() => setMenuAbierto(!menuAbierto)} style={{ background: "white", padding: "8px 15px", borderRadius: "30px", cursor: "pointer" }}>
@@ -61,28 +60,46 @@ const InitialPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Contenido Central */}
+
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "30px" }}>
             <p style={{ fontSize: "1.6rem", color: "#333", fontWeight: "600" }}>Aún no tienes explotaciones creadas</p>
-            <button 
-              onClick={() => setShowModal(true)}
-              style={{
-                width: "100%", maxWidth: "400px", padding: "22px", borderRadius: "18px",
-                border: "none", backgroundColor: "#72922B", color: "white", fontSize: "18px",
-                fontWeight: "bold", cursor: "pointer", boxShadow: "0 5px 0px #566e21"
+
+            <button
+              onClick={() => {
+                console.log("Abriendo modal...");
+                setShowModal(true);
               }}
+              style={{
+                width: "90px",             // Ancho y alto iguales
+                height: "90px",
+                borderRadius: "60%",       // 50% lo hace círculo perfecto
+                border: "none",
+                backgroundColor: "#72922B",
+                color: "white",
+                fontSize: "40px",          // El símbolo + más grande
+                fontWeight: "bold",
+                cursor: "pointer",
+                boxShadow: "0 3px 0px #566e21",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                transition: "transform 0.2s"
+              }}
+              title="Agregar explotación"
             >
-              Agregar explotación
+              +
             </button>
           </div>
         </div>
       </div>
 
-      {/* 2. EL MODAL (FUERA DE TODO EL DISEÑO PARA QUE NO SALGA AL LADO) */}
       {showModal && (
-        <TechnicalAddExplotation 
-          onClose={() => setShowModal(false)} 
-          onSuccess={(id) => navigate("/homeProductor", { state: { seleccionadaId: id } })}
+        <TechnicalAddExplotation
+          onClose={() => setShowModal(false)}
+          onSuccess={(id) => {
+            setShowModal(false);
+            navigate("/homeProductor", { state: { seleccionadaId: id } });
+          }}
         />
       )}
     </>
