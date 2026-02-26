@@ -7,18 +7,13 @@ import "../styles/ProducerHistory.css";
 
 const ProducerHistory: React.FC = () => {
   const { user } = useAuth();
-  const { explotations, activities, actualizarActivity } = useExplotation();
+  const { explotations, activities } = useExplotation();
   const navigate = useNavigate();
 
   const [actividadesFiltradas, setActividadesFiltradas] = useState<Activity[]>([]);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [explotacionSeleccionada, setExplotacionSeleccionada] = useState<Explotation | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const [idEditando, setIdEditando] = useState<string | null>(null);
-  const [tempData, setTempData] = useState<Activity | null>(null);
-
-  const tiposActividad = ["Riego", "Abonado", "Tratamiento", "Poda", "Cosecha"];
 
   useEffect(() => {
     let filtradas = [...activities];
@@ -28,19 +23,16 @@ const ProducerHistory: React.FC = () => {
     setActividadesFiltradas(filtradas);
   }, [activities, explotacionSeleccionada]);
 
-  const handleEditClick = (act: Activity) => {
-    setIdEditando(act.id);
-    setTempData({ ...act });
-  };
-
-  const ejecutarGuardado = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (tempData && typeof actualizarActivity === "function") {
-      actualizarActivity(tempData);
-      setIdEditando(null);
-      setTempData(null);
-    }
-  };
+  // Cerrar menú al hacer clic fuera
+  useEffect(() => {
+    const handleClickAfuera = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuAbierto(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickAfuera);
+    return () => document.removeEventListener("mousedown", handleClickAfuera);
+  }, []);
 
   const handleVerObservaciones = (actId: string) => {
     navigate(`/ver-observacion/${actId}`);
@@ -79,81 +71,42 @@ const ProducerHistory: React.FC = () => {
             <div className="cards-container">
               {actividadesFiltradas.map(act => (
                 <div className="activity-card" key={act.id}>
-                  {idEditando === act.id ? (
-                    <div className="edit-form-card">
-                      <div className="form-group">
-                        <label>Tipo de Actividad</label>
-                        <select 
-                          className="filter-select"
-                          value={tempData?.tipo || ""} 
-                          onChange={e => setTempData(prev => prev ? {...prev, tipo: e.target.value} : null)}
-                        >
-                          <option value="">Selecciona un tipo</option>
-                          {tiposActividad.map(t => <option key={t} value={t}>{t}</option>)}
-                        </select>
-                      </div>
-                      <div className="form-group">
-                        <label>Fecha</label>
-                        <input 
-                          type="date" 
-                          value={tempData?.fecha || ""} 
-                          onChange={e => setTempData(prev => prev ? {...prev, fecha: e.target.value} : null)} 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Descripción</label>
-                        <textarea 
-                          value={tempData?.detalles || ""} 
-                          onChange={e => setTempData(prev => prev ? {...prev, detalles: e.target.value} : null)} 
-                        />
-                      </div>
-                      <div className="card-footer">
-                        <button type="button" className="btn-save" onClick={ejecutarGuardado}>Guardar</button>
-                        <button type="button" className="btn-cancel" onClick={() => setIdEditando(null)}>Cancelar</button>
-                      </div>
+                  {/* Vista de lectura única (Sin formulario de edición) */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '15px', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '10px' }}>
+                    <span style={{ fontSize: '14px', color: '#444', fontWeight: '600', display: 'block' }}>{act.fecha}</span>
+                    <h3 style={{ fontSize: '32px', color: '#000000', fontWeight: '900', margin: '5px 0 0 0', padding: '0', lineHeight: '1', display: 'block' }}>
+                      {act.tipo}
+                    </h3> 
+                  </div>
+
+                  <div className="card-body">
+                    <p><strong>Parcela:</strong> {act.parcela}</p>
+                    <p><strong>Responsable:</strong> {act.responsable}</p>
+                    <div className="card-description-box" style={{ marginTop: '10px', background: 'rgba(255, 255, 255, 0.3)', padding: '12px', borderRadius: '8px', color: '#000' }}>
+                      {act.detalles}
                     </div>
-                  ) : (
-                    <>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '15px', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '10px' }}>
-                        <span style={{ fontSize: '14px', color: '#444', fontWeight: '600', display: 'block' }}>{act.fecha}</span>
-                        <h3 style={{ fontSize: '32px', color: '#000000', fontWeight: '900', margin: '5px 0 0 0', padding: '0', lineHeight: '1', display: 'block' }}>
-                          {act.tipo}
-                        </h3> 
-                      </div>
+                  </div>
 
-                      <div className="card-body">
-                        <p><strong>Parcela:</strong> {act.parcela}</p>
-                        <p><strong>Responsable:</strong> {act.responsable}</p>
-                        <div className="card-description-box" style={{ marginTop: '10px', background: 'rgba(255, 255, 255, 0.3)', padding: '12px', borderRadius: '8px', color: '#000' }}>
-                          {act.detalles}
-                        </div>
-                      </div>
-
-                      <div className="card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px' }}>
-                        <button className="btn-edit" onClick={() => handleEditClick(act)}>Editar</button>
-                        
-                        <button 
-                          className="btn-obs-transparent" 
-                          onClick={() => handleVerObservaciones(act.id)}
-                          style={{
-                            background: 'transparent',
-                            border: '1px solid rgba(0,0,0,0.2)',
-                            borderRadius: '15px',
-                            padding: '5px 12px',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            color: '#444',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s'
-                          }}
-                        >
-                          Ver observaciones
-                        </button>
-
-                        <div style={{ width: '60px' }}></div> 
-                      </div>
-                    </>
-                  )}
+                  <div className="card-footer" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '15px' }}>
+                    {/* El botón de editar ha sido eliminado por orden superior */}
+                    <button 
+                      className="btn-obs-transparent" 
+                      onClick={() => handleVerObservaciones(act.id)}
+                      style={{
+                        background: 'transparent',
+                        border: '1px solid rgba(0,0,0,0.2)',
+                        borderRadius: '15px',
+                        padding: '5px 12px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        color: '#444',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s'
+                      }}
+                    >
+                      Ver observaciones
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
