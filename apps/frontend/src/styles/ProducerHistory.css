@@ -104,14 +104,3 @@
   margin-top: 15px;
 }
 
-.btn-edit { background-color: #72922B; color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-.btn-save { background-color: #2b7e92; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px; }
-.btn-cancel { background-color: #922b2b; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; }
-
-.back-link { background-color: #5e5d5d; color: white; padding: 12px 50px; border-radius: 30px; border: none; cursor: pointer; margin-top: 20px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-weight: bold; margin-bottom: 4px; }
-.form-group input, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
-.card-title-display {
-  font-size: 26px !important;
-}
