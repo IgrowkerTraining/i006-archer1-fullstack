@@ -1,28 +1,27 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.page-background {
-  background-color: rgba(60, 60, 58, 0.75);
-  min-height: 100vh;
+/* CAPA OSCURA QUE CUBRE TODO */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex; /* Esto centra el contenido */
   justify-content: center;
   align-items: center;
-  padding: 20px 15px;
+  z-index: 10000; /* Muy alto */
 }
 
-.explotation-frame {
+/* EL CUADRO BLANCO DEL FORMULARIO */
+.explotation-frame-modal {
   background-color: #fffbf1;
-  width: 100%;
-  max-width: 320px;
+  width: 90%;
+  max-width: 360px;
   border-radius: 28px;
-  padding: 25px 22px;
+  padding: 30px 25px;
   border: 12px solid #e4dcd4;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
 .form-title {
@@ -30,75 +29,58 @@
   font-size: 20px;
   font-weight: bold;
   color: #0b1001;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
-label {
+.form-group label {
   font-weight: 600;
   color: #5d4a44;
   margin-bottom: 4px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
-input,
-select {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1.4px solid #d1c7c3;
-  font-size: 13px;
-  background-color: #fff;
-  color: #333;
+.form-group input,
+.form-group select {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #d1c7c3;
+  font-size: 14px;
+  background-color: white;
 }
 
 .btn-submit {
-  margin-top: 14px;
-  padding: 12px;
+  margin-top: 15px;
+  padding: 14px;
   background-color: #72922b;
   color: white;
   border: none;
-  border-radius: 14px;
-  font-size: 14px;
+  border-radius: 16px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 3px 0 #566e21;
+  box-shadow: 0 4px 0 #566e21;
 }
 
-.btn-submit:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 #566e21;
-}
-
-
-.footer-line {
-  height: 4px;
-  background-color: #efad23;
-  width: 65%;
-  margin: 22px auto 0;
-  border-radius: 10px;
-}
-
-
-.back-link-container {
-  margin-top: 18px;
-}
-
-.back-link {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-size: 13px;
-  color: white;
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
   border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #5d4a44;
   cursor: pointer;
 }
