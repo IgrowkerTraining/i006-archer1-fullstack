@@ -13,13 +13,15 @@
   max-width: 850px;
   min-height: 85vh;
   border-radius: 80px;
-  padding: 60px 40px;
+  /* IMPORTANTE: Padding 0 a los lados para que el navbar sea total */
+  padding: 0px 0px 60px 0px; 
   display: flex;
   flex-direction: column;
   border: 20px solid #f0eee4;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden; /* Corta el navbar para que respete el radio de 80px */
 }
-
 
 .home-container {
   display: flex;
@@ -27,25 +29,68 @@
   flex: 1;
 }
 
-
+/* NAVBAR TOTALMENTE EXPANDIDO Y VERDE */
 .navbar {
-  background-color: #EFAD23;
-  border-radius: 20px;
-  padding: 15px 25px;
+  background-color: #68911B !important;
+  padding: 25px 40px; /* Más alto y con aire a los lados para los elementos internos */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 40px;
 }
-
 
 .nav-left select {
   padding: 8px 15px;
-  border-radius: 30px;
+  border-radius: 10px;
   border: none;
   font-weight: 500;
   font-size: 14px;
   background: white;
   color: #333;
+}
+
+.nav-right {
+  position: relative;
+}
+
+.user-profile-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  color: white;
+  font-size: 32px;
+}
+
+.custom-dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 999;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-user-name {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* CONTENEDOR DE BOTONES (Para que no se peguen al borde del marco) */
+.main-content {
+  flex: 1;
+  display: flex;
+  padding: 0 40px; /* Devolvemos el margen que quitamos arriba */
 }
 
 .buttons {
@@ -56,7 +101,6 @@
   align-items: center;
   gap: 25px;
 }
-
 
 .buttons button {
   width: 100%;
@@ -71,8 +115,4 @@
   cursor: pointer;
   box-shadow: 0 5px 0px #566e21;
   transition: 0.2s;
-}
-
-.buttons button:hover {
-  transform: translateY(-3px);
 }
