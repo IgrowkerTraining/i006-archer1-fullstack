@@ -6,13 +6,13 @@ export const requireTechnician = (
   next: NextFunction
 ): void => {
   try {
-    // 1️⃣ Verificar que exista user (por seguridad extra)
+    //Verificar que exista user 
     if (!req.user) {
       res.status(401).json({ message: "Usuario no autenticado" });
       return;
     }
 
-    // 2️⃣ Verificar campo isTechnicial
+    // Verificar campo isTechnicial
     if (!req.user.istechnician) {
       res.status(403).json({
         message: "No tienes permisos para acceder a este recurso",
@@ -20,7 +20,7 @@ export const requireTechnician = (
       return;
     }
 
-    // 3️⃣ Si es técnico → continuar
+    //Si es técnico,continuar
     next();
   } catch (error) {
     res.status(500).json({ message: "Error verificando permisos" });
