@@ -57,10 +57,10 @@ const TechnicalHistory: React.FC = () => {
       }}>
         
         <div className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <span style={{ fontWeight: '900', fontSize: '1.4rem', color: '#000' }}>Historial Técnico</span>
+          <span style={{ fontWeight: '900', fontSize: '1.4rem', color: '#fdfdfd' }}>Historial Técnico</span>
           
           <select
-            style={{ padding: '8px', borderRadius: '10px', border: '2px solid #F3B130', fontWeight: 'bold', cursor: 'pointer' }}
+            style={{ padding: '8px', borderRadius: '10px', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}
             value={explotacionSeleccionada?.id || ""}
             onChange={e => {
               const ex = explotations.find(ex => ex.id === e.target.value) || null;
