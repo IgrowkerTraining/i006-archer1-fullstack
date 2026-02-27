@@ -23,7 +23,6 @@ const ProducerHistory: React.FC = () => {
     setActividadesFiltradas(filtradas);
   }, [activities, explotacionSeleccionada]);
 
-  // Cerrar menú al hacer clic fuera
   useEffect(() => {
     const handleClickAfuera = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -34,15 +33,15 @@ const ProducerHistory: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickAfuera);
   }, []);
 
-  const handleVerObservaciones = (actId: string) => {
-    navigate(`/ver-observacion/${actId}`);
-  };
-
   return (
     <div className="page-background">
       <div className="history-frame">
+        
         <div className="navbar">
-          <div className="navbar-left"><span className="navbar-title">Historial</span></div>
+          <div className="navbar-left">
+            <span className="navbar-title">Historial</span>
+          </div>
+
           <div className="navbar-center">
             <select
               className="navbar-select-small"
@@ -53,69 +52,69 @@ const ProducerHistory: React.FC = () => {
               {explotations.map(ex => <option key={ex.id} value={ex.id}>{ex.nombre}</option>)}
             </select>
           </div>
+
           <div className="navbar-right" ref={menuRef}>
-            <div className="user-chip" onClick={() => setMenuAbierto(!menuAbierto)}>
-              <span>👤</span>
-              <span className="user-name">{user?.name || user?.email || "Usuario Invitado"}</span>
-            </div>
-            {menuAbierto && <div className="dropdown-menu"><LogoutButton /></div>}
+            <button className="user-icon-btn" onClick={() => setMenuAbierto(!menuAbierto)}>
+              <i className="bi bi-person-circle"></i>
+            </button>
+            {menuAbierto && (
+              <div className="dropdown-menu">
+                <div className="dropdown-user-info">{user?.name || user?.email || "Usuario"}</div>
+                <hr />
+                <LogoutButton className="logout-btn-style" />
+              </div>
+            )}
           </div>
         </div>
 
-        <h2 className="history-title">Actividades Registradas</h2>
+        <div className="history-content">
+          <h2 className="history-title">Actividades Registradas</h2>
 
-        <div className="table-container">
-          {actividadesFiltradas.length === 0 ? (
-            <p className="no-data">No hay actividades registradas.</p>
-          ) : (
-            <div className="cards-container">
-              {actividadesFiltradas.map(act => (
+          <div className="cards-container">
+            {actividadesFiltradas.length === 0 ? (
+              <p className="no-data">No hay actividades registradas.</p>
+            ) : (
+              actividadesFiltradas.map(act => (
                 <div className="activity-card" key={act.id}>
-                  {/* Vista de lectura única (Sin formulario de edición) */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '15px', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '10px' }}>
-                    <span style={{ fontSize: '14px', color: '#444', fontWeight: '600', display: 'block' }}>{act.fecha}</span>
-                    <h3 style={{ fontSize: '32px', color: '#000000', fontWeight: '900', margin: '5px 0 0 0', padding: '0', lineHeight: '1', display: 'block' }}>
-                      {act.tipo}
-                    </h3> 
+                  <div className="card-header-main">
+                    <span className="card-date">{act.fecha}</span>
+                    <span className="card-activity">{act.tipo}</span>
                   </div>
 
                   <div className="card-body">
                     <p><strong>Parcela:</strong> {act.parcela}</p>
                     <p><strong>Responsable:</strong> {act.responsable}</p>
-                    <div className="card-description-box" style={{ marginTop: '10px', background: 'rgba(255, 255, 255, 0.3)', padding: '12px', borderRadius: '8px', color: '#000' }}>
+                    <div className="card-description-box">
                       {act.detalles}
                     </div>
                   </div>
 
-                  <div className="card-footer" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '15px' }}>
-                    {/* El botón de editar ha sido eliminado por orden superior */}
+                  <div className="card-footer">
                     <button 
-                      className="btn-obs-transparent" 
-                      onClick={() => handleVerObservaciones(act.id)}
+                      className="btn-ver-observaciones" 
+                      onClick={() => navigate(`/ver-observacion/${act.id}`)}
                       style={{
-                        background: 'transparent',
-                        border: '1px solid rgba(0,0,0,0.2)',
+                        backgroundColor: '#8cbe219f',
+                        border: 'none',
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        padding: '10px 20px',
                         borderRadius: '15px',
-                        padding: '5px 12px',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                        color: '#444',
+                        fontWeight: '700',
+                        fontSize: '13px',
                         cursor: 'pointer',
-                        transition: 'all 0.3s'
+                        color: '#333'
                       }}
                     >
                       Ver observaciones
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            )}
+          </div>
         </div>
       </div>
-      <div className="back-link-container">
-        <button className="back-link" onClick={() => navigate(-1)}>Volver</button>
-      </div>
+      <button className="back-link-main" onClick={() => navigate(-1)}>Volver</button>
     </div>
   );
 };
