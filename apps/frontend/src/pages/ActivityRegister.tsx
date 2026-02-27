@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useExplotation } from "../context/ExplotationContext";
 import "../styles/ActivityRegister.css";
 
-// Añadimos la interfaz para recibir la función de cerrar
 interface ActivityRegisterProps {
   onClose: () => void;
-  explotationId: string; // Pasamos el ID de la finca seleccionada directamente
+  explotationId: string;
 }
 
 const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotationId }) => {
@@ -13,15 +12,15 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
 
   const [formData, setFormData] = useState({
     parcela: "",
-    cultivo: "",
-    fecha: new Date().toISOString().split('T')[0], // Fecha de hoy por defecto
+    cultivo: "", // Campo añadido
+    fecha: new Date().toISOString().split('T')[0],
     tipoActividad: "",
-    responsable: "",
+    responsable: "", // Campo para escribir
     descripcion: "",
   });
 
   const opcionesParcelas = ["Parcela Norte", "Parcela Sur", "Sector A1"];
-  const opcionesCultivos = ["Trigo", "Maíz", "Olivos", "Vides"];
+  const opcionesCultivos = ["Trigo", "Maíz", "Olivos", "Vides"]; // Opciones para el select
   const opcionesActividades = ["Riego", "Abonado", "Cosecha", "Poda", "Tratamiento"];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -35,11 +34,12 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
       explotationId: explotationId, 
       tipo: formData.tipoActividad,
       parcela: formData.parcela,
-      responsable: formData.responsable,
+      responsable: formData.responsable, // Ahora se envía lo que el usuario escribe
       detalles: formData.descripcion,
       fecha: formData.fecha,
+      // Si tu contexto soporta 'cultivo', puedes añadirlo aquí también
     });
-    onClose(); // Cerramos el modal al terminar
+    onClose();
   };
 
   return (
@@ -53,7 +53,7 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
         backgroundColor: '#FFFBF1', width: '100%', maxWidth: '600px', 
         borderRadius: '50px', border: '15px solid rgba(0, 0, 0, 0.15)', 
         padding: '40px', position: 'relative'
-      }} onClick={e => e.stopPropagation()}> {/* Evita que se cierre al clicar dentro */}
+      }} onClick={e => e.stopPropagation()}>
         
         <button onClick={onClose} style={{ position: 'absolute', right: '30px', top: '20px', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', fontWeight: 'bold' }}>✕</button>
 
@@ -62,6 +62,8 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
         </h2>
         
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          
+          {/* PARCELA */}
           <div className="form-group">
             <label>Parcela</label>
             <select name="parcela" value={formData.parcela} onChange={handleChange} required>
@@ -70,6 +72,16 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
             </select>
           </div>
 
+          {/* CULTIVO (Añadido debajo de Parcela) */}
+          <div className="form-group">
+            <label>Tipo de cultivo</label>
+            <select name="cultivo" value={formData.cultivo} onChange={handleChange} required>
+              <option value="">Selecciona cultivo</option>
+              {opcionesCultivos.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+
+          {/* TIPO DE ACTIVIDAD */}
           <div className="form-group">
             <label>Tipo de actividad</label>
             <select name="tipoActividad" value={formData.tipoActividad} onChange={handleChange} required>
@@ -78,17 +90,32 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
             </select>
           </div>
 
+          {/* FECHA */}
           <div className="form-group">
             <label>Fecha</label>
             <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} required />
           </div>
 
+          {/* RESPONSABLE (Añadido como Input de texto) */}
+          <div className="form-group">
+            <label>Responsable</label>
+            <input 
+              type="text" 
+              name="responsable" 
+              value={formData.responsable} 
+              onChange={handleChange} 
+              placeholder="Nombre del responsable..." 
+              required 
+            />
+          </div>
+
+          {/* DESCRIPCIÓN */}
           <div className="form-group">
             <label>Descripción</label>
             <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} placeholder="Detalles de la actividad..." />
           </div>
 
-          <button type="submit" className="btn-submit" style={{ backgroundColor: '#68911B', color: 'black', padding: '15px', borderRadius: '20px', border: 'none', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px' }}>
+          <button type="submit" className="btn-submit" style={{ backgroundColor: '#68911B', color: 'white', padding: '15px', borderRadius: '20px', border: 'none', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px' }}>
             REGISTRAR ACTIVIDAD
           </button>
         </form>
