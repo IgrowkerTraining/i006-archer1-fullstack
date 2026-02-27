@@ -1,5 +1,8 @@
 import { Router } from "express";
 import observationController from "@/controllers/observationController";
+import  {authenticateJWT}  from "../middleware/auth.middleware";
+import  {requireTechnician}  from "../middleware/role.middleware";
+
 
 const router = Router();
 
@@ -75,7 +78,7 @@ router.post("/", observationController.createObservation);
  *               items:
  *                 $ref: '#/components/schemas/Observation'
  */
-router.get("/:activity", observationController.getObservationsByActivity);
+router.get("/:activity",authenticateJWT,requireTechnician, observationController.getObservationsByActivity);
 
 /**
  * @openapi
