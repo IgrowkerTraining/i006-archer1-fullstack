@@ -46,8 +46,8 @@ export default function HomeTecnic() {
         flexDirection: "column",
         position: "relative",
         boxSizing: "border-box",
-        border: "20px solid rgba(255, 255, 255, 0.4)", 
-        boxShadow: "0px 25px 60px rgba(0, 0, 0, 0.5)",
+        border: "20px solid rgba(58, 58, 58, 0.29)", 
+        boxShadow: "0px 25px 60px rgba(29, 27, 27, 0.5)",
         overflow: "hidden"
       }}>
         
@@ -62,8 +62,8 @@ export default function HomeTecnic() {
           boxSizing: "border-box",
           marginTop: "40px"
         }}>
-          <span style={{ fontWeight: "bold", color: "white", fontSize: "18px" }}>
-            Panel de Control Técnico
+          <span style={{ fontWeight: "bold", color: "white", fontSize: "25px" }}>
+            Explotaciones asignadas
           </span>
           
           <div ref={menuRef} style={{ position: "relative" }}>
@@ -110,9 +110,6 @@ export default function HomeTecnic() {
           display: "flex", 
           flexDirection: "column" 
         }}>
-          <h2 style={{ textAlign: "center", marginBottom: "30px", fontSize: "28px", fontWeight: "900", color: "#333" }}>
-            Explotaciones Asignadas
-          </h2>
 
           <div style={{ 
             flex: 1, 
