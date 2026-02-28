@@ -8,6 +8,7 @@ export interface Explotation {
   region: string;
   superficie: number;
   userId: string;
+  
 }
 
 export interface Activity {
@@ -15,9 +16,12 @@ export interface Activity {
   explotationId: string;
   tipo: string;
   parcela: string;
+  cultivo: string;    // <--- AÑADIDO: Ahora Activity reconoce el cultivo
   responsable: string;
   detalles: string;
   fecha: string;
+  parcelas: string[];
+  
 }
 
 interface ExplotationContextProps {
@@ -41,6 +45,7 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [activities, setActivities] = useState<Activity[]>([]);
 
   const agregarExplotation = (ex: Explotation) => setExplotations(prev => [...prev, ex]);
+  
   const agregarActivity = (act: Activity) => setActivities(prev => [...prev, act]);
 
   const actualizarActivity = (actActualizada: Activity) => {
