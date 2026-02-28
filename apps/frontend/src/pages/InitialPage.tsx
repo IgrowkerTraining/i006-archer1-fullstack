@@ -38,30 +38,15 @@ const InitialPage: React.FC = () => {
           maxWidth: "900px",
           minHeight: "85vh",
           borderRadius: "80px",
-          // CAMBIO: Padding lateral a 0 para que el navbar toque los bordes
           padding: "0px 0px 60px 0px", 
           display: "flex",
           flexDirection: "column",
           border: "20px solid #f0eee4",
           boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
           position: "relative",
-          overflow: "hidden" // Para que el navbar no se salga de las esquinas redondeadas
+          overflow: "hidden"
         }}>
 
-          {/* NAVBAR VERDE ANCHO Y GRUESO */}
-          <div style={{ 
-            backgroundColor: "#68911B", 
-            width: "100%", 
-            padding: "30px 40px", // Más grueso (30px) y con aire a los lados
-            display: "flex", 
-            justifyContent: "flex-end",
-            boxSizing: "border-box",
-            marginTop: "40px"
-          }}>
-            <div ref={menuRef} style={{ position: "relative" }}>
-               {/* Aquí puedes meter el botón de cerrar sesión si lo necesitas luego, ahora está vacío como tu código */}
-            </div>
-          </div>
 
 
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "30px", padding: "0 40px" }}>
