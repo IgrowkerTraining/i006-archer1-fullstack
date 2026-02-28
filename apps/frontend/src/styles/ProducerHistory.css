@@ -1,3 +1,4 @@
+/* --- RESET Y BASE --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,115 +8,278 @@
 .page-background {
   background-color: #61615b;
   min-height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  justify-content: center;
+  padding: 20px;
 }
 
+/* --- FRAME PRINCIPAL --- */
 .history-frame {
   background-color: #fdfaf2;
   width: 100%;
-  max-width: 950px;
-  min-height: 85vh;
-  border-radius: 80px;
-  border: 20px solid #f0eee4;
-  box-shadow: 0px 25px 60px rgba(0, 0, 0, 0.3);
+  max-width: 900px;
+  height: 80vh;
+  border-radius: 60px;
+  border: 15px solid #f0eee4;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative;
+  box-shadow: 0px 20px 50px rgba(0,0,0,0.3);
 }
 
+/* --- NAVBAR --- */
 .navbar {
+  background-color: #68911B;
+  padding: 15px 40px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: #68911B !important;
-  padding: 20px 40px;
-  width: 100%;
+  align-items: center;
 }
 
-.navbar-title { color: white; font-weight: bold; font-size: 20px; }
+.navbar-title { 
+  color: white; 
+  font-weight: bold; 
+  font-size: 1.2rem; 
+}
 
 .navbar-select-small {
-  padding: 8px 15px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 10px;
   border: none;
-  outline: none;
-  background-color: white;
+  font-weight: 500;
+  font-size: 14px;
+  background: white;
   color: #333;
 }
 
-.user-icon-btn {
-  background: none;
-  border: none;
+.navbar-right {
+  font-size: 30px;
   color: white;
-  font-size: 32px;
-  cursor: pointer;
   display: flex;
+  align-items: center;
 }
 
+
+/* --- CONTENIDO Y TITULO --- */
 .history-content {
-  padding: 40px;
+  padding: 30px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .history-title {
-  color: #333;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
+  margin-bottom: 25px;
+  color: #333;
   font-weight: 800;
 }
 
+/* --- CARDS DE ACTIVIDAD --- */
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
 .activity-card {
-  background-color: #99a877 !important;
+  background-color: #a1b183;
   border-radius: 25px;
-  padding: 25px; 
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  max-width: 500px; 
-  margin: 0 auto; 
+  padding: 20px;
   width: 100%;
+  max-width: 600px;
+  color: #000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .card-header-main {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
-.card-activity {
-  display: block;
-  font-size: 28px;
-  color: #000;
-  font-weight: 900;
+.card-date-label { 
+  font-size: 0.85rem; 
+  display: block; 
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.card-activity-name { 
+  font-size: 1.8rem; 
+  font-weight: 900; 
+  text-transform: uppercase;
+}
+
+.card-body-data {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
 }
 
 .card-description-box {
-  margin-top: 15px;
   background: rgba(255, 255, 255, 0.4);
   padding: 12px;
   border-radius: 12px;
-  color: #1a1a1a;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+  min-height: 50px;
 }
 
-.card-footer {
+/* --- BOTONES DE LA CARD --- */
+.card-footer-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 15px;
+  gap: 10px;
+}
+
+.btn-edit-activity {
+  background-color: white;
+  color: #68911B;
+  border: 2px solid #68911B;
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-edit-activity:hover {
+  background-color: #68911B;
+  color: white;
+}
+
+.btn-view-obs {
+  background-color: #7a914a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- BOTÓN VOLVER (FUERA DEL FRAME) --- */
+.bottom-container {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .back-link-main {
-  background: #68911B;
+  background-color: #333;
   color: white;
-  border: none;
-  padding: 12px 35px;
+  padding: 12px 40px;
   border-radius: 25px;
-  cursor: pointer;
+  border: none;
   font-weight: bold;
-  margin-top: 25px;
+  cursor: pointer;
+}
+
+/* ===========================================
+   ESTILOS CRÍTICOS PARA EL MODAL DE EDICIÓN
+   =========================================== */
+
+.modal-overlay-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75); /* Oscurece el fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegura que esté por encima de todo */
+}
+
+.modal-container-custom {
+  background-color: #FFFBF1;
+  width: 90%;
+  max-width: 550px;
+  border-radius: 50px;
+  border: 12px solid rgba(0, 0, 0, 0.1); /* El borde grueso grisáceo */
+  padding: 35px;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+.modal-close-x {
+  position: absolute;
+  right: 25px;
+  top: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-title-custom {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  font-weight: 800;
+  color: #222;
+}
+
+.modal-form-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row-custom {
+  display: flex;
+  gap: 12px;
+}
+
+.form-group-custom {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group-custom label {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+.form-group-custom input, 
+.form-group-custom textarea {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+}
+
+.btn-submit-custom {
+  background-color: #68911B;
+  color: white;
+  padding: 14px;
+  border-radius: 18px;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.btn-submit-custom:hover {
+  background-color: #567816;
+}
+
+.modal-footer-line {
+  height: 6px;
+  background-color: #EFAD23; /* La línea decorativa naranja */
+  width: 50%;
+  margin: 25px auto 0;
+  border-radius: 10px;
 }
