@@ -35,19 +35,17 @@ const InitialPage: React.FC = () => {
         <div style={{
           backgroundColor: "#fdfaf2",
           width: "100%",
-          maxWidth: "900px",
+          maxWidth: "850px",
           minHeight: "85vh",
           borderRadius: "80px",
           padding: "0px 0px 60px 0px", 
           display: "flex",
           flexDirection: "column",
           border: "20px solid #f0eee4",
-          boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 15px 40px rgba(0, 0, 0, 0.2)",
           position: "relative",
           overflow: "hidden"
         }}>
-
-
 
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "30px", padding: "0 40px" }}>
             <p style={{ fontSize: "1.6rem", color: "#333", fontWeight: "600", textAlign: "center" }}>
