@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useExplotation } from "../context/ExplotationContext";
 import LogoutButton from "../components/LogoutButton";
+// IMPORTANTE: Importamos el CSS para usar las clases
+import "../styles/HomeProductor.css"; 
 
 export default function HomeTecnic() {
   const { user } = useAuth();
@@ -26,76 +28,29 @@ export default function HomeTecnic() {
   }, []);
 
   return (
-    <div style={{
-      backgroundColor: "#837d7d",
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "20px",
-      boxSizing: "border-box"
-    }}>
-
-      <div style={{
-        backgroundColor: "#FFFAF2",
-        width: "100%",
-        maxWidth: "850px", 
-        minHeight: "88vh",
-        borderRadius: "60px",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        boxSizing: "border-box",
-        border: "20px solid rgba(58, 58, 58, 0.29)", 
-        boxShadow: "0px 25px 60px rgba(29, 27, 27, 0.5)",
-        overflow: "hidden"
-      }}>
+    /* Usamos la clase del CSS */
+    <div className="page-background">
+      
+      {/* Usamos la clase del frame para que el radio y el color sean iguales */}
+      <div className="producer-frame">
         
-
-        <div style={{
-          backgroundColor: "#68911B",
-          width: "100%",
-          padding: "20px 40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxSizing: "border-box",
-          marginTop: "40px"
-        }}>
+        {/* Navbar con la clase exacta del CSS */}
+        <div className="navbar">
           <span style={{ fontWeight: "bold", color: "white", fontSize: "25px" }}>
             Explotaciones asignadas
           </span>
           
-          <div ref={menuRef} style={{ position: "relative" }}>
+          <div ref={menuRef} className="nav-right">
             <div 
               onClick={toggleMenu}
-              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              className="user-profile-trigger"
             >
-              <span style={{ fontSize: "38px", color: "white" }}>
-                <i className="bi bi-person-circle"></i>
-              </span>
+              <i className="bi bi-person-circle"></i>
             </div>
 
             {menuAbierto && (
-              <div style={{
-                position: "absolute",
-                top: "45px",
-                right: "0",
-                backgroundColor: "white",
-                borderRadius: "12px",
-                boxShadow: "0px 10px 30px rgba(0,0,0,0.2)",
-                padding: "10px",
-                width: "180px",
-                zIndex: 1000,
-              }}>
-                <div style={{ 
-                  padding: "5px 10px", 
-                  fontSize: "14px", 
-                  fontWeight: "bold", 
-                  color: "#333",
-                  borderBottom: "1px solid #eee",
-                  marginBottom: "5px" 
-                }}>
+              <div className="custom-dropdown">
+                <div className="dropdown-user-name">
                   {user?.name || "Técnico"}
                 </div>
                 <LogoutButton />
@@ -104,13 +59,9 @@ export default function HomeTecnic() {
           </div>
         </div>
 
-        <div style={{ 
-          padding: "40px", 
-          flex: 1, 
-          display: "flex", 
-          flexDirection: "column" 
-        }}>
-
+        {/* Contenido principal */}
+        <div style={{ padding: "40px", flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          
           <div style={{ 
             flex: 1, 
             overflowY: "auto", 
@@ -150,7 +101,7 @@ export default function HomeTecnic() {
                   </div>
 
                   <button 
-                    onClick={() => navigate("/technical-history")}
+                    onClick={() => navigate("/technical-history", { state: { explotationId: ex.id } })}
                     style={{
                       backgroundColor: "#fdfaf2",
                       color: "#333",
@@ -160,24 +111,15 @@ export default function HomeTecnic() {
                       fontWeight: "bold",
                       cursor: "pointer",
                       fontSize: "13px",
-                      boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-                      transition: "0.2s"
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.15)"
                     }}
                   >
-                    HISTORIAL
+                    Historial
                   </button>
                 </div>
               ))
             )}
           </div>
-
-          <div style={{
-            width: "60%",
-            height: "6px",
-            backgroundColor: "#F3B130",
-            margin: "30px auto 0 auto",
-            borderRadius: "10px"
-          }} />
         </div>
       </div>
     </div>
