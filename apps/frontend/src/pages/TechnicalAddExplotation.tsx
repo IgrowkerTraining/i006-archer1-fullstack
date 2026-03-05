@@ -1,80 +1,85 @@
 import React, { useState } from "react";
 import { useExplotation } from "../context/ExplotationContext";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import "../styles/TechnicalAddExplotation.css"; 
+import "../styles/TechnicalAddExplotation.css";
 
-const TechnicalAddExplotation: React.FC = () => {
-  const { agregarExplotation } = useExplotation(); // actualizado
-  const { user } = useAuth();
-  const navigate = useNavigate();
+interface Props {
+  onClose: () => void;
+  onSuccess: (id: string) => void;
+}
 
+const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
+  const { agregarExplotation } = useExplotation();
   const [nombre, setNombre] = useState("");
-  const [ubicacion, setUbicacion] = useState("");
   const [pais, setPais] = useState("");
   const [region, setRegion] = useState("");
   const [superficie, setSuperficie] = useState<number | "">("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const opcionesRegiones = ["Madrid", "Cataluña", "Mendoza", "Galicia"];
+  const opcionesPaises = ["España", "Argentina"];
 
-    if (!nombre || !ubicacion || !pais || !region || !superficie) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nombre || !pais || !region || !superficie) {
       alert("Por favor completa todos los campos.");
       return;
     }
 
-    const nuevaExplotation = {
-      id: Date.now().toString(),
-      nombre,
-      ubicacion,
-      pais,
-      region,
-      superficie: Number(superficie),
-      userId: user?.id || "unknown",
+
+    const idTemporal = crypto.randomUUID();
+
+    const nuevaEx = {
+      id: idTemporal,
+      name: nombre,
+      ubication_country: pais,
+      ubication_region: region,
+      surface: Number(superficie),
+      producer: "53e26dcf-5c71-4157-8cac-e786504083b2", 
     };
 
-    agregarExplotation(nuevaExplotation);
+    try {
+      const resultado = await agregarExplotation(nuevaEx);
 
-    navigate("/homeProductor", {
-      state: { seleccionadaId: nuevaExplotation.id },
-    });
+      const idFinal = resultado?.id || idTemporal;
+      onSuccess(idFinal);
+    } catch (error) {
+      console.warn("Backend no disponible, guardando localmente...");
+
+      onSuccess(idTemporal);
+    }
   };
 
   return (
-    <div className="form-wrapper">
-      <form className="form-container" onSubmit={handleSubmit}>
-        <h2>Agregar Explotación</h2>
-        <input
-          placeholder="Nombre de la explotación"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
-        <input
-          placeholder="Ubicación"
-          value={ubicacion}
-          onChange={(e) => setUbicacion(e.target.value)}
-        />
-        <select value={pais} onChange={(e) => setPais(e.target.value)}>
-          <option value="">Selecciona un país</option>
-          <option value="España">España</option>
-          <option value="Francia">Francia</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Región"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Superficie (ha)"
-          value={superficie}
-          onChange={(e) =>
-            setSuperficie(e.target.value === "" ? "" : Number(e.target.value))
-          }
-        />
-        <button type="submit">Añadir Explotación</button>
-      </form>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="explotation-frame-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="close-x" onClick={onClose}>&times;</button>
+        <h2 className="form-title">Crear explotación</h2>
+        <h3 className="form-subtitle">Completa los datos de la explotación asignada</h3>
+        <form className="form-grid" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Nombre de la explotación</label>
+            <input value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>Ubicación</label>
+            <select value={pais} onChange={(e) => setPais(e.target.value)} required>
+              <option value="">Selecciona tu ubicación</option>
+              {opcionesPaises.map((u) => <option key={u} value={u}>{u}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Región</label>
+            <select value={region} onChange={(e) => setRegion(e.target.value)} required>
+              <option value="">Selecciona región</option>
+              {opcionesRegiones.map((r) => <option key={r} value={r}>{r}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Superficie (ha)</label>
+            <input type="number" step="0.01" value={superficie} onChange={(e) => setSuperficie(e.target.value === "" ? "" : Number(e.target.value))} required />
+          </div>
+          <button type="submit" className="btn-submit">Añadir Explotación</button>
+        </form>
+      </div>
     </div>
   );
 };

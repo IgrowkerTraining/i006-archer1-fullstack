@@ -1,135 +1,118 @@
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #FFFBF1;
-  font-family: Arial, sans-serif;
-}
-
-.home-wrapper {
+.page-background {
+  background-color: #61615b;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  box-sizing: border-box;
-  background-color: #FFFBF1;
+  align-items: center;
+}
+
+.producer-frame {
+  background-color: #fdfaf2;
+  width: 100%;
+  max-width: 850px;
+  min-height: 85vh;
+  border-radius: 80px;
+  /* IMPORTANTE: Padding 0 a los lados para que el navbar sea total */
+  padding: 0px 0px 60px 0px; 
+  display: flex;
+  flex-direction: column;
+  border: 20px solid #f0eee4;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden; /* Corta el navbar para que respete el radio de 80px */
 }
 
 .home-container {
-  width: 100%;
-  max-width: 1100px;
-  background: transparent;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
+/* NAVBAR TOTALMENTE EXPANDIDO Y VERDE */
 .navbar {
-  width: 100%;
-  background-color: #EFAD23;
-  border-radius: 20px;
-  padding: 16px 25px;
+  background-color: #68911B !important;
+  padding: 25px 40px; /* Más alto y con aire a los lados para los elementos internos */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   box-sizing: border-box;
-  margin-bottom: 50px;
+  margin-top: 40px;
 }
 
 .nav-left select {
-  font-size: 16px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 14px;
+  padding: 8px 15px;
+  border-radius: 10px;
   border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: #FFFBF1;
-  color: #0B1001;
-  margin-right: 450px;
+  font-weight: 500;
+  font-size: 14px;
+  background: white;
+  color: #333;
 }
 
 .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
   position: relative;
 }
 
-
-.user-chip {
-  background-color: #FFFBF1;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-weight: 500;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.user-profile-trigger {
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
+  display: flex;
+  color: white;
+  font-size: 32px;
 }
 
-.buttons {
+.custom-dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 999;
+  min-width: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px; /* Espacio uniforme entre los 3 botones */
-  width: 100%;
-  margin-top: 20px;
 }
 
-/* Estilo unificado para los tres botones */
+.dropdown-user-name {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* CONTENEDOR DE BOTONES (Para que no se peguen al borde del marco) */
+.main-content {
+  flex: 1;
+  display: flex;
+  padding: 0 40px; /* Devolvemos el margen que quitamos arriba */
+}
+
+.buttons {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  gap: 25px;
+}
+
 .buttons button {
-  width: 100%;           /* Ocupa el ancho disponible */
-  max-width: 500px;      /* Pero no más de 500px para que no se vean gigantes en PC */
-  padding: 20px;         /* Un poco más de aire */
-  font-size: 18px;
-  font-weight: 600;
-  background-color: #6B8E23;
+  width: 100%;
+  max-width: 400px;
+  padding: 22px;
+  border-radius: 18px;
+  border: none;
+  background-color: #72922B;
   color: white;
-  border: none;
-  border-radius: 20px;   /* Bordes redondeados consistentes */
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Un toque de relieve */
-}
-
-.buttons button:hover {
-  opacity: 0.9;
-  transform: translateY(-2px); /* Efecto de levante al pasar el mouse */
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-.buttons button:active {
-  transform: translateY(0);
-};
-
-.user-menu {
-  position: relative;
-}
-.dropdown-menu {
-  position: absolute;
-  top: 55px;
-  right: 0;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: 8px;
-  min-width: 150px;
-  z-index: 10;
-}
-
-.dropdown-item {
-  background: none;
-  border: none;
-  font-size: 13px;
-  padding: 6px 10px;
-  cursor: pointer;
-  color: #0B1001;
-  border-radius: 8px;
-  width: auto;
-  text-align: left;
-}
-
-.dropdown-item:hover {
-  background-color: #f3f3f3;
+  box-shadow: 0 5px 0px #566e21;
+  transition: 0.2s;
 }

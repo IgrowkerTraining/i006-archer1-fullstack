@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useExplotation, Explotation } from "../context/ExplotationContext";
 import { useAuth } from "../hooks/useAuth";
 import LogoutButton from "../components/LogoutButton";
+import ActivityRegister from "./ActivityRegister";
 import "../styles/HomeProductor.css";
 
 export default function HomeProductor() {
@@ -13,93 +14,97 @@ export default function HomeProductor() {
 
   const [explotationSeleccionada, setExplotationSeleccionada] = useState<Explotation | null>(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Filtrar solo las explotaciones del usuario
-  const misExplotations = explotations.filter(ex => ex.userId === user?.id);
+  const misExplotations = user ? explotations.filter(ex => ex.userId === user.id) : explotations;
 
   useEffect(() => {
-    const idSeleccionado = (location.state as any)?.seleccionadaId;
-    if (idSeleccionado) {
-      const encontrada = misExplotations.find(e => e.id === idSeleccionado);
-      setExplotationSeleccionada(encontrada || misExplotations[0] || null);
-    } else {
-      setExplotationSeleccionada(misExplotations[0] || null);
+    const idRecibido = (location.state as any)?.seleccionadaId;
+    if (idRecibido) {
+      const encontrada = explotations.find(e => e.id === idRecibido);
+      if (encontrada) {
+        setExplotationSeleccionada(encontrada);
+        window.history.replaceState({}, document.title);
+        return; 
+      }
     }
-  }, [misExplotations, location.state]);
+    if (explotationSeleccionada) {
+        const sigueExistiendo = explotations.some(e => e.id === explotationSeleccionada.id);
+        if (sigueExistiendo) return;
+    }
+    if (misExplotations.length > 0) {
+      setExplotationSeleccionada(misExplotations[0]);
+    }
+  }, [explotations, misExplotations, location.state]);
 
-  const handleCambioExplotation = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = e.target.value;
-    const encontrada = misExplotations.find(ex => ex.id === id);
-    setExplotationSeleccionada(encontrada || null);
-  };
-
-  const toggleMenu = () => setMenuAbierto(prev => !prev);
-
-  // Cerrar menú al hacer click fuera
   useEffect(() => {
-    const handleClickFuera = (event: MouseEvent) => {
+    const handleClickAfuera = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuAbierto(false);
       }
     };
-    document.addEventListener("mousedown", handleClickFuera);
-    return () => {
-      document.removeEventListener("mousedown", handleClickFuera);
-    };
+    document.addEventListener("mousedown", handleClickAfuera);
+    return () => document.removeEventListener("mousedown", handleClickAfuera);
   }, []);
 
-  return (
-    <div className="home-wrapper">
-      <div className="home-container">
-        <div className="navbar">
-          <div className="nav-left">
-            <select
-              value={explotationSeleccionada?.id || ""}
-              onChange={handleCambioExplotation}
-            >
-              <option value="" disabled>
-                Explotación seleccionada
-              </option>
-              {misExplotations.map(ex => (
-                <option key={ex.id} value={ex.id}>
-                  {ex.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+  const handleCambioExplotation = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const encontrada = misExplotations.find(ex => ex.id === e.target.value);
+    setExplotationSeleccionada(encontrada || null);
+  };
 
-          <div className="nav-right">
-            <div className="user-menu" ref={menuRef}>
-              <div className="user-chip" onClick={toggleMenu}>
-                <span className="user-icon">👤</span>
-                <span className="user-name">{user?.name || user?.email}</span>
-              </div>
+  return (
+    <div className="page-background">
+      <div className="producer-frame">
+        <div className="home-container">
+          
+          <div className="navbar">
+            <div className="nav-left">
+              <select value={explotationSeleccionada?.id || ""} onChange={handleCambioExplotation}>
+                <option value="" disabled>Explotación seleccionada</option>
+                {misExplotations.map(ex => (
+                  <option key={ex.id} value={ex.id}>{ex.nombre}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="nav-right" ref={menuRef}>
+              <button 
+                className="user-profile-trigger"
+                onClick={() => setMenuAbierto(!menuAbierto)}
+              >
+                <i className="bi bi-person-circle"></i>
+              </button>
 
               {menuAbierto && (
-                <div className="dropdown-menu">
-                  <LogoutButton className="dropdown-item" />
+                <div className="custom-dropdown">
+                  <div className="dropdown-user-name">
+                    {user?.name || user?.email || "Usuario"}
+                  </div>
+                  <div className="dropdown-divider"></div>
+                  <LogoutButton className="logout-btn-style" />
                 </div>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="buttons">
-          <div className="buttons">
-  <button onClick={() => {
-    console.log("Navegando a Actividad...");
-    navigate("/activity");
-  }}>Registrar actividad</button>
-  
-  <button onClick={() => {
-    console.log("Navegando a Historial...");
-    navigate("/producer-history");
-  }}>Historial</button>
-</div>
-          <button>Generar resumen</button>
+          <div className="main-content">
+            <div className="buttons">
+              <button onClick={() => setShowModal(true)}>Registrar actividad</button>
+              <button onClick={() => navigate("/producer-history")}>Historial</button>
+              <button>Generar resumen</button>
+            </div>
+          </div>
+
         </div>
       </div>
+
+      {showModal && explotationSeleccionada && (
+        <ActivityRegister 
+          explotationId={explotationSeleccionada.id} 
+          onClose={() => setShowModal(false)} 
+        />
+      )}
     </div>
   );
 }
