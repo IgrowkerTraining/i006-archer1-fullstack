@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import agroactivityService from "@/services/agroactivityService";
 
-export default {
+class AgroactivityController {
   async getHistory(req: Request, res: Response) {
     try {
       const history = await agroactivityService.getHistory();
@@ -12,5 +12,7 @@ export default {
         message: "Error retrieving agroactivity history",
       });
     }
-  },
-};
+  }
+}
+
+export default new AgroactivityController();
