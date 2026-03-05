@@ -5,113 +5,154 @@
 }
 
 .page-background {
-  background-color: #868686;
-  min-height: 100vh;
+  background-color: #61615b;
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 40px 20px;
 }
 
 .history-frame {
-  background-color: #FFFBF1;
+  background-color: #fdfaf2;
   width: 100%;
-  max-width: 950px;
-  min-height: 1000px;
-  border-radius: 50px;
-  border: 20px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 25px 60px rgba(0, 0, 0, 0.5);
-  padding: 40px;
+  max-width: 850px;
+  min-height: 85vh;
+  border-radius: 80px;
   display: flex;
   flex-direction: column;
+  border: 20px solid #f0eee4;
+  box-shadow: 0px 15px 40px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
 }
 
 .navbar {
+  background-color: #68911B;
+  padding: 15px 40px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: #EFAD23;
-  border-radius: 20px;
-  padding: 10px 20px;
-  margin-bottom: 30px;
+  align-items: center;
 }
 
-.navbar-title { color: white; font-weight: bold; font-size: 18px; }
+.navbar-title { 
+  color: white; 
+  font-weight: bold; 
+  font-size: 1.2rem; 
+}
 
-.history-title {
-  color: #5d4a44;
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
+.navbar-select-small {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-weight: 500;
+  font-size: 14px;
+  background: white;
+  color: #333;
+}
+
+.history-content {
+  padding: 30px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .cards-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
 }
 
 .activity-card {
-  background-color: #99a877;
-  border-radius: 15px;
-  padding: 15px 20px; 
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  max-width: 450px; 
-  margin: 0 auto; 
+  background-color: #a1b183;
+  border-radius: 25px;
+  padding: 20px;
   width: 100%;
+  max-width: 650px;
+  color: #000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-
 
 .card-header-main {
-  margin-bottom: 10px !important;
-  padding-bottom: 5px !important;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
-.card-date {
-  display: block;
-  font-size: 14px;
-  color: #141414;
-  font-weight: 600;
+.card-date-label { 
+  font-size: 0.85rem; 
+  display: block; 
   margin-bottom: 4px;
-}
-
-.card-activity {
-  display: block;
-  font-size: 18px;
-  color: #141414;
   font-weight: bold;
 }
 
+.card-activity-name { 
+  font-size: 1.5rem; 
+  font-weight: 900; 
+  text-transform: uppercase;
+}
 
-.card-body p {
-  margin-bottom: 6px;
-  font-size: 16px;
-  color: #1a1a1a;
+.card-body-data {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
 }
 
 .card-description-box {
-  margin-top: 8px !important;
-  padding: 8px 12px !important;
-  font-size: 14px !important;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  min-height: 40px;
 }
 
-
-.card-footer {
+.card-footer-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 15px;
+  gap: 10px;
 }
 
-.btn-edit { background-color: #72922B; color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-.btn-save { background-color: #2b7e92; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px; }
-.btn-cancel { background-color: #922b2b; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; }
+.btn-edit-activity {
+  background-color: white;
+  color: #68911B;
+  border: 2px solid #68911B;
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-.back-link { background-color: #5e5d5d; color: white; padding: 12px 50px; border-radius: 30px; border: none; cursor: pointer; margin-top: 20px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-weight: bold; margin-bottom: 4px; }
-.form-group input, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
-.card-title-display {
-  font-size: 26px !important;
+.btn-view-obs {
+  background-color: #7a914a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bottom-container {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.back-link-main {
+  background-color: #333;
+  color: white;
+  padding: 12px 50px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-link-main:hover {
+  transform: scale(1.05);
 }

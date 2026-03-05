@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useExplotation, Explotation } from "../context/ExplotationContext";
 import { useAuth } from "../hooks/useAuth";
 import LogoutButton from "../components/LogoutButton";
-import ActivityRegister from "./ActivityRegister"; // Importamos el modal
+import ActivityRegister from "./ActivityRegister";
 import "../styles/HomeProductor.css";
 
 export default function HomeProductor() {
@@ -14,7 +14,7 @@ export default function HomeProductor() {
 
   const [explotationSeleccionada, setExplotationSeleccionada] = useState<Explotation | null>(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const [showModal, setShowModal] = useState(false); // ESTADO PARA EL MODAL
+  const [showModal, setShowModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const misExplotations = user ? explotations.filter(ex => ex.userId === user.id) : explotations;
@@ -38,6 +38,16 @@ export default function HomeProductor() {
     }
   }, [explotations, misExplotations, location.state]);
 
+  useEffect(() => {
+    const handleClickAfuera = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuAbierto(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickAfuera);
+    return () => document.removeEventListener("mousedown", handleClickAfuera);
+  }, []);
+
   const handleCambioExplotation = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const encontrada = misExplotations.find(ex => ex.id === e.target.value);
     setExplotationSeleccionada(encontrada || null);
@@ -47,6 +57,7 @@ export default function HomeProductor() {
     <div className="page-background">
       <div className="producer-frame">
         <div className="home-container">
+          
           <div className="navbar">
             <div className="nav-left">
               <select value={explotationSeleccionada?.id || ""} onChange={handleCambioExplotation}>
@@ -57,27 +68,37 @@ export default function HomeProductor() {
               </select>
             </div>
 
-            <div className="nav-right">
-              <div className="user-menu" ref={menuRef}>
-                <div className="user-chip" onClick={() => setMenuAbierto(!menuAbierto)}>
-                  <span className="user-icon">👤</span>
-                  <span className="user-name">{user?.name || "Usuario"}</span>
+            <div className="nav-right" ref={menuRef}>
+              <button 
+                className="user-profile-trigger"
+                onClick={() => setMenuAbierto(!menuAbierto)}
+              >
+                <i className="bi bi-person-circle"></i>
+              </button>
+
+              {menuAbierto && (
+                <div className="custom-dropdown">
+                  <div className="dropdown-user-name">
+                    {user?.name || user?.email || "Usuario"}
+                  </div>
+                  <div className="dropdown-divider"></div>
+                  <LogoutButton className="logout-btn-style" />
                 </div>
-                {menuAbierto && <div className="dropdown-menu"><LogoutButton /></div>}
-              </div>
+              )}
             </div>
           </div>
 
-          <div className="buttons">
-            {/* AHORA ABRE EL MODAL EN LUGAR DE NAVEGAR */}
-            <button onClick={() => setShowModal(true)}>Registrar actividad</button>
-            <button onClick={() => navigate("/producer-history")}>Historial</button>
-            <button>Generar resumen</button>
+          <div className="main-content">
+            <div className="buttons">
+              <button onClick={() => setShowModal(true)}>Registrar actividad</button>
+              <button onClick={() => navigate("/producer-history")}>Historial</button>
+              <button>Generar resumen</button>
+            </div>
           </div>
+
         </div>
       </div>
 
-      {/* RENDERIZADO DEL MODAL */}
       {showModal && explotationSeleccionada && (
         <ActivityRegister 
           explotationId={explotationSeleccionada.id} 

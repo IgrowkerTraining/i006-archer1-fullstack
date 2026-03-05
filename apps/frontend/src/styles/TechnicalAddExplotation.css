@@ -1,4 +1,4 @@
-/* CAPA OSCURA QUE CUBRE TODO */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -6,13 +6,13 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  display: flex; /* Esto centra el contenido */
+  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000; /* Muy alto */
+  z-index: 10000;
 }
 
-/* EL CUADRO BLANCO DEL FORMULARIO */
+
 .explotation-frame-modal {
   background-color: #fffbf1;
   width: 90%;
@@ -31,7 +31,12 @@
   color: #0b1001;
   margin-bottom: 20px;
 }
-
+.form-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #5d4a44;
+  margin-bottom: 20px;
+}
 .form-grid {
   display: flex;
   flex-direction: column;
