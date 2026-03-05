@@ -79,6 +79,7 @@ class UserService {
         fullname: user.fullname,
         email: user.email
       },
+      
       token
     };
   }

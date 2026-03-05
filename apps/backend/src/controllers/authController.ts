@@ -7,7 +7,6 @@ class AuthController {
 
   async register(req: Request, res: Response): Promise<void> {
     try {
-
       const errors = ValidatorUser.validateRegister(req.body);
       if (errors.length > 0) {
         ResponseHelper.error(res, "Validation failed", 400, errors);
@@ -16,7 +15,7 @@ class AuthController {
 
       const user = await userService.register(req.body);
 
-      ResponseHelper.success(res, "Registered successfully", 201);
+      ResponseHelper.success(res, {"Registered successfully" : user} , 201);
 
     } catch (error: any) {
       if (error.message === "User already exists") {
@@ -42,7 +41,7 @@ class AuthController {
 
       const result = await userService.login(email, password);
 
-      ResponseHelper.success(res, " token: result.token", 200);
+      ResponseHelper.success(res, { token: result.token }, 200);
 
     } catch (error: any) {
       if (error.message === "Invalid credentials") {
