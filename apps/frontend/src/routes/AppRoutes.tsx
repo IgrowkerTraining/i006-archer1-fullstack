@@ -26,15 +26,6 @@ export const AppRoutes: React.FC = () => {
     <ExplotationProvider>
       <Routes>
         <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-
-        <Route
           path="/register"
           element={
             <PublicRoute>
@@ -85,7 +76,7 @@ export const AppRoutes: React.FC = () => {
         />
 
         <Route path="/" element={<OnboardingScreen />} />
-        <Route path="/loginscreen" element={<LoginScreen />} /> 
+        <Route path="/login" element={<LoginScreen />} /> 
         <Route path="/homeProductor" element={<HomeProductor />} />
         <Route path="/homeTecnic" element={<HomeTecnic />} />
         <Route path="/activity" element={<ActivityRegister />} />
@@ -93,7 +84,6 @@ export const AppRoutes: React.FC = () => {
         <Route path="/technical-history" element={<TechnicalHistory />} />
         <Route path="/add-explotation" element={<TechnicalAddExplotation />} />
         <Route path="/initial" element={<InitialPage />} />
-
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
