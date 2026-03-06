@@ -17,6 +17,9 @@ const OPCIONES_CULTIVOS = [
 const OPCIONES_ACTIVIDADES = [
   { nombre: "Recarga de activos", id: "c3ac43b4-a03e-4977-9eca-f3ca0c8eace4" },
   { nombre: "Aplicación fitosanitaria", id: "ca797386-2d27-49eb-b743-38df41da148e" },
+  { nombre: "Monitorización de plagas", id: "69aa6b18-8f1e-4130-b0c1-7196434e0cc9" },
+  { nombre: "Control de malezas", id: "7cd6b82c-545b-4ccd-b453-2ffea9d948b7" },
+  { nombre: "Mantenimiento de sistemas de riego", id: "d0e72c22-52d9-4aa8-8393-245e6d8e7cb8" }
 ];
 
 const ProducerHistory: React.FC = () => {
@@ -138,25 +141,89 @@ const ProducerHistory: React.FC = () => {
       </div>
 
       {mostrarModal && actividadAEditar && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
-          <div style={{ backgroundColor: '#FFFBF1', width: '90%', maxWidth: '500px', borderRadius: '40px', padding: '30px', position: 'relative', border: '10px solid #f0eee4' }}>
-            <button onClick={() => setMostrarModal(false)} style={{ position: 'absolute', right: '20px', top: '15px', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}>✕</button>
-            <h2 style={{ textAlign: 'center', marginBottom: '20px', fontWeight: 800 }}>Editar Actividad</h2>
-            <form onSubmit={guardarCambios} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input type="date" style={{ flex: 1, padding: '10px', borderRadius: '10px' }} value={`${actividadAEditar.date_year}-${String(actividadAEditar.date_month).padStart(2, '0')}-${String(actividadAEditar.date_day).padStart(2, '0')}`} onChange={e => {
-                  const [y, m, d] = e.target.value.split('-').map(Number);
-                  setActividadAEditar({ ...actividadAEditar, date_year: y, date_month: m, date_day: d });
-                }} />
-                <select style={{ flex: 1, padding: '10px', borderRadius: '10px' }} value={actividadAEditar.activitytype} onChange={e => setActividadAEditar({ ...actividadAEditar, activitytype: e.target.value })}>
-                  {OPCIONES_ACTIVIDADES.map(t => <option key={t.id} value={t.id}>{t.nombre}</option>)}
-                </select>
-              </div>
-              <button type="submit" style={{ backgroundColor: '#68911B', color: 'white', padding: '12px', borderRadius: '15px', border: 'none', fontWeight: 'bold' }}>Guardas cambios</button>
-            </form>
+  <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
+    <div style={{ backgroundColor: '#FFFBF1', width: '95%', maxWidth: '550px', borderRadius: '40px', padding: '30px', position: 'relative', border: '10px solid #f0eee4', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+      
+      <button onClick={() => setMostrarModal(false)} style={{ position: 'absolute', right: '25px', top: '20px', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#888' }}>✕</button>
+      
+      <h2 style={{ textAlign: 'center', marginBottom: '25px', fontWeight: 800, color: '#333', fontSize: '24px' }}>Editar Actividad</h2>
+      
+      <form onSubmit={guardarCambios} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ flex: 1 }}>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginLeft: '5px' }}>Fecha</label>
+            <input 
+              type="date" 
+              style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', color: '#202020' }} 
+              value={`${actividadAEditar.date_year}-${String(actividadAEditar.date_month).padStart(2, '0')}-${String(actividadAEditar.date_day).padStart(2, '0')}`} 
+              onChange={e => {
+                const [y, m, d] = e.target.value.split('-').map(Number);
+                setActividadAEditar({ ...actividadAEditar, date_year: y, date_month: m, date_day: d });
+              }} 
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginLeft: '5px' }}>Actividad</label>
+            <select 
+              style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', color: '#202020' }} 
+              value={actividadAEditar.activitytype} 
+              onChange={e => setActividadAEditar({ ...actividadAEditar, activitytype: e.target.value })}
+            >
+              {OPCIONES_ACTIVIDADES.map(t => <option key={t.id} value={t.id}>{t.nombre}</option>)}
+            </select>
           </div>
         </div>
-      )}
+
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ flex: 1 }}>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginLeft: '5px' }}>Parcela</label>
+            <select 
+              style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', color: '#202020' }} 
+              value={actividadAEditar.plot} 
+              onChange={e => setActividadAEditar({ ...actividadAEditar, plot: e.target.value })}
+            >
+              {OPCIONES_PARCELAS.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+            </select>
+          </div>
+          <div style={{ flex: 1 }}>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginLeft: '5px' }}>Cultivo</label>
+            <select 
+              style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', color: '#202020' }} 
+              value={actividadAEditar.crop} 
+              onChange={e => setActividadAEditar({ ...actividadAEditar, crop: e.target.value })}
+            >
+              {OPCIONES_CULTIVOS.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginLeft: '5px' }}>Responsable</label>
+          <input 
+            type="text" 
+            style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', color: '#202020' }} 
+            value={actividadAEditar.responsible} 
+            onChange={e => setActividadAEditar({ ...actividadAEditar, responsible: e.target.value })} 
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#3a3a3a', marginLeft: '5px' }}>Descripción de la actividad</label>
+          <textarea 
+            style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #ddd', marginTop: '5px', minHeight: '80px', resize: 'none',color: '#202020' }} 
+            value={actividadAEditar.description} 
+            onChange={e => setActividadAEditar({ ...actividadAEditar, description: e.target.value })} 
+          />
+        </div>
+
+        <button type="submit" style={{ backgroundColor: '#68911B', color: 'white', padding: '15px', borderRadius: '20px', border: 'none', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginTop: '10px', boxShadow: '0 4px 10px rgba(104, 145, 27, 0.3)' }}>
+          Guardar cambios
+        </button>
+      </form>
+    </div>
+  </div>
+)}
     </div>
   );
 };
