@@ -29,10 +29,10 @@ export default function TechnicianAddObservation() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#FFFBF1" }}>
-      <div className="mx-auto max-w-[980px] px-8 py-12">
+    <div className="min-h-[100svh] bg-[#FFFBF1] flex items-center justify-center p-6">
+      <div className="w-full max-w-[900px]">
         <div
-          className="rounded-[34px] p-8 shadow-2xl border"
+          className="rounded-[34px] p-6 md:p-8 shadow-2xl border"
           style={{
             backgroundColor: "rgba(11,16,1,0.05)",
             borderColor: "rgba(11,16,1,0.10)",
@@ -47,7 +47,7 @@ export default function TechnicianAddObservation() {
             }}
           >
             <div
-              className="px-10 pt-10 pb-6 border-b"
+              className="px-8 md:px-10 pt-8 md:pt-10 pb-6 border-b"
               style={{ borderColor: "rgba(11,16,1,0.10)" }}
             >
               <div className="flex items-start gap-6">
@@ -66,7 +66,7 @@ export default function TechnicianAddObservation() {
                 </button>
 
                 <div className="flex-1">
-                  <h1 className="text-[34px] leading-tight font-extrabold tracking-tight">
+                  <h1 className="text-[32px] md:text-[34px] leading-tight font-extrabold tracking-tight">
                     Agregar observación
                   </h1>
                   <p className="mt-2 text-lg" style={{ opacity: 0.78 }}>
@@ -89,7 +89,7 @@ export default function TechnicianAddObservation() {
               </div>
             </div>
 
-            <div className="px-10 py-10 flex justify-center">
+            <div className="px-8 md:px-10 py-10 flex justify-center">
               <ObservationForm
                 value={detail}
                 onChange={setDetail}
@@ -99,7 +99,7 @@ export default function TechnicianAddObservation() {
               />
             </div>
 
-            <div className="px-10 pb-8">
+            <div className="px-8 md:px-10 pb-8">
               <div className="h-[6px] rounded-full" style={{ backgroundColor: "#EFAD23" }} />
             </div>
           </div>
