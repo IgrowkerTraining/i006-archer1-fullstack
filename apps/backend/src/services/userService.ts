@@ -73,17 +73,9 @@ class UserService {
     );
 
     return {
-      user: {
-        id: user.id,
-        istechnician: user.istechnician,
-        fullname: user.fullname,
-        email: user.email
-      },
-      
       token
     };
   }
-
 }
 
 export default new UserService();
