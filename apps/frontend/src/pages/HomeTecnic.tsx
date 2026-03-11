@@ -1,22 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useExplotation, Explotation } from "../context/ExplotationContext";
+import { useExplotation } from "../context/ExplotationContext";
 import LogoutButton from "../components/LogoutButton";
+// IMPORTANTE: Importamos el CSS para usar las clases
+import "../styles/HomeProductor.css"; 
 
 export default function HomeTecnic() {
   const { user } = useAuth();
-  const { explotations } = useExplotation(); // hook ya seguro dentro del Provider
+  const { explotations } = useExplotation();
   const navigate = useNavigate();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  // Solo mostramos las explotaciones asignadas al técnico (filtrar después)
-  // Cambié tecnicoId por userId
-  const assignedExplotations = explotations.filter(
-    (ex) => ex.userId === user?.id // Ahora usamos userId en vez de tecnicoId
-  );
+  const allExplotations = explotations;
 
   const toggleMenu = () => setMenuAbierto((prev) => !prev);
 
@@ -31,137 +28,99 @@ export default function HomeTecnic() {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#FFFBF1",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "30px 20px",
-        fontFamily: "Arial, sans-serif",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1100px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-        }}
-      >
-        {/* NAVBAR */}
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "#EFAD23",
-            borderRadius: "20px",
-            padding: "16px 25px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            boxSizing: "border-box",
-            marginBottom: "50px",
-          }}
-        >
-          <div ref={menuRef} style={{ position: "relative" }}>
-            <div
+    /* Usamos la clase del CSS */
+    <div className="page-background">
+      
+      {/* Usamos la clase del frame para que el radio y el color sean iguales */}
+      <div className="producer-frame">
+        
+        {/* Navbar con la clase exacta del CSS */}
+        <div className="navbar">
+          <span style={{ fontWeight: "bold", color: "white", fontSize: "25px" }}>
+            Explotaciones asignadas
+          </span>
+          
+          <div ref={menuRef} className="nav-right">
+            <div 
               onClick={toggleMenu}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "10px 20px",
-                borderRadius: "30px",
-                backgroundColor: "#FFFBF1",
-                cursor: "pointer",
-                fontWeight: 500,
-                fontSize: "14px",
-              }}
+              className="user-profile-trigger"
             >
-              <span>👤</span>
-              <span>{user?.name || user?.email}</span>
+              <i className="bi bi-person-circle"></i>
             </div>
 
             {menuAbierto && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "55px",
-                  right: 0,
-                  backgroundColor: "#fff",
-                  borderRadius: "12px",
-                  boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-                  padding: "8px",
-                  minWidth: "150px",
-                  zIndex: 10,
-                }}
-              >
-                <LogoutButton
-                  className="dropdown-item"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "13px",
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                    color: "#0B1001",
-                    borderRadius: "8px",
-                    width: "auto",
-                    textAlign: "left",
-                  }}
-                />
+              <div className="custom-dropdown">
+                <div className="dropdown-user-name">
+                  {user?.name || "Técnico"}
+                </div>
+                <LogoutButton />
               </div>
             )}
           </div>
         </div>
 
-        {/* CONTENIDO */}
-        {assignedExplotations.length === 0 ? (
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "18px",
-              color: "#777",
-            }}
-          >
-            No tienes ninguna explotación asignada por el momento.
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
-            {assignedExplotations.map((ex) => (
-              <div
-                key={ex.id}
-                onClick={() =>
-                  navigate("/detalle-explotacion", { state: { explotationId: ex.id } })
-                }
-                style={{
-                  display: "flex",
-                  backgroundColor: "#F4EBDC",
-                  padding: "25px",
-                  borderRadius: "25px",
-                  alignItems: "center",
-                  gap: "20px",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                <div style={{ fontSize: "40px" }}>🖼️</div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: "20px" }}>{ex.nombre}</h3>
-                  <p style={{ margin: "5px 0 15px 0", fontSize: "14px" }}>
-                    <strong>Productor:</strong> {user?.name || user?.email} {/* Aquí he puesto el nombre del usuario */}
-                  </p>
-                </div>
+        {/* Contenido principal */}
+        <div style={{ padding: "40px", flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          
+          <div style={{ 
+            flex: 1, 
+            overflowY: "auto", 
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            paddingRight: "5px"
+          }}>
+            {allExplotations.length === 0 ? (
+              <div style={{ textAlign: "center", color: "#A0A0A0", marginTop: "50px" }}>
+                No hay explotaciones registradas en el sistema.
               </div>
-            ))}
+            ) : (
+              allExplotations.map((ex) => (
+                <div 
+                  key={ex.id}
+                  style={{
+                    backgroundColor: "#99a877",
+                    borderRadius: "25px",
+                    padding: "20px 30px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                    <h3 style={{ margin: 0, fontSize: "22px", fontWeight: "900", color: "#000" }}>
+                      {ex.nombre}
+                    </h3>
+                    <p style={{ margin: 0, fontSize: "15px", color: "#222", fontWeight: "600" }}>
+                      Responsable: {ex.userId === "invitado" ? "Productor Invitado" : ex.userId}
+                    </p>
+                    <p style={{ margin: 0, fontSize: "14px", color: "#444" }}>
+                      <i className="bi bi-geo-alt"></i> {ex.ubicacion}
+                    </p>
+                  </div>
+
+                  <button 
+                    onClick={() => navigate("/technical-history", { state: { explotationId: ex.id } })}
+                    style={{
+                      backgroundColor: "#fdfaf2",
+                      color: "#333",
+                      border: "none",
+                      padding: "10px 25px",
+                      borderRadius: "15px",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.15)"
+                    }}
+                  >
+                    Historial
+                  </button>
+                </div>
+              ))
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

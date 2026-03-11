@@ -76,7 +76,7 @@ const Register: React.FC = () => {
                   <p className="font-extrabold tracking-wide" style={{ color: "#0B1001" }}>
                     PRODUCTOR
                   </p>
-                  <p className="mt-1 text-sm" style={{ opacity: 0.78 }}>
+                  <p className="mt-1 text-sm text-[#0B1001]/80">
                     Registro y gestión de actividades agrícolas
                   </p>
                 </button>
@@ -92,7 +92,7 @@ const Register: React.FC = () => {
                   <p className="font-extrabold tracking-wide" style={{ color: "#0B1001" }}>
                     TÉCNICO
                   </p>
-                  <p className="mt-1 text-sm" style={{ opacity: 0.78 }}>
+                  <p className="mt-1 text-sm text-[#0B1001]/80">
                     Supervisión y observaciones técnicas
                   </p>
                 </button>

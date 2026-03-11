@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useExplotation } from "../context/ExplotationContext";
 import { useAuth } from "../hooks/useAuth";
 import LogoutButton from "../components/LogoutButton";
+import TechnicalAddExplotation from "./TechnicalAddExplotation";
 
 const InitialPage: React.FC = () => {
   const { explotations } = useExplotation();
@@ -10,149 +11,84 @@ const InitialPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Redirigir automáticamente si ya existen explotaciones
   useEffect(() => {
     if (explotations.length > 0) {
       navigate("/homeProductor");
     }
   }, [explotations, navigate]);
 
-  const toggleMenu = () => setMenuAbierto(prev => !prev);
-
-  // Cerrar el menú al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuAbierto(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <div style={{
-      backgroundColor: "#FFFBF1",
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-start",
-      padding: "30px 20px",
-      fontFamily: "Arial, sans-serif",
-      boxSizing: "border-box"
-    }}>
+    <>
       <div style={{
+        backgroundColor: "#61615b",
         width: "100%",
-        maxWidth: "1100px",
+        minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
-        gap: "30px"
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px"
       }}>
+
         <div style={{
+          backgroundColor: "#fdfaf2",
           width: "100%",
-          backgroundColor: "#EFAD23",
-          borderRadius: "20px",
-          padding: "16px 25px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxSizing: "border-box",
-          marginBottom: "50px"
-        }}>
-          {/* Espacio para mantener el layout si decides poner algo a la izquierda */}
-          <div /> 
-
-          <div ref={menuRef} style={{ position: "relative" }}>
-            <div
-              onClick={toggleMenu}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "10px 20px",
-                borderRadius: "30px",
-                backgroundColor: "#FFFBF1",
-                cursor: "pointer",
-                fontWeight: 500,
-                fontSize: "14px"
-              }}
-            >
-              <span>👤</span>
-              <span>{user?.name || user?.email}</span>
-            </div>
-
-            {menuAbierto && (
-              <div style={{
-                position: "absolute",
-                top: "55px",
-                right: 0,
-                backgroundColor: "#fff",
-                borderRadius: "12px",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-                padding: "8px",
-                minWidth: "150px",
-                zIndex: 10
-              }}>
-                <LogoutButton
-                  className="dropdown-item"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "13px",
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                    color: "#0B1001",
-                    borderRadius: "8px",
-                    width: "100%",
-                    textAlign: "left"
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div style={{
+          maxWidth: "850px",
+          minHeight: "85vh",
+          borderRadius: "80px",
+          padding: "0px 0px 60px 0px", 
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "80px",
-          textAlign: "center",
-          padding: "0 20px",
-          gap: "20px"
+          border: "20px solid #f0eee4",
+          boxShadow: "0 15px 40px rgba(0, 0, 0, 0.2)",
+          position: "relative",
+          overflow: "hidden"
         }}>
-          <p style={{
-            fontSize: "1.3rem",
-            color: "#0B1001"
-          }}>
-            Aún no tienes explotaciones creadas
-          </p>
-          <button
-            onClick={() => navigate("/add-explotation")}
-            style={{
-              backgroundColor: "#68911B",
-              color: "white",
-              padding: "15px 40px",
-              borderRadius: "12px",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              transition: "background-color 0.3s"
-            }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#557716")}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#68911B")}
-          >
-            Agregar explotación
-          </button>
+
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "30px", padding: "0 40px" }}>
+            <p style={{ fontSize: "1.6rem", color: "#333", fontWeight: "600", textAlign: "center" }}>
+              Aún no tienes explotaciones creadas
+            </p>
+
+            <button
+              onClick={() => setShowModal(true)}
+              style={{
+                width: "70px",
+                height: "70px",
+                borderRadius: "50%",
+                border: "none",
+                backgroundColor: "#72922B",
+                color: "white",
+                fontSize: "35px",
+                fontWeight: "300",
+                cursor: "pointer",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                lineHeight: "0",
+                paddingBottom: "5px"
+              }}
+            >
+              +
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {showModal && (
+        <TechnicalAddExplotation
+          onClose={() => setShowModal(false)}
+          onSuccess={(id) => {
+            setShowModal(false);
+            navigate("/homeProductor", { state: { seleccionadaId: id } });
+          }}
+        />
+      )}
+    </>
   );
 };
 
-// EXPORTACIÓN POR DEFECTO PARA EL ROUTER
 export default InitialPage;
