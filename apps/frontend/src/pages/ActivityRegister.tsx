@@ -20,8 +20,11 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
   });
 
   const opcionesParcelas = [
-    { nombre: "Parcela Norte", id: "fc0d93f6-4687-4179-9540-e7104539f110" },
-    { nombre: "Parcela Sur", id: "1a4b1e5a-6923-49f3-8d41-cd0f6df88a75" }
+    { nombre: "Parcela 14", id: "b8e69891-7b61-478a-88ba-248f82d87139" },
+    { nombre: "Parcela 1", id: "6d631b2e-5cd4-4c43-ad6d-4229ba90cb57" },
+    { nombre: "Parcela 17", id: "1a4b1e5a-6923-49f3-8d41-cd0f6df88a75" },
+    { nombre: "Parcela 8", id: "d9ae4cd9-e352-4c5a-bed7-94775ff588ec"},
+    { nombre: "Parcela 12", id: "fc0d93f6-4687-4179-9540-e7104539f110" }
   ];
 
   const opcionesCultivos = [
@@ -42,27 +45,35 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+// Dentro de handleSubmit en ActivityRegister.tsx
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  const [year, month, day] = formData.fecha.split('-').map(Number);
 
-    const [year, month, day] = formData.fecha.split('-').map(Number);
+  // Recuperamos el ID del usuario del localStorage para que 'responsible' sea el ID real
+  const userStr = localStorage.getItem('example_user');
+  const userData = userStr ? JSON.parse(userStr) : null;
 
-    const datosParaBackend = {
-      plot: formData.parcela,
-      crop: formData.cultivo,
-      activitytype: formData.tipoActividad,
-      responsible: formData.responsable,
-      description: formData.descripcion,
-      date_day: day,
-      date_month: month,
-      date_year: year,
-      explotationId: explotationId
-    };
+ const datosParaBackend = {
+  // 1. Este ID debe existir en la tabla 'plot' y estar unido a la explotación del productor
+  plot: formData.parcela, 
+  
+  // 2. El tipo de cultivo vinculado a esa parcela
+  crop: formData.cultivo, 
+  
+  // 3. El ID del productor (Producer) que es el 'responsible'
+  responsible: userData?.id, 
+  
+  activitytype: formData.tipoActividad,
+  description: formData.descripcion,
+  date_day: day,
+  date_month: month,
+  date_year: year
+};
 
-    await agregarActivity(datosParaBackend as any); 
-    
-    onClose();
-  };
+  await agregarActivity(datosParaBackend as any); 
+  onClose();
+};
 
   return (
     <div className="modal-overlay" style={{
