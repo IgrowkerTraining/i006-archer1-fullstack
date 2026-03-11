@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { api } from '../services/api'; 
+import { useAuth } from '../hooks/useAuth';// Para guardar al usuario logueado
+import { useExplotation } from '../context/ExplotationContext';
 
 export const LoginScreen: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -12,20 +15,65 @@ export const LoginScreen: React.FC = () => {
  
     const selectedRole = location.state?.role || null;
 
-    const handleLogin = () => {
-        console.log('Logging in with', email, password, 'as', selectedRole);
-        
-       
-        if (selectedRole === 'PRODUCTOR') {
-            navigate('/homeProductor');
-        } else if (selectedRole === 'TECNICO') {
-            navigate('/homeTecnic');
-        } else {
-            
-            navigate('/');
-        }
-    };
+    // 1. Asegúrate de extraer 'login' del hook useAuth antes de la función
+const { login } = useAuth(); 
+const { cargarExplotacionesByProducer } = useExplotation();
 
+const handleLogin = async () => {
+    try {
+        const response = await api.login({ email, password });
+        const res = response as any;
+
+        // 1. Extraemos el token que ya vimos que sí llega
+        const token = res.token;
+
+        if (!token) {
+            throw new Error("No se recibió un token del servidor");
+        }
+
+        // 2. EXTRAEMOS EL ID DEL TOKEN (Ya que el servidor no lo envía aparte)
+        // El token tiene 3 partes separadas por puntos. La segunda parte tiene los datos.
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(window.atob(base64));
+        
+        // El ID suele venir como 'id' o 'sub' dentro del token
+        const userId = payload.id || payload.sub;
+
+        if (!userId) {
+            throw new Error("El token no contiene un ID de usuario válido");
+        }
+
+        // 3. Creamos un objeto de usuario manual con ese ID
+        const user = { 
+            id: userId, 
+            email: email, 
+            role: selectedRole 
+        };
+
+        console.log("Usuario recuperado del token:", user);
+
+        // 4. Guardamos la sesión
+       login(user as any, token); 
+
+        // 5. Redirigimos
+        if (selectedRole === 'PRODUCTOR') {
+            const explotaciones = await cargarExplotacionesByProducer(userId);
+
+            if (!explotaciones || explotaciones.length === 0) {
+                navigate('/initial'); // <--- Esto es lo que querías ver
+            } else {
+                navigate('/homeProductor');
+            }
+        } else {
+            navigate(selectedRole === 'TECNICO' ? '/homeTecnic' : '/');
+        }
+
+    } catch (error: any) {
+        console.error('Error detallado:', error);
+        alert('Error al entrar: ' + (error.message || 'Datos incorrectos'));
+    }
+};
     return (
         <div
             className="min-h-screen flex flex-col items-center justify-start pt-20 px-6 font-sans md:justify-center md:bg-[#f3efe6]"
