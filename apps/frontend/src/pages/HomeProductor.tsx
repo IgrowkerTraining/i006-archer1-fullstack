@@ -92,7 +92,7 @@ export default function HomeProductor() {
             <div className="buttons">
               <button onClick={() => setShowModal(true)}>Registrar actividad</button>
               <button onClick={() => navigate("/producer-history")}>Historial</button>
-              <button>Generar resumen</button>
+              <button onClick={() => navigate("/generate-summary")}>Generar resumen</button>
             </div>
           </div>
 

@@ -1,0 +1,26 @@
+@keyframes summaryFill {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 65%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.summary-loading-track {
+  width: 320px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: rgba(228, 165, 29, 0.28);
+  overflow: hidden;
+}
+
+.summary-loading-bar {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: #E4A51D;
+  animation: summaryFill 1.8s ease-in-out infinite;
+}
