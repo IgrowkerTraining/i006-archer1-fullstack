@@ -12,6 +12,24 @@ type RegisterFormProps = {
   onSuccess?: () => void;
 };
 
+const COUNTRIES = [
+  "España",
+  "Alemania",
+  "Francia",
+  "Italia",
+  "Portugal",
+  "Reino Unido",
+  "Países Bajos",
+  "Bélgica",
+  "Suiza",
+  "Argentina",
+  "Chile",
+  "México",
+  "Colombia",
+  "Uruguay",
+  "Perú",
+];
+
 export const RegisterForm: React.FC<RegisterFormProps> = ({
   role,
   showLicenseField = false,
@@ -91,7 +109,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </p>
           </div>
 
-      
           <div
             className="shrink-0 px-4 py-2 rounded-2xl text-sm font-bold border"
             style={{
@@ -137,13 +154,45 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             disabled={loading}
           />
 
-          <Input
-            label="País"
-            placeholder="Seleccionar país"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            disabled={loading}
-          />
+          
+          <div className="w-full">
+            <label
+              className="block text-[14px] font -semibold mb-2"
+              style={{ color: "#0B1001" }}
+            >
+              País
+            </label>
+
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              disabled={loading}
+              className="w-full h-12 px-4 text-[16px] rounded-xl border outline-none"
+              style={{
+                backgroundColor: "#FFFBF1",
+                borderColor: "rgba(11,16,1,0.18)",
+                color: "#0B1001",
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 0 4px rgba(239,173,35,0.25)";
+                e.currentTarget.style.borderColor = "#EFAD23";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.borderColor = "rgba(11,16,1,0.18)";
+              }}
+            >
+              <option value="" disabled>
+                Seleccionar país
+              </option>
+
+              {COUNTRIES.map((countryOption) => (
+                <option key={countryOption} value={countryOption}>
+                  {countryOption}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {showLicenseField ? (
             <div className="col-span-2">
@@ -171,16 +220,17 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           </div>
         ) : null}
 
-
         <div className="mt-8">
           <Button
             type="submit"
             className="w-full py-4 text-lg rounded-2xl"
             isLoading={loading}
-            style={{
-              backgroundColor: "#68911B",
-              color: "#FFFBF1",
-            } as any}
+            style={
+              {
+                backgroundColor: "#68911B",
+                color: "#FFFBF1",
+              } as any
+            }
           >
             Crear cuenta
           </Button>
