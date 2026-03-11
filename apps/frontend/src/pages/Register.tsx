@@ -70,9 +70,8 @@ const Register: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setRole("producer")}
-                  className={`${cardBase} ${
-                    role === "producer" ? cardSelected : cardIdle
-                  }`}
+                  className={`${cardBase} ${role === "producer" ? cardSelected : cardIdle
+                    }`}
                   style={{
                     backgroundColor:
                       role === "producer"
@@ -94,9 +93,8 @@ const Register: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setRole("technician")}
-                  className={`${cardBase} ${
-                    role === "technician" ? cardSelected : cardIdle
-                  }`}
+                  className={`${cardBase} ${role === "technician" ? cardSelected : cardIdle
+                    }`}
                   style={{
                     backgroundColor:
                       role === "technician"
@@ -138,7 +136,11 @@ const Register: React.FC = () => {
                 >
                   <p className="text-sm" style={{ opacity: 0.75 }}>
                     Ya tengo cuenta.{" "}
-                    <Link to="/login" className="underline font-semibold" style={{ color: "#0B1001" }}>
+                    <Link
+                      to="/login"
+                      className="underline font-semibold"
+                      style={{ color: "#EFAD23" }}
+                    >
                       Iniciar sesión
                     </Link>
                   </p>

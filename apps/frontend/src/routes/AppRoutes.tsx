@@ -20,6 +20,7 @@ import { LoginScreen } from "../pages/LoginScreen";
 import TechnicianObservations from "../pages/TechnicianObservations";
 import TechnicianAddObservation from "../pages/TechnicianAddObservation";
 import ProducerObservations from "../pages/ProducerObservations";
+import GenerateSummary from "../pages/GenerateSummary";
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -84,6 +85,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/technical-history" element={<TechnicalHistory />} />
         <Route path="/add-explotation" element={<TechnicalAddExplotation />} />
         <Route path="/initial" element={<InitialPage />} />
+        <Route path="/generate-summary" element={<GenerateSummary />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
