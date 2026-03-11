@@ -6,6 +6,7 @@ import activityRoutes from "./activity";
 import observationRoutes from "./observation";
 import agroactivityRoutes from "./agroactivity";
 import exploitationRoutes from "./exploitation";
+import resumeRoutes from "./resume";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/activity", activityRoutes);
 router.use("/observation", observationRoutes);
 router.use("/agroactivity", agroactivityRoutes);
 router.use("/exploitation", exploitationRoutes);
+router.use("/resume", resumeRoutes);
 
 export default router;

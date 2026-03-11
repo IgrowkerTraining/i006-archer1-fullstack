@@ -1,6 +1,5 @@
 import activityService from "@/services/activityService";
 import { Request, Response } from "express";
-import { CreateActivityDTO } from "@/DTOs/activity";
 
 export default {
     async createActivity(req: Request, res: Response) {
