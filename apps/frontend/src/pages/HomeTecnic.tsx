@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useExplotation } from "../context/ExplotationContext";
 import LogoutButton from "../components/LogoutButton";
-// IMPORTANTE: Importamos el CSS para usar las clases
-import "../styles/HomeProductor.css"; 
+import "../styles/HomeProductor.css";
 
 export default function HomeTecnic() {
   const { user } = useAuth();
@@ -28,20 +27,19 @@ export default function HomeTecnic() {
   }, []);
 
   return (
-    /* Usamos la clase del CSS */
+
     <div className="page-background">
-      
-      {/* Usamos la clase del frame para que el radio y el color sean iguales */}
+
+
       <div className="producer-frame">
-        
-        {/* Navbar con la clase exacta del CSS */}
+
         <div className="navbar">
           <span style={{ fontWeight: "bold", color: "white", fontSize: "25px" }}>
             Explotaciones asignadas
           </span>
-          
+
           <div ref={menuRef} className="nav-right">
-            <div 
+            <div
               onClick={toggleMenu}
               className="user-profile-trigger"
             >
@@ -50,21 +48,23 @@ export default function HomeTecnic() {
 
             {menuAbierto && (
               <div className="custom-dropdown">
-                <div className="dropdown-user-name">
-                  {user?.name || "Técnico"}
+                <div className="dropdown-user-name" style={{ padding: '10px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>
+                  {/* Usamos el email para evitar que salga "Técnico" o un ID raro */}
+                  {user?.email || "Usuario"}
                 </div>
-                <LogoutButton />
+                <div style={{ padding: '5px' }}>
+                  <LogoutButton />
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Contenido principal */}
         <div style={{ padding: "40px", flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          
-          <div style={{ 
-            flex: 1, 
-            overflowY: "auto", 
+
+          <div style={{
+            flex: 1,
+            overflowY: "auto",
             display: "flex",
             flexDirection: "column",
             gap: "15px",
@@ -76,7 +76,7 @@ export default function HomeTecnic() {
               </div>
             ) : (
               allExplotations.map((ex) => (
-                <div 
+                <div
                   key={ex.id}
                   style={{
                     backgroundColor: "#99a877",
@@ -90,17 +90,19 @@ export default function HomeTecnic() {
                 >
                   <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                     <h3 style={{ margin: 0, fontSize: "22px", fontWeight: "900", color: "#000" }}>
-                      {ex.nombre}
+                      {/* CAMBIO AQUÍ: ex.nombre -> (ex as any).name */}
+                      {(ex as any).name || (ex as any).nombre}
                     </h3>
                     <p style={{ margin: 0, fontSize: "15px", color: "#222", fontWeight: "600" }}>
-                      Responsable: {ex.userId === "invitado" ? "Productor Invitado" : ex.userId}
+                      {/* CAMBIO AQUÍ: ex.userId -> (ex as any).producer */}
+                      Responsable: {(ex as any).producer === "invitado" ? "Productor Invitado" : (ex as any).producer}
                     </p>
                     <p style={{ margin: 0, fontSize: "14px", color: "#444" }}>
                       <i className="bi bi-geo-alt"></i> {ex.ubicacion}
                     </p>
                   </div>
 
-                  <button 
+                  <button
                     onClick={() => navigate("/technical-history", { state: { explotationId: ex.id } })}
                     style={{
                       backgroundColor: "#fdfaf2",
