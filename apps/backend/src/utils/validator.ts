@@ -19,7 +19,6 @@ interface LoginData {
 
 class ValidatorUser {
 
-
   static required(value: string | undefined, fieldName: string): string | null {
     if (!value || value.trim() === "") {
       return `${fieldName} is required`;
