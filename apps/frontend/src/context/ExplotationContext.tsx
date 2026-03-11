@@ -18,7 +18,9 @@ interface ExplotationContextProps {
   explotations: any[];
   activities: Activity[];
   agregarActivity: (act: Activity) => Promise<void>;
-  actualizarActivity: (id: string, act: Activity) => Promise<void>; // Añadido
+  // AÑADIMOS ESTO A LA INTERFAZ:
+  agregarExplotation: (ex: any) => Promise<any>; 
+  actualizarActivity: (id: string, act: Activity) => Promise<void>;
   cargarExplotacionesByProducer: (producerId: string) => Promise<any[]>;
   cargarActividades: () => Promise<void>;
 }
@@ -34,6 +36,23 @@ export const useExplotation = () => {
 export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [explotations, setExplotations] = useState<any[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
+
+  // --- NUEVA FUNCIÓN QUE FALTABA ---
+  const agregarExplotation = useCallback(async (ex: any) => {
+    try {
+      // Llamamos a la API para guardar en Supabase
+      const response = await api.createExplotation(ex); 
+      
+      // Actualizamos el estado local para que aparezca en la lista
+      setExplotations((prev) => [...prev, response || ex]);
+      
+      return response || ex;
+    } catch (error) {
+      console.error("Error en agregarExplotation:", error);
+      throw error; // Lanzamos el error para que el componente lo huela
+    }
+  }, []);
+  // --------------------------------
 
   const cargarActividades = useCallback(async () => {
     try {
@@ -100,13 +119,10 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
   }, []);
 
-  // NUEVA FUNCIÓN AÑADIDA
   const actualizarActivity = useCallback(async (id: string, act: Activity) => {
     try {
-      // 1. Actualizar en Backend
       await api.updateActivity(id, act);
 
-      // 2. Actualizar en LocalStorage (Sistema de emergencia)
       const userStr = localStorage.getItem('example_user');
       const userId = JSON.parse(userStr || '{}').id;
       if (userId) {
@@ -118,7 +134,6 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
         }
       }
 
-      // 3. Actualizar estado de la interfaz
       setActivities(prev => prev.map(a => (a.id === id ? { ...act, id } : a)));
     } catch (error) {
       console.error("Error al actualizar actividad:", error);
@@ -129,10 +144,11 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
   return (
     <ExplotationContext.Provider 
       value={{ 
-        explotations, 
+        explotations,
+        agregarExplotation, // <--- YA NO SALDRÁ ROJO PORQUE YA EXISTE ARRIBA
         activities, 
         agregarActivity, 
-        actualizarActivity, // Añadido al provider
+        actualizarActivity,
         cargarExplotacionesByProducer, 
         cargarActividades 
       }}
