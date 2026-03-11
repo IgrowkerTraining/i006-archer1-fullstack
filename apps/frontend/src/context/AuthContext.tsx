@@ -4,7 +4,8 @@ import { storage } from "../utils/storage";
 
 interface AuthContextType {
   authState: AuthState;
-  login: (user: User) => void;
+  // CAMBIO: Ahora acepta user y token
+  login: (user: User, token: string) => void; 
   logout: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
@@ -22,6 +23,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return { ...state, loading: action.payload };
     case "SET_USER":
       return {
+        ...state,
         user: action.payload,
         isAuthenticated: true,
         loading: false,
@@ -59,15 +61,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const savedUser = storage.getUser();
-    if (savedUser) {
+    const savedToken = storage.getToken(); // Asumiendo que tienes getToken en tu storage
+    
+    if (savedUser && savedToken) {
       dispatch({ type: "SET_USER", payload: savedUser });
     } else {
       dispatch({ type: "SET_LOADING", payload: false });
     }
   }, []);
 
-  const login = (user: User) => {
+  // CAMBIO: La función ahora recibe y guarda ambos datos
+  const login = (user: User, token: string) => {
     storage.setUser(user);
+    storage.setToken(token); // Guardamos el token en el storage
     dispatch({ type: "SET_USER", payload: user });
   };
 
