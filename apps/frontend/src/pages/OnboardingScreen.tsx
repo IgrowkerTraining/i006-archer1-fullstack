@@ -10,7 +10,7 @@ export const OnboardingScreen: React.FC = () => {
 
  const handleContinue = () => {
   if (selectedRole) {
-   navigate('/loginscreen', { state: { role: selectedRole } }); 
+   navigate('/login', { state: { role: selectedRole } }); 
   }
 };
 
