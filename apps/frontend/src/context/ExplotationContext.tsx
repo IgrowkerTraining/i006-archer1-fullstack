@@ -1,15 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
-import { api } from "../services/api"; // Importación corregida
-
-export interface Explotation {
-  id: string;
-  nombre: string;
-  ubicacion: string;
-  pais: string;
-  region: string;
-  superficie: number;
-  userId: string;
-}
+import React, { createContext, useState, useContext, ReactNode, useCallback } from "react";
+import { api } from "../services/api";
 
 export interface Activity {
   id?: string;
@@ -21,52 +11,132 @@ export interface Activity {
   date_day: number;
   date_month: number;
   date_year: number;
-  explotationId: string;
+  explotation: string;
 }
 
 interface ExplotationContextProps {
-  explotations: Explotation[];
-  agregarExplotation: (ex: Explotation) => void;
+  explotations: any[];
   activities: Activity[];
   agregarActivity: (act: Activity) => Promise<void>;
-  actualizarActivity: (actActualizada: Activity) => void;
+  actualizarActivity: (id: string, act: Activity) => Promise<void>; // Añadido
+  cargarExplotacionesByProducer: (producerId: string) => Promise<any[]>;
+  cargarActividades: () => Promise<void>;
 }
 
 const ExplotationContext = createContext<ExplotationContextProps | undefined>(undefined);
 
-export const useExplotation = (): ExplotationContextProps => {
+export const useExplotation = () => {
   const context = useContext(ExplotationContext);
   if (!context) throw new Error("useExplotation debe usarse dentro de ExplotationProvider");
   return context;
 };
 
 export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [explotations, setExplotations] = useState<Explotation[]>([]);
+  const [explotations, setExplotations] = useState<any[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
 
-  const agregarExplotation = (ex: Explotation) => setExplotations(prev => [...prev, ex]);
-  
-  const agregarActivity = async (act: Activity) => {
+  const cargarActividades = useCallback(async () => {
     try {
-      // Llamamos a la nueva función de api.ts
-      const data = await api.createActivity(act);
-      setActivities(prev => [...prev, data]);
-      console.log("¡Guardado en Docker con éxito!");
-    } catch (error) {
-      console.error("Error backend:", error);
-      // Fallback local por si el Docker está apagado
-      setActivities(prev => [...prev, { ...act, id: crypto.randomUUID() }]);
-    }
-  };
+      const userStr = localStorage.getItem('example_user');
+      if (!userStr) return;
+      
+      const userData = JSON.parse(userStr);
+      const userId = userData?.id;
+      if (!userId) return;
 
-  const actualizarActivity = (actActualizada: Activity) => {
-    setActivities(prev => 
-      prev.map(act => (act.id === actActualizada.id ? { ...actActualizada } : act))
-    );
-  };
+      const data = await api.getActivities(userId);
+      
+      const localesStr = localStorage.getItem(`local_activities_${userId}`);
+      const actividadesLocales: Activity[] = localesStr ? JSON.parse(localesStr) : [];
+
+      let combinadas: Activity[] = [];
+      
+      if (Array.isArray(data) && data.length > 0) {
+        combinadas = data.map((act: any) => ({
+          ...act,
+          explotation: act.explotation || act.exploitation || ""
+        }));
+      } else {
+        combinadas = actividadesLocales;
+      }
+
+      setActivities(combinadas);
+    } catch (error) {
+      console.error("Error al cargar actividades:", error);
+    }
+  }, []);
+
+  const cargarExplotacionesByProducer = useCallback(async (producerId: string) => {
+    if (!producerId) return [];
+    try {
+      const data = await api.getExplotationsByProducer(producerId);
+      setExplotations(data || []);
+      return data;
+    } catch (error) {
+      return [];
+    }
+  }, []);
+
+  const agregarActivity = useCallback(async (act: Activity) => {
+    try {
+      const response = await api.createActivity(act);
+      const nuevaAct = response || act;
+      
+      const userStr = localStorage.getItem('example_user');
+      const userId = JSON.parse(userStr || '{}').id;
+      
+      if (userId) {
+        const localesStr = localStorage.getItem(`local_activities_${userId}`);
+        const actuales: Activity[] = localesStr ? JSON.parse(localesStr) : [];
+        const nuevas = [nuevaAct, ...actuales];
+        localStorage.setItem(`local_activities_${userId}`, JSON.stringify(nuevas));
+      }
+
+      setActivities(prev => [nuevaAct, ...prev]);
+
+    } catch (error) {
+      console.error("Error al guardar actividad:", error);
+      setActivities(prev => [act, ...prev]);
+    }
+  }, []);
+
+  // NUEVA FUNCIÓN AÑADIDA
+  const actualizarActivity = useCallback(async (id: string, act: Activity) => {
+    try {
+      // 1. Actualizar en Backend
+      await api.updateActivity(id, act);
+
+      // 2. Actualizar en LocalStorage (Sistema de emergencia)
+      const userStr = localStorage.getItem('example_user');
+      const userId = JSON.parse(userStr || '{}').id;
+      if (userId) {
+        const localesStr = localStorage.getItem(`local_activities_${userId}`);
+        if (localesStr) {
+          const actuales: Activity[] = JSON.parse(localesStr);
+          const actualizadas = actuales.map(a => (a.id === id ? { ...act, id } : a));
+          localStorage.setItem(`local_activities_${userId}`, JSON.stringify(actualizadas));
+        }
+      }
+
+      // 3. Actualizar estado de la interfaz
+      setActivities(prev => prev.map(a => (a.id === id ? { ...act, id } : a)));
+    } catch (error) {
+      console.error("Error al actualizar actividad:", error);
+      throw error;
+    }
+  }, []);
 
   return (
-    <ExplotationContext.Provider value={{ explotations, agregarExplotation, activities, agregarActivity, actualizarActivity }}>
+    <ExplotationContext.Provider 
+      value={{ 
+        explotations, 
+        activities, 
+        agregarActivity, 
+        actualizarActivity, // Añadido al provider
+        cargarExplotacionesByProducer, 
+        cargarActividades 
+      }}
+    >
       {children}
     </ExplotationContext.Provider>
   );
