@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useExplotation } from "../context/ExplotationContext";
 import "../styles/TechnicalAddExplotation.css";
+import { useAuth } from "../hooks/useAuth"; // Asegúrate de que la ruta sea correcta
 
 interface Props {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface Props {
 
 const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
   const { agregarExplotation } = useExplotation();
+  const { user } = useAuth();
   const [nombre, setNombre] = useState("");
   const [pais, setPais] = useState("");
   const [region, setRegion] = useState("");
@@ -32,7 +34,7 @@ const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
       ubication_country: pais,
       ubication_region: region,
       surface: Number(superficie),
-      producer: "53e26dcf-5c71-4157-8cac-e786504083b2",
+      producer: user.id,
     };
 
     try {
