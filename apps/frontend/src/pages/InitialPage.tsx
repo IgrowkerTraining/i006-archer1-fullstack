@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useExplotation } from "../context/ExplotationContext";
 import { useAuth } from "../hooks/useAuth";
-import LogoutButton from "../components/LogoutButton";
 import TechnicalAddExplotation from "./TechnicalAddExplotation";
 
 const InitialPage: React.FC = () => {
@@ -29,7 +28,6 @@ const InitialPage: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "20px"
       }}>
 
         <div style={{
