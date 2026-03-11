@@ -1,3 +1,4 @@
+/* Estilos Base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,6 +16,7 @@
   padding: 40px 20px;
 }
 
+/* Contenedor Principal */
 .history-frame {
   background-color: #fdfaf2;
   width: 100%;
@@ -37,28 +39,13 @@
   align-items: center;
 }
 
-.navbar-title { 
-  color: white; 
-  font-weight: bold; 
-  font-size: 1.2rem; 
-}
-
-.navbar-select-small {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-weight: 500;
-  font-size: 14px;
-  background: white;
-  color: #333;
-}
-
 .history-content {
   padding: 30px;
   flex: 1;
   overflow-y: auto;
 }
 
+/* Tarjetas de Actividad */
 .cards-container {
   display: flex;
   flex-direction: column;
@@ -72,59 +59,67 @@
   padding: 20px;
   width: 100%;
   max-width: 650px;
-  color: #000;
+  color: #000000 !important; /* Letras negras para mejor legibilidad */
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.card-header-main {
-  text-align: left;
-  margin-bottom: 10px;
+/* --- MEJORAS DE VISIBILIDAD Y TAMAÑO --- */
+
+/* Título de la actividad: GRANDE y NEGRO */
+.card-activity-name {
+  font-size: 1.6rem !important; 
+  font-weight: 900 !important;
+  color: #000000 !important;
+  text-transform: uppercase;
+  margin: 0;
+  display: block;
 }
 
-.card-date-label { 
-  font-size: 0.85rem; 
-  display: block; 
-  margin-bottom: 4px;
+/* Fecha y textos secundarios */
+.card-date-label {
+  font-size: 0.9rem;
+  color: #333;
   font-weight: bold;
 }
 
-.card-activity-name { 
-  font-size: 1.5rem; 
-  font-weight: 900; 
-  text-transform: uppercase;
+.activity-card p, 
+.activity-card strong, 
+.card-description-text {
+  color: #000000 !important;
+  font-size: 1rem;
+  margin: 5px 0;
 }
 
-.card-body-data {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-}
-
-.card-description-box {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  min-height: 40px;
-}
-
+/* Contenedor de acciones */
 .card-footer-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
+  margin-top: 15px;
 }
 
+/* --- BOTONES --- */
+
+/* Botón Editar (Blanco con marco verde) */
 .btn-edit-activity {
-  background-color: white;
-  color: #68911B;
-  border: 2px solid #68911B;
-  padding: 8px 15px;
-  border-radius: 12px;
-  font-weight: bold;
+  background-color: #ffffff !important;
+  color: #68911B !important;
+  border: 2px solid #68911B !important;
+  padding: 8px 25px !important;
+  border-radius: 12px !important;
+  font-weight: bold !important;
   cursor: pointer;
+  display: inline-block;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.btn-edit-activity:hover {
+  background-color: #68911B !important;
+  color: #ffffff !important;
+}
+
+/* Botón Observaciones */
 .btn-view-obs {
   background-color: #7a914a;
   color: white;
@@ -135,13 +130,86 @@
   cursor: pointer;
 }
 
-.bottom-container {
-  margin-top: 30px;
+/* --- MODAL DE EDICIÓN --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
+.modal-content {
+  background: #fdfaf2;
+  padding: 30px;
+  border-radius: 40px;
+  width: 90%;
+  max-width: 500px;
+  border: 10px solid #f0eee4;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.modal-content h3 {
+  color: #68911B;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.modal-content input, 
+.modal-content select, 
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: white;
+  font-family: inherit;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-save-modal {
+  background-color: #68911B !important;
+  color: white !important;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-cancel-modal {
+  background-color: #333 !important;
+  color: white !important;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Botón Volver */
 .back-link-main {
   background-color: #333;
   color: white;
@@ -150,9 +218,5 @@
   border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.back-link-main:hover {
-  transform: scale(1.05);
+  margin-top: 20px;
 }
