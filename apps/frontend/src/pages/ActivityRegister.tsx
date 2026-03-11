@@ -45,24 +45,18 @@ const ActivityRegister: React.FC<ActivityRegisterProps> = ({ onClose, explotatio
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-// Dentro de handleSubmit en ActivityRegister.tsx
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   const [year, month, day] = formData.fecha.split('-').map(Number);
 
-  // Recuperamos el ID del usuario del localStorage para que 'responsible' sea el ID real
   const userStr = localStorage.getItem('example_user');
   const userData = userStr ? JSON.parse(userStr) : null;
 
  const datosParaBackend = {
-  // 1. Este ID debe existir en la tabla 'plot' y estar unido a la explotación del productor
   plot: formData.parcela, 
-  
-  // 2. El tipo de cultivo vinculado a esa parcela
+
   crop: formData.cultivo, 
-  
-  // 3. El ID del productor (Producer) que es el 'responsible'
-  responsible: userData?.id, 
+  responsible: formData.responsable, 
   
   activitytype: formData.tipoActividad,
   description: formData.descripcion,
