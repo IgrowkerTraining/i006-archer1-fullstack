@@ -1,17 +1,10 @@
 import prisma  from "../utils/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { RegisterDTO } from "@/DTOs/user";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-interface RegisterDTO {
-  fullname: string;
-  email: string;
-  password: string;
-  country?: string;
-  istechnician: boolean;
-  registrationnumber?: string;
-}
 
 class UserService {
 
@@ -73,17 +66,9 @@ class UserService {
     );
 
     return {
-      user: {
-        id: user.id,
-        istechnician: user.istechnician,
-        fullname: user.fullname,
-        email: user.email
-      },
-      
       token
     };
   }
-
 }
 
 export default new UserService();

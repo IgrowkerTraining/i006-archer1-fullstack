@@ -13,7 +13,7 @@ export const swaggerSpec = swaggerJsdoc({
             { url: 'http://localhost:3000', description: 'Local' },
             { url: 'https://example.com', description: 'Producción' },
         ],
-        /*components: {
+        components: {
             securitySchemes: {
                 bearerAuth: {
                     type: 'http',
@@ -22,7 +22,7 @@ export const swaggerSpec = swaggerJsdoc({
                 },
             },
         },
-        security: [{ bearerAuth: [] }],*/
+        security: [{ bearerAuth: [] }],
     },
     apis: [
         './src/routes/*.ts', // donde vivan tus routes/controllers
