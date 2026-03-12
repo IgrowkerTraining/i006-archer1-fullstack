@@ -4,6 +4,7 @@ import testService from "../services/testService";
 class TestController {
     async findAll(req: Request, res: Response) {
         const users = await testService.findAll();
+        console.log(req.user);
         res.json(users);
     }
 

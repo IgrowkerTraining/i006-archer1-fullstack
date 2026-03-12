@@ -1,5 +1,7 @@
 import { Router } from "express";
 import testController from "../controllers/testController";
+import { authenticateJWT } from "../middleware/auth.middleware";
+import { requireTechnician } from "../middleware/role.middleware";
 
 const router = Router();
 
@@ -21,7 +23,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/UserTest'
  */
-router.get("/", testController.findAll);
+router.get("/", authenticateJWT, testController.findAll);
 
 /**
  * @openapi

@@ -5,7 +5,7 @@ export interface JwtPayload {
   id: string;
   email: string;
   role: string;
-  istechnician : boolean;
+  istechnician: boolean;
 }
 
 export const authenticateJWT = (
@@ -14,21 +14,12 @@ export const authenticateJWT = (
   next: NextFunction
 ): void => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies?.token;
 
-    if (!authHeader) {
+    if (!token) {
       res.status(401).json({ message: "Token no proporcionado" });
       return;
     }
-
-    const parts = authHeader.split(" ");
-
-    if (parts.length !== 2 || parts[0] !== "Bearer") {
-      res.status(401).json({ message: "Formato de token inválido" });
-      return;
-    }
-
-    const token = parts[1];
 
     const decoded = jwt.verify(
       token,

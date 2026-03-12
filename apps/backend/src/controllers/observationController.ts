@@ -1,9 +1,11 @@
 import observationService from "@/services/observationService";
 import { Request, Response } from "express";
+import { User } from "../DTOs/user";
 
 export default {
     async createObservation(req: Request, res: Response) {
-        const { technician, observation, agroactivity } = req.body;
+        const { observation, agroactivity } = req.body;
+        const technician = (req.user as User).id;
         const newObservation = await observationService.CreateObservation({ technician, observation, agroactivity });
         return res.json(newObservation);
     },

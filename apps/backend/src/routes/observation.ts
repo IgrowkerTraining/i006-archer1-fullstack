@@ -1,7 +1,7 @@
 import { Router } from "express";
 import observationController from "@/controllers/observationController";
-import  {authenticateJWT}  from "../middleware/auth.middleware";
-import  {requireTechnician}  from "../middleware/role.middleware";
+import { authenticateJWT } from "../middleware/auth.middleware";
+import { requireTechnician } from "../middleware/role.middleware";
 
 
 const router = Router();
@@ -30,7 +30,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Observation'
  */
-router.post("/", observationController.createObservation);
+router.post("/", authenticateJWT, requireTechnician, observationController.createObservation);
 
 /**
  * @openapi
@@ -78,7 +78,7 @@ router.post("/", observationController.createObservation);
  *               items:
  *                 $ref: '#/components/schemas/Observation'
  */
-router.get("/:activity",authenticateJWT,requireTechnician, observationController.getObservationsByActivity);
+router.get("/:activity", authenticateJWT, requireTechnician, observationController.getObservationsByActivity);
 
 /**
  * @openapi
@@ -87,14 +87,9 @@ router.get("/:activity",authenticateJWT,requireTechnician, observationController
  *     CreateObservationRequest:
  *       type: object
  *       required:
- *         - technician
  *         - observation
  *         - agroactivity
  *       properties:
- *         technician:
- *           type: string
- *           description: Technician user ID
- *           example: "tech-uuid-001"
  *         observation:
  *           type: string
  *           description: Observation text content

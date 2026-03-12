@@ -9,7 +9,6 @@ interface Props {
 }
 
 const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
-  // --- PASO 1: INSPECCIÓN ---
   const contexto = useExplotation();
   console.log("¿Qué hay dentro de useExplotation?:", contexto);
 
@@ -21,7 +20,7 @@ const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
   const [region, setRegion] = useState("");
   const [superficie, setSuperficie] = useState<number | "">("");
 
-  const opcionesRegiones = ["Madrid", "Cataluña", "Mendoza", "Galicia"];
+  const opcionesRegiones = ["Misiones", "Cataluña", "Mendoza", "Buenos Aires"];
   const opcionesPaises = ["España", "Argentina"];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +33,6 @@ const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
 
     const idTemporal = crypto.randomUUID();
 
-    // Importante: user.id debe ser un UUID válido en Supabase
     const nuevaEx = {
       id: idTemporal,
       name: nombre,
@@ -47,7 +45,7 @@ const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
     console.log("Intentando enviar a Supabase:", nuevaEx);
 
     try {
-      // Si agregarExplotation es undefined, aquí saltará al catch
+
       if (typeof agregarExplotation !== 'function') {
         throw new Error("La función agregarExplotation no existe en el contexto. Revisa ExplotationContext.tsx");
       }
@@ -60,10 +58,9 @@ const TechnicalAddExplotation: React.FC<Props> = ({ onClose, onSuccess }) => {
       onClose();
 
     } catch (error: any) {
-      // --- PASO 2: VER EL ERROR REAL EN CONSOLA ---
-      console.error("❌ ERROR REAL DEL SERVIDOR:", error.response?.data || error.message || error);
+      console.error(" ERROR REAL DEL SERVIDOR:", error.response?.data || error.message || error);
       
-      console.warn("⚠️ Falló la conexión/validación. Guardando localmente como plan B...");
+      console.warn(" Falló la conexión/validación. Guardando localmente como plan B...");
       onSuccess(idTemporal);
       onClose();
     }
