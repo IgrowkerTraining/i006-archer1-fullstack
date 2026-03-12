@@ -3,6 +3,11 @@ import { setupMiddleware } from "./src/middleware";
 import apiRoutes from "./src/routes";
 import config from "./src/config";
 
+// BigInt serialization support (Prisma returns BigInt for some ID fields)
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 const app = express();
 
 setupMiddleware(app);

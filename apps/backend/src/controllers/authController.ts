@@ -15,7 +15,7 @@ class AuthController {
 
       const user = await userService.register(req.body);
 
-      ResponseHelper.success(res, {"Registered successfully" : user} , 201);
+      ResponseHelper.success(res, { "Registered successfully": user }, 201);
 
     } catch (error: any) {
       if (error.message === "User already exists") {
@@ -40,6 +40,13 @@ class AuthController {
       const { email, password } = req.body;
 
       const result = await userService.login(email, password);
+
+      res.cookie("token", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
       ResponseHelper.success(res, { token: result.token }, 200);
 
