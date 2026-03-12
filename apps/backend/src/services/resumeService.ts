@@ -1,70 +1,8 @@
-/*{
-            exploitationid: string;
-            mes: string;
-            anio: string;
-            activities: [
-                {
-                    activitytype: string;
-                    plot: string;
-                    crop: string;
-                    date_day: string;
-                    date_month: string;
-                    date_year: string;
-                    responsible: string;
-                    description: string;
-                    observations: [
-                            {
-                                technician: {
-                                    name: string;
-                                }
-                                description: string;
-                            }
-                        ]
-                    }
-                ]
-            }
-        }*/
-
 import prisma from "@/utils/prisma";
-
+import {Observation,Activity,ResumeData,ResumeResponse} from "@/DTOs/resume"
+//import { Observation,Activity,ResumeData,ResumeResponse } from "@/DTOs/resume";
 // ── Interfaces matching the commented JSON structure ──
 
-interface Observation {
-    technician: {
-        name: string;
-    };
-    description: string;
-}
-
-interface Activity {
-    activitytype: string;
-    plot: string;
-    crop: string;
-    date_day: string;
-    date_month: string;
-    date_year: string;
-    responsible: string;
-    description: string;
-    observations: Observation[];
-}
-
-interface ResumeData {
-    exploitationid: string;
-    mes: string;
-    anio: string;
-    activities: Activity[];
-}
-
-interface ResumeResponse {
-    id: string;
-    exploitationid: string;
-    mes: string;
-    anio: string;
-    resumen: ResumeData;
-    fecha_generacion: string;
-    modelo_usado: string;
-    exitoso: boolean;
-}
 
 // ── Example URL (replace with the real endpoint) ──
 const RESUME_API_URL = "https://i006-archer1-ai.onrender.com/api/v1/ia/resumen-mensual";
