@@ -1,5 +1,6 @@
 import activityService from "@/services/activityService";
 import { Request, Response } from "express";
+import { User } from "../DTOs/user";
 
 export default {
     async createActivity(req: Request, res: Response) {
@@ -9,14 +10,14 @@ export default {
     },
 
     async getActivities(req: Request, res: Response) {
-        const { producerid } = req.params;
-        const activities = await activityService.getActivitiesByProducer(producerid);
+        const  User  = (req.user as User).id;;
+        const activities = await activityService.getActivitiesByProducer(User);
         return res.json(activities);
     },
 
     async getFormOptions(req: Request, res: Response) {
-        const { producerid } = req.params;
-        const options = await activityService.getFormOptions(producerid);
+        const  User  = (req.user as User).id;;
+        const options = await activityService.getFormOptions(User);
         return res.json(options);
     }
 }

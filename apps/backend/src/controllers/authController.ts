@@ -1,63 +1,52 @@
 import { Request, Response } from "express";
 import userService from "../services/userService";
-import ValidatorUser from "../utils/validatorUser";
 import ResponseHelper from "../utils/responseHelper";
 
 class AuthController {
 
   async register(req: Request, res: Response): Promise<void> {
-    try {
-      const errors = ValidatorUser.validateRegister(req.body);
-      if (errors.length > 0) {
-        ResponseHelper.error(res, "Validation failed", 400, errors);
-        return;
-      }
+  try {
 
-      const user = await userService.register(req.body);
+    const user = await userService.register(req.body);
 
-      ResponseHelper.success(res, { "Registered successfully": user }, 201);
+    ResponseHelper.success(res, { "Registered successfully": user }, 201);
 
-    } catch (error: any) {
-      if (error.message === "User already exists") {
-        ResponseHelper.error(res, "Validation failed", 409, { error: error.message });
-        return;
-      }
-
-      ResponseHelper.error(res, "Validation failed", 500, { error: "Registration failed" });
+  } catch (error: any) {
+    if (error.message === "User already exists") {
+      ResponseHelper.error(res, "Validation failed", 409, { error: error.message });
+      return;
     }
+
+    ResponseHelper.error(res, "Validation failed", 500, { error: "Registration failed" });
   }
+}
 
 
-  async login(req: Request, res: Response): Promise<void> {
-    try {
-      const errors = ValidatorUser.validateLogin(req.body);
+async login(req: Request, res: Response): Promise<void> {
+  try {
 
-      if (errors.length > 0) {
-        ResponseHelper.error(res, "Validation failed", 400, { errors });
-        return;
-      }
+    const { email, password } = req.body;
 
-      const { email, password } = req.body;
+    const result = await userService.login(email, password);
 
-      const result = await userService.login(email, password);
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
-      res.cookie("token", result.token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+    ResponseHelper.success(res, { token: result.token }, 200);
 
-      ResponseHelper.success(res, { token: result.token }, 200);
-
-    } catch (error: any) {
-      if (error.message === "Invalid credentials") {
-        ResponseHelper.error(res, "Validation failed", 401, { error: error.message });
-        return;
-      }
-      ResponseHelper.error(res, "Login failed", 500, { detail: error.message });
+  } catch (error: any) {
+    if (error.message === "Invalid credentials") {
+      ResponseHelper.error(res, "Validation failed", 401, { error: error.message });
+      return;
     }
+
+    ResponseHelper.error(res, "Login failed", 500, { detail: error.message });
   }
+}
 }
 
 export default new AuthController();

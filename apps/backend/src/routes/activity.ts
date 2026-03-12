@@ -1,5 +1,6 @@
 import activityController from "@/controllers/activityController";
 import { Router } from "express";
+import { authenticateJWT } from "@/middleware/auth.middleware";
 
 const router = Router();
 
@@ -53,7 +54,7 @@ router.post("/", activityController.createActivity);
  *               items:
  *                 $ref: '#/components/schemas/Activity'
  */
-router.get("/:producerid", activityController.getActivities);
+router.get("/:producerid",authenticateJWT, activityController.getActivities);
 
 /**
  * @openapi
@@ -81,7 +82,7 @@ router.get("/:producerid", activityController.getActivities);
  *             schema:
  *               $ref: '#/components/schemas/ActivityFormOptionsResponse'
  */
-router.get("/form-options/:producerid", activityController.getFormOptions);
+router.get("/form-options/:producerid",authenticateJWT, activityController.getFormOptions);
 
 /**
  * @openapi
