@@ -54,7 +54,7 @@ router.post("/", activityController.createActivity);
  *               items:
  *                 $ref: '#/components/schemas/Activity'
  */
-router.get("",authenticateJWT, activityController.getActivities);
+router.get("/",authenticateJWT, activityController.getActivities);
 
 /**
  * @openapi
@@ -82,7 +82,7 @@ router.get("",authenticateJWT, activityController.getActivities);
  *             schema:
  *               $ref: '#/components/schemas/ActivityFormOptionsResponse'
  */
-router.get("",authenticateJWT, activityController.getFormOptions);
+router.get("/",authenticateJWT, activityController.getFormOptions);
 
 /**
  * @openapi
