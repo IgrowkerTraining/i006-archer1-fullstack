@@ -20,13 +20,10 @@ export const useAuthApi = () => {
     return api.login(credentials);
   }, []);
 
-  const checkHealth = useCallback(() => {
-    return api.checkHealth();
-  }, []);
+
 
   return {
     register,
     login,
-    checkHealth,
   };
 };

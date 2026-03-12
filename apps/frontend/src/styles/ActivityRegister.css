@@ -1,0 +1,38 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #d1c7c3;
+  font-size: 15px;
+  outline: none;
+  color:black;
+}
+
+.btn-submit {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 18px;
+  border: none;
+  background-color: #72922B;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 0px #566e21;
+}
+
+.btn-submit:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0px #566e21;
+}

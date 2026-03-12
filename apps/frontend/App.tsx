@@ -1,6 +1,7 @@
 import React from "react";
 import { HashRouter } from "react-router-dom";
 import { AuthProvider } from "./src/context/AuthContext";
+import { ExplotationProvider } from "./src/context/ExplotationContext";
 import { Layout } from "./src/components/layout/Layout";
 import { LoadingSpinner } from "./src/components/layout/LoadingSpinner";
 import { AppRoutes } from "./src/routes/AppRoutes";
@@ -10,7 +11,7 @@ const AppContent: React.FC = () => {
   const { loading } = useAuth();
 
   if (loading) {
-    return <LoadingSpinner message="Initializing Example App..." />;
+    return <LoadingSpinner message="Initializing..." />;
   }
 
   return (
@@ -24,7 +25,9 @@ export const App: React.FC = () => {
   return (
     <HashRouter>
       <AuthProvider>
-        <AppContent />
+        <ExplotationProvider>
+          <AppContent />
+        </ExplotationProvider>
       </AuthProvider>
     </HashRouter>
   );
