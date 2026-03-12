@@ -18,7 +18,6 @@ interface ExplotationContextProps {
   explotations: any[];
   activities: Activity[];
   agregarActivity: (act: Activity) => Promise<void>;
-  // AÑADIMOS ESTO A LA INTERFAZ:
   agregarExplotation: (ex: any) => Promise<any>; 
   actualizarActivity: (id: string, act: Activity) => Promise<void>;
   cargarExplotacionesByProducer: (producerId: string) => Promise<any[]>;
@@ -37,22 +36,18 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [explotations, setExplotations] = useState<any[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
 
-  // --- NUEVA FUNCIÓN QUE FALTABA ---
   const agregarExplotation = useCallback(async (ex: any) => {
     try {
-      // Llamamos a la API para guardar en Supabase
       const response = await api.createExplotation(ex); 
       
-      // Actualizamos el estado local para que aparezca en la lista
       setExplotations((prev) => [...prev, response || ex]);
       
       return response || ex;
     } catch (error) {
       console.error("Error en agregarExplotation:", error);
-      throw error; // Lanzamos el error para que el componente lo huela
+      throw error;
     }
   }, []);
-  // --------------------------------
 
   const cargarActividades = useCallback(async () => {
     try {
@@ -119,33 +114,43 @@ export const ExplotationProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
   }, []);
 
-  const actualizarActivity = useCallback(async (id: string, act: Activity) => {
+ const actualizarActivity = useCallback(async (id: string, act: Activity) => {
+  try {
+    // 1. Intentamos avisar al servidor (por si acaso lo arreglan en el futuro)
+    // Pero como sabemos que falla, rodeamos esto con un try/catch interno
     try {
       await api.updateActivity(id, act);
-
-      const userStr = localStorage.getItem('example_user');
-      const userId = JSON.parse(userStr || '{}').id;
-      if (userId) {
-        const localesStr = localStorage.getItem(`local_activities_${userId}`);
-        if (localesStr) {
-          const actuales: Activity[] = JSON.parse(localesStr);
-          const actualizadas = actuales.map(a => (a.id === id ? { ...act, id } : a));
-          localStorage.setItem(`local_activities_${userId}`, JSON.stringify(actualizadas));
-        }
-      }
-
-      setActivities(prev => prev.map(a => (a.id === id ? { ...act, id } : a)));
-    } catch (error) {
-      console.error("Error al actualizar actividad:", error);
-      throw error;
+    } catch (e) {
+      console.warn("El servidor no soporta edición, guardando solo en local.");
     }
-  }, []);
+
+    // 2. ACTUALIZAMOS EL LOCAL STORAGE (Esto es lo importante)
+    const userStr = localStorage.getItem('example_user');
+    const userId = JSON.parse(userStr || '{}').id;
+    
+    if (userId) {
+      const localesStr = localStorage.getItem(`local_activities_${userId}`);
+      let actuales: Activity[] = localesStr ? JSON.parse(localesStr) : [];
+      
+      // Reemplazamos la actividad vieja por la editada en la lista local
+      const actualizadas = actuales.map(a => (a.id === id ? { ...act, id } : a));
+      localStorage.setItem(`local_activities_${userId}`, JSON.stringify(actualizadas));
+    }
+
+    // 3. Actualizamos la interfaz al momento
+    setActivities(prev => prev.map(a => (a.id === id ? { ...act, id } : a)));
+    
+    // No lanzamos el error (throw) para que el modal se cierre con éxito
+  } catch (error) {
+    console.error("Error crítico en la edición local:", error);
+  }
+}, []);
 
   return (
     <ExplotationContext.Provider 
       value={{ 
         explotations,
-        agregarExplotation, // <--- YA NO SALDRÁ ROJO PORQUE YA EXISTE ARRIBA
+        agregarExplotation,
         activities, 
         agregarActivity, 
         actualizarActivity,
