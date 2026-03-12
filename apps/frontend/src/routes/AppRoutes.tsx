@@ -26,32 +26,10 @@ export const AppRoutes: React.FC = () => {
   return (
     <ExplotationProvider>
       <Routes>
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/register/producer" element={<RegisterProducer />} />
+        <Route path="/register/technician" element={<RegisterTechnician />} />
 
-        <Route
-          path="/register/producer"
-          element={
-            <PublicRoute>
-              <RegisterProducer />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/register/technician"
-          element={
-            <PublicRoute>
-              <RegisterTechnician />
-            </PublicRoute>
-          }
-        />
 
         <Route
           path="/app/technician/activities/:activityId/observations"
@@ -67,17 +45,9 @@ export const AppRoutes: React.FC = () => {
           path="/app/producer/activities/:activityId/observations"
           element={<ProducerObservations />}
         />
-        <Route
-          path="/dashboard"
-          element={
-            <PublicRoute>
-              <Dashboard />
-            </PublicRoute>
-          }
-        />
 
         <Route path="/" element={<OnboardingScreen />} />
-        <Route path="/login" element={<LoginScreen />} /> 
+        <Route path="/login" element={<LoginScreen />} />
         <Route path="/homeProductor" element={<HomeProductor />} />
         <Route path="/homeTecnic" element={<HomeTecnic />} />
         <Route path="/activity" element={<ActivityRegister />} />

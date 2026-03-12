@@ -67,12 +67,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     }
 
     const payload: any = {
-      name: fullName,
+      fullname: fullName,
       email,
       password,
       country,
-      role,
-      ...(showLicenseField ? { licenseNumber } : {}),
+      istechnician: role === "technician",
+      registrationnumber: showLicenseField ? licenseNumber : "",
     };
 
     try {
@@ -154,10 +154,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             disabled={loading}
           />
 
-          
           <div className="w-full">
             <label
-              className="block text-[14px] font -semibold mb-2"
+              className="block text-[14px] font-semibold mb-2"
               style={{ color: "#0B1001" }}
             >
               País
@@ -248,3 +247,5 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     </div>
   );
 };
+
+export default RegisterForm;
