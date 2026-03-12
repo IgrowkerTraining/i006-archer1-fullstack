@@ -31,17 +31,14 @@ const ProducerHistory: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Estados para filtros
   const [actividadesFiltradas, setActividadesFiltradas] = useState<Activity[]>([]);
   const [filtroTipo, setFiltroTipo] = useState("");
   const [filtroParcela, setFiltroParcela] = useState("");
   const [filtroFecha, setFiltroFecha] = useState("");
 
-  // Estados para el Modal
   const [mostrarModal, setMostrarModal] = useState(false);
   const [actividadAEditar, setActividadAEditar] = useState<Activity | null>(null);
 
-  // Funciones auxiliares
   const getNombreActividad = (id: string) => OPCIONES_ACTIVIDADES.find(a => a.id === id)?.nombre || "Actividad";
   const getNombreParcela = (id: string) => OPCIONES_PARCELAS.find(p => p.id === id)?.nombre || "Parcela";
   const getNombreCultivo = (id: string) => OPCIONES_CULTIVOS.find(c => c.id === id)?.nombre || "Cultivo";
@@ -108,15 +105,15 @@ const ProducerHistory: React.FC = () => {
           <div style={{ marginBottom: '25px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#555' }}>Aplicar filtros:</span>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <select className="navbar-select-small" style={{flex: 1}} value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+              <select className="navbar-select-small" style={{flex: 1,color: 'black'}} value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
                 <option value="">Todas las Actividades</option>
                 {OPCIONES_ACTIVIDADES.map(t => <option key={t.id} value={t.id}>{t.nombre}</option>)}
               </select>
-              <select className="navbar-select-small" style={{flex: 1}} value={filtroParcela} onChange={(e) => setFiltroParcela(e.target.value)}>
+              <select className="navbar-select-small" style={{flex: 1,color: 'black'}} value={filtroParcela} onChange={(e) => setFiltroParcela(e.target.value)}>
                 <option value="">Todas las Parcelas</option>
                 {OPCIONES_PARCELAS.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
               </select>
-              <input type="date" className="navbar-select-small" style={{flex: 1}} value={filtroFecha} onChange={(e) => setFiltroFecha(e.target.value)} />
+              <input type="date" className="navbar-select-small" style={{flex: 1,color: 'black'}} value={filtroFecha} onChange={(e) => setFiltroFecha(e.target.value)} />
             </div>
           </div>
 
@@ -160,11 +157,11 @@ const ProducerHistory: React.FC = () => {
             <h2 style={{ textAlign: 'center', marginBottom: '25px', color: '#333' }}>Editar Actividad</h2>
             <form onSubmit={guardarCambios} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1,color: 'black' }}>
                   <label>Fecha</label>
                   <input 
                     type="date" 
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} 
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd',color: 'black' }} 
                     value={`${actividadAEditar.date_year}-${String(actividadAEditar.date_month).padStart(2, '0')}-${String(actividadAEditar.date_day).padStart(2, '0')}`} 
                     onChange={e => {
                       const [y, m, d] = e.target.value.split('-').map(Number);
@@ -172,10 +169,10 @@ const ProducerHistory: React.FC = () => {
                     }} 
                   />
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1,color: 'black' }}>
                   <label>Actividad</label>
                   <select 
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} 
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd',color: 'black' }} 
                     value={actividadAEditar.activitytype} 
                     onChange={e => setActividadAEditar({ ...actividadAEditar, activitytype: e.target.value })}
                   >
@@ -183,21 +180,21 @@ const ProducerHistory: React.FC = () => {
                   </select>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '10px',color: 'black' }}>
+                <div style={{ flex: 1,color: 'black' }}>
                   <label>Parcela</label>
                   <select 
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} 
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd',color: 'black' }} 
                     value={actividadAEditar.plot} 
                     onChange={e => setActividadAEditar({ ...actividadAEditar, plot: e.target.value })}
                   >
                     {OPCIONES_PARCELAS.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
                   </select>
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1,color: 'black' }}>
                   <label>Cultivo</label>
                   <select 
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} 
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd',color: 'black' }} 
                     value={actividadAEditar.crop} 
                     onChange={e => setActividadAEditar({ ...actividadAEditar, crop: e.target.value })}
                   >
@@ -207,11 +204,11 @@ const ProducerHistory: React.FC = () => {
               </div>
               <div>
                 <label>Responsable</label>
-                <input type="text" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} value={actividadAEditar.responsible} onChange={e => setActividadAEditar({ ...actividadAEditar, responsible: e.target.value })} />
+                <input type="text" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd',color: 'black' }} value={actividadAEditar.responsible} onChange={e => setActividadAEditar({ ...actividadAEditar, responsible: e.target.value })} />
               </div>
               <div>
                 <label>Descripción</label>
-                <textarea style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} value={actividadAEditar.description} onChange={e => setActividadAEditar({ ...actividadAEditar, description: e.target.value })} />
+                <textarea style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px',color: 'black' }} value={actividadAEditar.description} onChange={e => setActividadAEditar({ ...actividadAEditar, description: e.target.value })} />
               </div>
               <button type="submit" style={{ backgroundColor: '#68911B', color: 'white', padding: '15px', borderRadius: '20px', border: 'none', fontWeight: 'bold', cursor: 'pointer' }}>
                 Guardar cambios
