@@ -45,7 +45,7 @@ export const api = {
   },
 
 async updateActivity(activityId: string, data: any): Promise<any> {
-  const response = await fetch(`${API_ENDPOINTS.BASE}/agroactivity/${activityId}`, {
+  const response = await fetch(`${API_ENDPOINTS.BASE}/activity/${activityId}`, {
     method: "PUT", 
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
