@@ -30,11 +30,11 @@ async login(req: Request, res: Response): Promise<void> {
     const result = await userService.login(email, password);
 
     res.cookie("token", result.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
     ResponseHelper.success(res, { token: result.token }, 200);
 
