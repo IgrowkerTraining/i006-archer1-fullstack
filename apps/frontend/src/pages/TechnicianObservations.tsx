@@ -15,6 +15,16 @@ type ObservationUI = {
   detail: string;
 };
 
+const DEMO_OBSERVATION: ObservationUI = {
+  id: "obs-demo-001",
+  activityId: "b5e386a0-59b6-4204-9ac1-283d0220b470",
+  createdAt: "13/03/2026",
+  technicianName: "Tecnico Demo",
+  technicianLicense: "MAT-001",
+  detail:
+    "Se observa buen estado general del cultivo, humedad estable en el terreno y ausencia de incidencias graves en la parcela revisada.",
+};
+
 export default function TechnicianObservations() {
   const navigate = useNavigate();
   const { activityId } = useParams<{ activityId: string }>();
@@ -44,10 +54,10 @@ export default function TechnicianObservations() {
           detail: item.observation,
         }));
 
-        setItems(mapped);
+        setItems(mapped.length > 0 ? mapped : [DEMO_OBSERVATION]);
       } catch (error) {
         console.error("Error cargando observaciones:", error);
-        setItems([]);
+        setItems([DEMO_OBSERVATION]);
       } finally {
         setLoading(false);
       }
