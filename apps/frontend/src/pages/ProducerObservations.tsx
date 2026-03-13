@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ObservationCard } from "../components/observations/ObservationCard";
 import { ObservationsEmptyState } from "../components/observations/ObservationsEmptyState";
-import { mockGetActivity, mockGetObservations, type Activity } from "../mocks/observationsMock";
+import { mockGetActivity, type Activity } from "../mocks/observationsMock";
+import { api } from "../services/api";
 import "../styles/archer-shell.css";
 
 type ObservationUI = {
@@ -31,18 +32,18 @@ export default function ProducerObservations() {
 
         const [activityData, obs] = await Promise.all([
           mockGetActivity(activityId).catch(() => null),
-          mockGetObservations(activityId),
+          api.getObservationsByActivity(activityId),
         ]);
 
         setActivity(activityData);
 
         const mapped: ObservationUI[] = obs.map((item: any) => ({
           id: item.id,
-          activityId: item.activityId,
-          createdAt: item.createdAt,
-          technicianName: item.technicianName || "Técnico asignado",
+          activityId: item.agroactivity,
+          createdAt: item.date,
+          technicianName: item.technician || "Técnico asignado",
           technicianLicense: item.technicianLicense || "Matrícula",
-          detail: item.detail,
+          detail: item.observation,
         }));
 
         setItems(mapped);

@@ -152,7 +152,7 @@ const ProducerHistory: React.FC = () => {
       </div>
 
       <div className="bottom-container" style={{ textAlign: 'center', marginTop: '20px' }}>
-        <button className="back-link-main" onClick={() => navigate(-1)}>Volver</button>
+        <button className="back-link-main" onClick={() => navigate("/homeProductor")}>Volver</button>
       </div>
 
       {mostrarModal && actividadAEditar && (
