@@ -40,7 +40,7 @@ export const api = {
 
     try {
       const response = await fetch(
-        `${API_ENDPOINTS.BASE}/activity/${producerId}`,
+        `${API_ENDPOINTS.BASE}/activity`,
         {
           credentials: "include",
         },
