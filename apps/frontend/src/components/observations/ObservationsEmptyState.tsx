@@ -12,8 +12,11 @@ export const ObservationsEmptyState: React.FC<Props> = ({
   onAdd,
 }) => {
   return (
-    <div className="mt-24 flex flex-col items-center text-center">
-      <p className="text-lg font-medium" style={{ color: "#0B1001", opacity: 0.45 }}>
+    <div className="flex flex-col items-center justify-between min-h-[520px] pt-24 pb-10">
+      <p
+        className="text-center text-[22px] md:text-[24px] font-medium"
+        style={{ color: "#A8A8A8" }}
+      >
         {message}
       </p>
 
@@ -21,17 +24,16 @@ export const ObservationsEmptyState: React.FC<Props> = ({
         <button
           type="button"
           onClick={onAdd}
-          className="mt-10 h-20 w-20 rounded-full flex items-center justify-center shadow-lg border"
+          className="h-[96px] w-[96px] rounded-full flex items-center justify-center shadow-lg"
           style={{
-            backgroundColor: "rgba(11,16,1,0.06)",
-            borderColor: "rgba(11,16,1,0.12)",
-            color: "#0B1001",
+            backgroundColor: "#95CB1D",
+            color: "#FFFBF1",
           }}
           aria-label="Agregar observación"
         >
-          <span className="text-4xl leading-none">+</span>
+          <span className="text-[58px] leading-none">+</span>
         </button>
-      ) : null}
+      ) : <div />}
     </div>
   );
 };

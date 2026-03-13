@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ObservationCard } from "../components/observations/ObservationCard";
-import "../styles/archer-shell.css";
 import { ObservationsEmptyState } from "../components/observations/ObservationsEmptyState";
-import {
-  mockGetActivity,
-  mockGetObservations,
-  type Activity,
-  type Observation,
-} from "../mocks/observationsMock";
+import { mockGetActivity, mockGetObservations, type Activity } from "../mocks/observationsMock";
+import "../styles/archer-shell.css";
+
+type ObservationUI = {
+  id: string;
+  activityId: string;
+  createdAt: string;
+  technicianName: string;
+  technicianLicense?: string;
+  detail: string;
+};
 
 export default function ProducerObservations() {
   const navigate = useNavigate();
   const { activityId } = useParams<{ activityId: string }>();
 
   const [activity, setActivity] = useState<Activity | null>(null);
-  const [items, setItems] = useState<Observation[]>([]);
+  const [items, setItems] = useState<ObservationUI[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,12 +28,27 @@ export default function ProducerObservations() {
     (async () => {
       try {
         setLoading(true);
-        const [a, obs] = await Promise.all([
-          mockGetActivity(activityId),
+
+        const [activityData, obs] = await Promise.all([
+          mockGetActivity(activityId).catch(() => null),
           mockGetObservations(activityId),
         ]);
-        setActivity(a);
-        setItems(obs);
+
+        setActivity(activityData);
+
+        const mapped: ObservationUI[] = obs.map((item: any) => ({
+          id: item.id,
+          activityId: item.activityId,
+          createdAt: item.createdAt,
+          technicianName: item.technicianName || "Técnico asignado",
+          technicianLicense: item.technicianLicense || "Matrícula",
+          detail: item.detail,
+        }));
+
+        setItems(mapped);
+      } catch (error) {
+        console.error("Error cargando observaciones productor:", error);
+        setItems([]);
       } finally {
         setLoading(false);
       }
@@ -47,48 +66,44 @@ export default function ProducerObservations() {
           }}
         >
           <div
-            className="w-full rounded-[28px] border shadow-2xl overflow-hidden"
+            className="w-full min-h-[760px] rounded-[28px] border shadow-2xl overflow-hidden"
             style={{
               backgroundColor: "#FFFBF1",
               borderColor: "rgba(11,16,1,0.12)",
               color: "#0B1001",
             }}
           >
-            <div
-              className="px-8 md:px-10 pt-8 md:pt-10 pb-6 border-b"
-              style={{ borderColor: "rgba(11,16,1,0.10)" }}
-            >
-              <div className="flex items-start gap-6">
+            <div className="px-8 md:px-10 pt-10 pb-6">
+              <div className="flex items-start gap-5">
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="h-14 w-14 rounded-full flex items-center justify-center border shadow-sm"
+                  className="h-[54px] w-[54px] rounded-full flex items-center justify-center"
                   style={{
-                    backgroundColor: "rgba(11,16,1,0.06)",
-                    borderColor: "rgba(11,16,1,0.12)",
-                    color: "#0B1001",
+                    backgroundColor: "#95CB1D",
+                    color: "#FFFBF1",
                   }}
                   aria-label="Volver"
                 >
-                  ←
+                  <span className="text-[28px] leading-none">↩</span>
                 </button>
 
-                <div className="flex-1">
-                  <h1 className="text-[32px] md:text-[34px] leading-tight font-extrabold tracking-tight">
+                <div>
+                  <h1 className="text-[34px] md:text-[38px] leading-tight font-medium">
                     Observaciones
                   </h1>
-                  <p className="mt-2 text-lg" style={{ opacity: 0.78 }}>
+                  <p className="mt-2 text-[13px]" style={{ color: "#567A12" }}>
                     {activity
-                      ? `${activity.activityType} · ${activity.parcel}`
-                      : "Tipo de actividad · Parcela"}
+                      ? `${activity.activityType} - ${activity.parcel}`
+                      : `Actividad ${activityId ?? ""}`}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="px-8 md:px-10 py-8">
+            <div className="px-8 md:px-10 pb-10">
               {loading ? (
-                <div className="mt-20 flex flex-col items-center">
+                <div className="mt-24 flex flex-col items-center">
                   <p className="italic" style={{ color: "#0B1001", opacity: 0.75 }}>
                     Cargando observaciones…
                   </p>
@@ -102,20 +117,21 @@ export default function ProducerObservations() {
               ) : items.length === 0 ? (
                 <ObservationsEmptyState showFab={false} />
               ) : (
-                <div className="space-y-6">
-                  {items.map((o) => (
-                    <ObservationCard
-                      key={o.id}
-                      observation={o}
-                      activityType={activity?.activityType}
-                      parcelCrop={`${activity?.parcel ?? "Parcela"} - ${activity?.crop ?? "Cultivo"
+                <div className="pt-6 pl-4 md:pl-10">
+                  <div className="space-y-6">
+                    {items.map((o) => (
+                      <ObservationCard
+                        key={o.id}
+                        observation={o}
+                        activityType={activity?.activityType || "Tipo de actividad"}
+                        parcelCrop={`${activity?.parcel ?? "Parcela"} - ${
+                          activity?.crop ?? "Cultivo"
                         }`}
-                    />
-                  ))}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
-
-              <div className="mt-8 h-[6px] rounded-full" style={{ backgroundColor: "#EFAD23" }} />
             </div>
           </div>
         </div>

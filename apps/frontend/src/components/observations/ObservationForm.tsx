@@ -18,8 +18,11 @@ export const ObservationForm: React.FC<Props> = ({
   const disabled = loading || !value.trim();
 
   return (
-    <div className="w-full max-w-[560px]">
-      <label className="block text-sm font-semibold mb-2" style={{ color: "#0B1001" }}>
+    <div className="w-full max-w-[420px]">
+      <label
+        className="block text-[14px] font-medium mb-2"
+        style={{ color: "#0B1001" }}
+      >
         Observación técnica
       </label>
 
@@ -27,11 +30,11 @@ export const ObservationForm: React.FC<Props> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Completar con la observación técnica"
-        className="w-full min-h-[240px] rounded-[18px] p-4 outline-none border"
+        className="w-full min-h-[260px] rounded-[14px] p-4 outline-none border resize-none"
         style={{
           backgroundColor: "#FFFBF1",
-          borderColor: "rgba(11,16,1,0.18)",
-          color: "#0B1001",
+          borderColor: "rgba(104,145,27,0.65)",
+          color: "#567A12",
         }}
         disabled={loading}
       />
@@ -40,20 +43,20 @@ export const ObservationForm: React.FC<Props> = ({
         type="button"
         onClick={onSave}
         disabled={disabled}
-        className="mt-8 w-full h-[52px] rounded-[18px] font-semibold shadow-md disabled:opacity-50"
+        className="mt-8 w-full h-[54px] rounded-full font-medium disabled:opacity-50"
         style={{
-          backgroundColor: "#68911B",
-          color: "#FFFBF1",
+          backgroundColor: "rgba(104,145,27,0.12)",
+          color: "rgba(11,16,1,0.30)",
         }}
       >
-        Guardar observación
+        Guardado observación
       </button>
 
       <button
         type="button"
         onClick={onCancel}
-        className="mt-3 w-full text-center text-sm font-semibold underline"
-        style={{ color: "#0B1001", opacity: 0.8 }}
+        className="mt-4 w-full text-center text-[15px] underline"
+        style={{ color: "#D58D12" }}
       >
         Cancelar
       </button>

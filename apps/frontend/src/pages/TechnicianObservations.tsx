@@ -1,33 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ObservationForm } from "../components/observations/ObservationForm";
+import { ObservationCard } from "../components/observations/ObservationCard";
+import { ObservationsEmptyState } from "../components/observations/ObservationsEmptyState";
+import { mockGetActivity, type Activity } from "../mocks/observationsMock";
+import { api } from "../services/api";
 import "../styles/archer-shell.css";
-import { mockAddObservation, mockGetActivity, type Activity } from "../mocks/observationsMock";
 
-export default function TechnicianAddObservation() {
+type ObservationUI = {
+  id: string;
+  activityId: string;
+  createdAt: string;
+  technicianName: string;
+  technicianLicense?: string;
+  detail: string;
+};
+
+export default function TechnicianObservations() {
   const navigate = useNavigate();
   const { activityId } = useParams<{ activityId: string }>();
 
   const [activity, setActivity] = useState<Activity | null>(null);
-  const [detail, setDetail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<ObservationUI[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!activityId) return;
-    mockGetActivity(activityId).then(setActivity).catch(() => setActivity(null));
+
+    (async () => {
+      try {
+        setLoading(true);
+
+        const activityData = await mockGetActivity(activityId).catch(() => null);
+        setActivity(activityData);
+
+        const obs = await api.getObservationsByActivity(activityId);
+
+        const mapped: ObservationUI[] = obs.map((item: any) => ({
+          id: item.id,
+          activityId: item.agroactivity,
+          createdAt: item.date,
+          technicianName:
+            typeof item.technician === "string"
+              ? item.technician
+              : item.technician?.name || "Técnico",
+          technicianLicense:
+            typeof item.technician === "object"
+              ? item.technician?.registrationnumber || ""
+              : "",
+          detail: item.observation,
+        }));
+
+        setItems(mapped);
+      } catch (error) {
+        console.error("Error cargando observaciones:", error);
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [activityId]);
 
-  const save = async () => {
-    if (!activityId || !detail.trim()) return;
-
-    try {
-      setLoading(true);
-      await mockAddObservation(activityId, detail);
-      navigate(`/app/technician/activities/${activityId}/observations`);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const goNew = () =>
+    navigate(`/app/technician/activities/${activityId}/observations/new`);
 
   return (
     <div className="archer-page-bg">
@@ -40,68 +74,89 @@ export default function TechnicianAddObservation() {
           }}
         >
           <div
-            className="w-full rounded-[28px] border shadow-2xl overflow-hidden"
+            className="w-full min-h-[760px] rounded-[28px] border shadow-2xl overflow-hidden"
             style={{
               backgroundColor: "#FFFBF1",
               borderColor: "rgba(11,16,1,0.12)",
               color: "#0B1001",
             }}
           >
-            <div
-              className="px-8 md:px-10 pt-8 md:pt-10 pb-6 border-b"
-              style={{ borderColor: "rgba(11,16,1,0.10)" }}
-            >
-              <div className="flex items-start gap-6">
+            <div className="px-8 md:px-10 pt-10 pb-6">
+              <div className="flex items-start gap-5">
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="h-14 w-14 rounded-full flex items-center justify-center border shadow-sm"
+                  className="h-[54px] w-[54px] rounded-full flex items-center justify-center"
                   style={{
-                    backgroundColor: "rgba(11,16,1,0.06)",
-                    borderColor: "rgba(11,16,1,0.12)",
-                    color: "#0B1001",
+                    backgroundColor: "#95CB1D",
+                    color: "#FFFBF1",
                   }}
                   aria-label="Volver"
                 >
-                  ←
+                  <span className="text-[28px] leading-none">↩</span>
                 </button>
 
-                <div className="flex-1">
-                  <h1 className="text-[32px] md:text-[34px] leading-tight font-extrabold tracking-tight">
-                    Agregar observación
+                <div>
+                  <h1 className="text-[34px] md:text-[38px] leading-tight font-medium">
+                    Observaciones
                   </h1>
-                  <p className="mt-2 text-lg" style={{ opacity: 0.78 }}>
+                  <p className="mt-2 text-[13px]" style={{ color: "#567A12" }}>
                     {activity
-                      ? `${activity.activityType} · ${activity.parcel}`
-                      : "Tipo de actividad · Parcela"}
+                      ? `${activity.activityType} - ${activity.parcel}`
+                      : `Actividad ${activityId ?? ""}`}
                   </p>
-                </div>
-
-                <div
-                  className="shrink-0 px-4 py-2 rounded-2xl text-sm font-bold border"
-                  style={{
-                    borderColor: "rgba(11,16,1,0.18)",
-                    backgroundColor: "rgba(239,173,35,0.18)",
-                    color: "#0B1001",
-                  }}
-                >
-                  TÉCNICO
                 </div>
               </div>
             </div>
 
-            <div className="px-8 md:px-10 py-10 flex justify-center">
-              <ObservationForm
-                value={detail}
-                onChange={setDetail}
-                onSave={save}
-                onCancel={() => navigate(-1)}
-                loading={loading}
-              />
-            </div>
+            <div className="px-8 md:px-10 pb-10">
+              {loading ? (
+                <div className="mt-24 flex flex-col items-center">
+                  <p className="italic" style={{ color: "#0B1001", opacity: 0.75 }}>
+                    Cargando observaciones…
+                  </p>
+                  <div
+                    className="mt-4 h-[6px] w-52 rounded-full overflow-hidden"
+                    style={{ backgroundColor: "rgba(11,16,1,0.12)" }}
+                  >
+                    <div className="h-full w-20" style={{ backgroundColor: "#0B1001" }} />
+                  </div>
+                </div>
+              ) : items.length === 0 ? (
+                <ObservationsEmptyState showFab onAdd={goNew} />
+              ) : (
+                <div className="min-h-[600px] flex flex-col justify-between">
+                  <div className="pt-4 pl-12">
+                    <div className="space-y-6">
+                      {items.map((o) => (
+                        <ObservationCard
+                          key={o.id}
+                          observation={o}
+                          activityType={activity?.activityType || "Tipo de actividad"}
+                          parcelCrop={`${activity?.parcel ?? "Parcela"} - ${
+                            activity?.crop ?? "Cultivo"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
 
-            <div className="px-8 md:px-10 pb-8">
-              <div className="h-[6px] rounded-full" style={{ backgroundColor: "#EFAD23" }} />
+                  <div className="flex justify-center pt-16">
+                    <button
+                      type="button"
+                      onClick={goNew}
+                      className="h-[70px] w-[70px] rounded-full flex items-center justify-center shadow-lg"
+                      style={{
+                        backgroundColor: "#95CB1D",
+                        color: "#FFFBF1",
+                      }}
+                      aria-label="Agregar observación"
+                    >
+                      <span className="text-[42px] leading-none">+</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

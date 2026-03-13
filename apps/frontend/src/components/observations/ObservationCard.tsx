@@ -20,42 +20,35 @@ export const ObservationCard: React.FC<Props> = ({
   activityType = "Tipo de actividad",
   parcelCrop = "Parcela - Cultivo",
 }) => {
-  const date = new Date(observation.createdAt);
-  const dateText = Number.isNaN(date.getTime())
-    ? observation.createdAt
-    : date.toLocaleDateString("es-ES");
-
   return (
     <div
-      className="rounded-[22px] p-6 border shadow-md"
+      className="w-full max-w-[520px] rounded-[22px] p-4 md:p-5"
       style={{
-        backgroundColor: "rgba(11,16,1,0.05)",
-        borderColor: "rgba(11,16,1,0.12)",
-        color: "#0B1001",
+        backgroundColor: "#95CB1D",
+        color: "#FFFBF1",
       }}
     >
-      <p className="text-xs" style={{ opacity: 0.7 }}>
-        {dateText}
-      </p>
+      <p className="text-[12px] leading-none opacity-95">{observation.createdAt}</p>
 
-      <p className="mt-1 font-extrabold">{activityType}</p>
-      <p className="text-sm" style={{ opacity: 0.8 }}>
-        {parcelCrop}
-      </p>
+      <h3 className="mt-2 text-[18px] md:text-[20px] font-bold leading-tight">
+        {activityType}
+      </h3>
 
-      <p className="text-xs mt-1" style={{ opacity: 0.7 }}>
+      <p className="mt-1 text-[14px] leading-tight opacity-95">{parcelCrop}</p>
+
+      <p className="mt-1 text-[13px] leading-tight opacity-95">
         {observation.technicianName}
-        {observation.technicianLicense ? ` · ${observation.technicianLicense}` : ""}
+        {observation.technicianLicense ? ` Nº ${observation.technicianLicense}` : ""}
       </p>
 
       <div
-        className="mt-4 rounded-[14px] p-4 min-h-[72px] border"
+        className="mt-4 rounded-[12px] min-h-[72px] px-4 py-3"
         style={{
           backgroundColor: "#FFFBF1",
-          borderColor: "rgba(11,16,1,0.12)",
+          color: "#567A12",
         }}
       >
-        {observation.detail}
+        <p className="text-[13px] md:text-[14px] leading-relaxed">{observation.detail}</p>
       </div>
     </div>
   );
