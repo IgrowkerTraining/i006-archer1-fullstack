@@ -77,7 +77,7 @@ export default function ProducerObservations() {
               <div className="flex items-start gap-5">
                 <button
                   type="button"
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate("/producer-history")}
                   className="h-[54px] w-[54px] rounded-full flex items-center justify-center"
                   style={{
                     backgroundColor: "#95CB1D",
@@ -124,9 +124,8 @@ export default function ProducerObservations() {
                         key={o.id}
                         observation={o}
                         activityType={activity?.activityType || "Tipo de actividad"}
-                        parcelCrop={`${activity?.parcel ?? "Parcela"} - ${
-                          activity?.crop ?? "Cultivo"
-                        }`}
+                        parcelCrop={`${activity?.parcel ?? "Parcela"} - ${activity?.crop ?? "Cultivo"
+                          }`}
                       />
                     ))}
                   </div>
