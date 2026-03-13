@@ -39,14 +39,8 @@ export default function TechnicianObservations() {
           id: item.id,
           activityId: item.agroactivity,
           createdAt: item.date,
-          technicianName:
-            typeof item.technician === "string"
-              ? item.technician
-              : item.technician?.name || "Técnico",
-          technicianLicense:
-            typeof item.technician === "object"
-              ? item.technician?.registrationnumber || ""
-              : "",
+          technicianName: item.technician || "Técnico",
+          technicianLicense: "",
           detail: item.observation,
         }));
 

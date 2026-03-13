@@ -165,12 +165,15 @@ export const api = {
       return [];
     }
   },
-
   // =========================
   // RESUMEN
   // =========================
 
-  async getResume(exploitationId: string, month: number, year: number): Promise<any> {
+  async getResume(
+    exploitationId: string,
+    month: number,
+    year: number,
+  ): Promise<any> {
     const response = await fetch(
       `${API_ENDPOINTS.BASE}/resume/${exploitationId}?month=${month}&year=${year}`,
       {
@@ -192,7 +195,11 @@ export const api = {
     return await response.text();
   },
 
-  async getResumeData(exploitationId: string, month: number, year: number): Promise<any> {
+  async getResumeData(
+    exploitationId: string,
+    month: number,
+    year: number,
+  ): Promise<any> {
     const response = await fetch(
       `${API_ENDPOINTS.BASE}/resume/data/${exploitationId}?month=${month}&year=${year}`,
       {

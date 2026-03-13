@@ -15,7 +15,9 @@ export default function TechnicianAddObservation() {
 
   useEffect(() => {
     if (!activityId) return;
-    mockGetActivity(activityId).then(setActivity).catch(() => setActivity(null));
+    mockGetActivity(activityId)
+      .then(setActivity)
+      .catch(() => setActivity(null));
   }, [activityId]);
 
   const save = async () => {
