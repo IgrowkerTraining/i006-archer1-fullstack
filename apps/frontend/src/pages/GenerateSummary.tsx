@@ -5,6 +5,7 @@ import { SummaryLoadingState } from "../components/summary/SummaryLoadingState";
 import { SummaryResultCard } from "../components/summary/SummaryResultCard";
 import { SummaryDownloadedState } from "../components/summary/SummaryDownloadedState";
 import { mockGenerateSummary, type MonthlySummary } from "../mocks/summaryMock";
+import "../styles/archer-shell.css";
 
 type Step = "form" | "loading" | "result" | "downloaded";
 
@@ -41,12 +42,12 @@ const GenerateSummary: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[100svh] bg-[#FFFBF1] flex items-center justify-center p-6">
-      <div className="w-full max-w-[980px]">
+    <div className="archer-page-bg">
+      <div className="archer-page-shell">
         <div
           className="rounded-[34px] p-6 md:p-8 shadow-2xl border"
           style={{
-            backgroundColor: "rgba(11,16,1,0.05)",
+            backgroundColor: "rgba(255,251,241,0.45)",
             borderColor: "rgba(11,16,1,0.10)",
           }}
         >

@@ -1,0 +1,18 @@
+.archer-page-bg {
+  min-height: 100svh;
+  background-color: #666661;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.archer-page-shell {
+  width: 100%;
+  max-width: 980px;
+}
+
+.archer-page-shell--narrow {
+  width: 100%;
+  max-width: 900px;
+}

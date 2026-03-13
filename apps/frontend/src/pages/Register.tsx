@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/archer-shell.css";
 import { Button } from "../components/common/Button";
 
 const Register: React.FC = () => {
@@ -17,8 +18,8 @@ const Register: React.FC = () => {
   const cardSelected = "shadow-md";
 
   return (
-    <div className="min-h-[100svh] bg-[#FFFBF1] flex items-center justify-center p-6">
-      <div className="w-full max-w-[900px]">
+    <div className="archer-page-bg">
+      <div className="archer-page-shell">
         {/* Card exterior tablet */}
         <div
           className="rounded-[34px] p-6 md:p-8 shadow-2xl border"

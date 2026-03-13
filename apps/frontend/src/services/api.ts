@@ -118,4 +118,99 @@ export const api = {
 
     return await response.text();
   },
+
+  // =========================
+  // OBSERVACIONES
+  // =========================
+
+  async createObservation(data: {
+    observation: string;
+    agroactivity: string;
+  }): Promise<any> {
+    const response = await fetch(`${API_ENDPOINTS.BASE}/observation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      credentials: "include",
+    });
+
+    const contentType = response.headers.get("content-type");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    }
+
+    return await response.text();
+  },
+
+  async getObservationsByActivity(activityId: string): Promise<any[]> {
+    if (!activityId) return [];
+
+    try {
+      const response = await fetch(
+        `${API_ENDPOINTS.BASE}/observation/${activityId}`,
+        {
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (error) {
+      return [];
+    }
+  },
+
+  // =========================
+  // RESUMEN
+  // =========================
+
+  async getResume(exploitationId: string, month: number, year: number): Promise<any> {
+    const response = await fetch(
+      `${API_ENDPOINTS.BASE}/resume/${exploitationId}?month=${month}&year=${year}`,
+      {
+        credentials: "include",
+      },
+    );
+
+    const contentType = response.headers.get("content-type");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    }
+
+    return await response.text();
+  },
+
+  async getResumeData(exploitationId: string, month: number, year: number): Promise<any> {
+    const response = await fetch(
+      `${API_ENDPOINTS.BASE}/resume/data/${exploitationId}?month=${month}&year=${year}`,
+      {
+        credentials: "include",
+      },
+    );
+
+    const contentType = response.headers.get("content-type");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    }
+
+    return await response.text();
+  },
 };
