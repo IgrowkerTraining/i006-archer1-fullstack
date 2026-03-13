@@ -11,7 +11,7 @@ export const swaggerSpec = swaggerJsdoc({
         },
         servers: [
             { url: 'http://localhost:3000', description: 'Local' },
-            { url: 'https://example.com', description: 'Producción' },
+            { url: 'https://archer1-backend.onrender.com', description: 'Producción' },
         ],
         components: {
             securitySchemes: {
@@ -25,7 +25,7 @@ export const swaggerSpec = swaggerJsdoc({
         security: [{ bearerAuth: [] }],
     },
     apis: [
-        './src/routes/*.ts', // donde vivan tus routes/controllers
+        './src/routes/*.ts',
         './src/routes/*.js',
     ],
 });
